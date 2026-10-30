@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mako.memory/evidence-link/v1",
+  "title": "evidence-link",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["link_id", "claim_id", "event_id", "role", "created_at"],
+  "properties": {
+    "link_id": {"type": "string", "minLength": 8},
+    "claim_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "role": {"type": "string", "enum": ["supports", "contradicts", "derived_from", "corrects"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "note": {"type": ["string", "null"]}
+  },
+  "description": "Edges exist only between stored IDs. Similar text without a stored link carries no provenance."
+}

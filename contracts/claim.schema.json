@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mako.memory/claim/v1",
+  "title": "claim",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id", "owner_id", "project", "session", "actor",
+    "statement", "certainty", "created_at", "valid_from", "valid_to",
+    "invalid_due_to_event_id", "derived_from_claim_ids", "model_versions",
+    "source_digest"
+  ],
+  "properties": {
+    "claim_id": {"type": "string", "minLength": 8},
+    "owner_id": {"type": "string", "minLength": 1},
+    "project": {"type": "string", "minLength": 1},
+    "session": {"type": "string", "minLength": 1},
+    "actor": {"type": ["string", "null"]},
+    "statement": {"type": "object", "description": "structured proposition; free text alone is not evidence"},
+    "certainty": {"type": "string", "enum": ["explicit", "deterministic", "inferred"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_to": {"type": ["string", "null"], "description": "null while valid; set only by temporal invalidation"},
+    "invalid_due_to_event_id": {"type": ["string", "null"]},
+    "derived_from_claim_ids": {"type": "array", "items": {"type": "string"}, "description": "dependencies by claim_id only; no text similarity"},
+    "model_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "source_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

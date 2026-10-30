@@ -1,0 +1,228 @@
+{
+  "actual": {
+    "comparison": {
+      "none": {
+        "correct": false,
+        "fact_ref": null,
+        "memory_receipt": {
+          "mode": "none",
+          "result_digest": "none",
+          "returned": 0,
+          "scanned": 0
+        },
+        "version": "v1.2"
+      },
+      "raw_history": {
+        "correct": true,
+        "fact_ref": "ev_66c557b675a1b4811f8d14cc",
+        "memory_receipt": {
+          "as_of": null,
+          "mode": "raw_history",
+          "owner_id": "owner-cmp",
+          "project": "synth-proj",
+          "query_digest": "4d4a12a89a46c3c49d99162ee6fc21868876ef898f402813d6fb700aeb972733",
+          "result_digest": "02f07bdbf54a076e6cf8715cf87787c358048de54986246fa4771e304f13a565",
+          "returned": 2,
+          "scanned": 2
+        },
+        "version": "v2.1"
+      },
+      "temporal_recall": {
+        "correct": true,
+        "fact_ref": "ev_66c557b675a1b4811f8d14cc",
+        "memory_receipt": {
+          "as_of": null,
+          "considered": 1,
+          "mode": "temporal_recall",
+          "owner_id": "owner-cmp",
+          "project": "synth-proj",
+          "query_digest": "4d4a12a89a46c3c49d99162ee6fc21868876ef898f402813d6fb700aeb972733",
+          "result_digest": "614ae098690c28bbf5402f96cac0a3370acfe9b466d4f42f3389d658d38596e2",
+          "returned": 1
+        },
+        "version": "v2.1"
+      }
+    },
+    "pilot": {
+      "R1": {
+        "state": "completed",
+        "tool_receipt": {
+          "arguments_digest": "9ae649ca57dab63fea8615c250284a673345648cdde75776ec9eec8092d8275e",
+          "executor_seq": 1,
+          "fact_ref": "ev_8a95b7e5d2f844e6cc710553",
+          "operation": "ship_release",
+          "version": "v1.2"
+        }
+      },
+      "R2": {
+        "state": "completed",
+        "tool_receipt": {
+          "arguments_digest": "d6e9940d0b85816ce25a2b46657a09bc45476570d04b6ec75ee972a0f3b0063f",
+          "executor_seq": 2,
+          "fact_ref": "ev_965e2727173b6f762a5201e7",
+          "operation": "ship_release",
+          "version": "v1.3"
+        }
+      },
+      "as_of": {
+        "current_valid": [
+          "cl_844c980592c317e60dd39681"
+        ],
+        "historical_valid": [
+          "cl_3ea2e6ff0c57fddf2beddec3",
+          "cl_58ce619cdd6aafe0dfe27af5"
+        ],
+        "phase": "as_of"
+      },
+      "invalidated_claims": [
+        "cl_3ea2e6ff0c57fddf2beddec3",
+        "cl_58ce619cdd6aafe0dfe27af5"
+      ],
+      "model_swap": {
+        "R1_model_receipt": "syn-model-a",
+        "R4_action_version": "v1.3",
+        "R4_model_receipt": "syn-model-b",
+        "data_digest_unchanged": true
+      },
+      "receipt_fact_links": {
+        "R1_tool_receipt_fact_ref": "ev_8a95b7e5d2f844e6cc710553",
+        "R2_tool_receipt_fact_ref": "ev_965e2727173b6f762a5201e7",
+        "new_fact_event": "ev_965e2727173b6f762a5201e7",
+        "old_fact_event": "ev_8a95b7e5d2f844e6cc710553"
+      },
+      "restart": {
+        "checkpoint_stages_after_restart": [
+          "memory",
+          "model",
+          "outbox",
+          "tool"
+        ],
+        "crashed": true,
+        "executions_after_crash": 3,
+        "executions_after_restart": 3,
+        "restart_memory_recalls": 0,
+        "restart_model_calls": 0,
+        "restart_state": "completed"
+      }
+    }
+  },
+  "all_checks_passed": true,
+  "checks": {
+    "R1_completed": true,
+    "R2_completed": true,
+    "invalidation_ran": true,
+    "model_swap_data_unchanged": true,
+    "no_memory_control_wrong": true,
+    "raw_baseline_not_strawman": true,
+    "receipt_links_new_fact": true,
+    "restart_exactly_once": true
+  },
+  "cleanup": "temp dir removed on exit; no background processes started",
+  "duration_seconds": 0.29,
+  "environment": {
+    "core_dir": "/Users/Andreyled/MAKO-Local/kimi-code-m5m/attached-assets-price-review/repo/scripts/backend/mnemosyne-core",
+    "core_file_digests": {
+      "core_v1_contract.py": "a43e1e111a5b2389",
+      "core_v1_runtime.py": "f13ffec9e9f81c77",
+      "core_v1_store.py": "f0e034d2944dd427"
+    },
+    "data": "synthetic multi-agent dialogs only, no personal data",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "stdlib_only": true
+  },
+  "expected": {
+    "comparison": {
+      "none": {
+        "correct": false
+      },
+      "raw_history": {
+        "correct": true
+      },
+      "temporal_recall": {
+        "correct": true
+      }
+    },
+    "pilot": {
+      "R1_action": {
+        "fact_ref": "seed event E1",
+        "version": "v1.2"
+      },
+      "R2_action_after_change": {
+        "fact_ref": "correction event E2 (!= E1)",
+        "version": "v1.3"
+      },
+      "model_swap": {
+        "data_digest_unchanged": true,
+        "receipts_differ": true
+      },
+      "restart": {
+        "crashed": true,
+        "memory_recalls_after_restart": 1,
+        "model_calls_after_restart": 1,
+        "restart_state": "completed",
+        "tool_executions_delta": 0
+      }
+    }
+  },
+  "limitations": [
+    "synthetic model/tool/policy/transport/verifier adapters are not a live LLM; the CORE runtime, SQLiteRunStore and exactly-once recovery are the real 0.2.6 code",
+    "recall/reranker baselines are deterministic keyword scoring, not embeddings",
+    "single-machine SQLite; no concurrency stress, no network, no paid calls",
+    "RAM figure is ru_maxrss of this process (platform units), not a controlled measurement"
+  ],
+  "ram_ru_maxrss": 32587776,
+  "receipts": {
+    "R1_model": {
+      "input_digest": "4dd066abc564f6cba0020c94e4a6645478b05cb25fbc47c58651a6bdf017d768",
+      "model": "syn-model-a",
+      "model_version": "syn-1.0",
+      "policy_revision": "synth-policy-v1",
+      "usage": {
+        "calls": 1,
+        "context_items": 2
+      }
+    },
+    "R1_tool": {
+      "arguments_digest": "9ae649ca57dab63fea8615c250284a673345648cdde75776ec9eec8092d8275e",
+      "executor_seq": 1,
+      "fact_ref": "ev_8a95b7e5d2f844e6cc710553",
+      "operation": "ship_release",
+      "version": "v1.2"
+    },
+    "R2_model": {
+      "input_digest": "a89ad3902a0c6b02977b4dc3e60f00174bc6d9186c79162a6dd1195329be338c",
+      "model": "syn-model-a",
+      "model_version": "syn-1.0",
+      "policy_revision": "synth-policy-v1",
+      "usage": {
+        "calls": 1,
+        "context_items": 1
+      }
+    },
+    "R2_tool": {
+      "arguments_digest": "d6e9940d0b85816ce25a2b46657a09bc45476570d04b6ec75ee972a0f3b0063f",
+      "executor_seq": 2,
+      "fact_ref": "ev_965e2727173b6f762a5201e7",
+      "operation": "ship_release",
+      "version": "v1.3"
+    },
+    "R3_restart_tool": {
+      "arguments_digest": "d6e9940d0b85816ce25a2b46657a09bc45476570d04b6ec75ee972a0f3b0063f",
+      "executor_seq": 3,
+      "fact_ref": "ev_965e2727173b6f762a5201e7",
+      "operation": "ship_release",
+      "version": "v1.3"
+    },
+    "R4_model": {
+      "input_digest": "a89ad3902a0c6b02977b4dc3e60f00174bc6d9186c79162a6dd1195329be338c",
+      "model": "syn-model-b",
+      "model_version": "syn-1.0",
+      "policy_revision": "synth-policy-v1",
+      "usage": {
+        "calls": 1,
+        "context_items": 1
+      }
+    }
+  }
+}

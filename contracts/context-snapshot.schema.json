@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mako.memory/context-snapshot/v1",
+  "title": "context-snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshot_id", "owner_id", "project", "created_at",
+    "mode", "items", "retrieval_receipt", "core_run_id"
+  ],
+  "properties": {
+    "snapshot_id": {"type": "string", "minLength": 8},
+    "owner_id": {"type": "string", "minLength": 1},
+    "project": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "mode": {"type": "string", "enum": ["temporal_recall", "raw_history", "none"]},
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ref_id", "ref_type", "text", "certainty", "valid_from", "provenance"],
+        "properties": {
+          "ref_id": {"type": "string"},
+          "ref_type": {"type": "string", "enum": ["event", "claim"]},
+          "text": {"type": "string"},
+          "certainty": {"type": "string", "enum": ["explicit", "deterministic", "inferred"]},
+          "valid_from": {"type": "string"},
+          "provenance": {
+            "type": "object",
+            "required": ["evidence_event_ids", "source_digests"],
+            "properties": {
+              "evidence_event_ids": {"type": "array", "items": {"type": "string"}},
+              "source_digests": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
+    "retrieval_receipt": {"type": "object", "description": "deterministic digest of query+scope+result ids; memory never executes actions"},
+    "as_of": {"type": ["string", "null"], "format": "date-time"},
+    "core_run_id": {"type": ["string", "null"], "description": "CORE run that consumed this context; reference only"}
+  }
+}

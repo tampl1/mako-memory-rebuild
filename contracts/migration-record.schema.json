@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mako.memory/migration-record/v1",
+  "title": "migration-record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "migration_id", "applied_at", "tool_version", "record_digest", "record"
+  ],
+  "properties": {
+    "migration_id": {"type": "string", "minLength": 3},
+    "applied_at": {"type": "string", "format": "date-time"},
+    "tool_version": {"type": "string"},
+    "record_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record": {"type": "object"},
+    "already_applied": {"type": "boolean", "description": "true when a replay returned the existing row instead of inserting a duplicate"}
+  },
+  "description": "migration_id is UNIQUE in the store; replays are idempotent and never create a second record."
+}

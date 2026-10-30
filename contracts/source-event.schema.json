@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mako.memory/source-event/v1",
+  "title": "source-event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id", "kind", "owner_id", "project", "session", "actor",
+    "recipients", "occurred_at", "ingested_at", "valid_from", "valid_to",
+    "correction_of", "supersedes_event_id", "certainty", "model_versions",
+    "source_digest", "payload"
+  ],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 8},
+    "kind": {"type": "string", "enum": ["message", "decision", "action_result", "fact", "correction"]},
+    "owner_id": {"type": "string", "minLength": 1},
+    "project": {"type": "string", "minLength": 1},
+    "session": {"type": "string", "minLength": 1},
+    "actor": {"type": ["string", "null"], "description": "null or \"unknown\" when the source does not identify the author; never fabricated"},
+    "recipients": {"type": "array", "items": {"type": ["string", "null"]}},
+    "occurred_at": {"type": ["string", "null"], "format": "date-time", "description": "UTC RFC3339; null only when genuinely unknown and never invented"},
+    "ingested_at": {"type": "string", "format": "date-time", "description": "UTC RFC3339, set by the store at ingestion"},
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_to": {"type": ["string", "null"], "description": "transaction-time close of this version; null while current. Mutable ONLY through temporal invalidation."},
+    "correction_of": {"type": ["string", "null"], "description": "event_id of the event this one corrects"},
+    "supersedes_event_id": {"type": ["string", "null"]},
+    "certainty": {"type": "string", "enum": ["explicit", "deterministic", "inferred"]},
+    "model_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "source_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "core_run_id": {"type": ["string", "null"], "description": "reference to a CORE run/receipt; memory never executes or authorizes CORE actions"},
+    "payload": {"type": "object"}
+  }
+}
