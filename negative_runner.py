@@ -37,7 +37,7 @@ def main():
             "production_backfill": 0, "weight_training": 0,
             "credential_access": 0, "live_queue_changes": 0,
         },
-        "injection_source": "mini-max-win document not yet published; synthetic categories from commission only",
+        "injection_source": "Attached-Assets fa495f74b9e4147b8cc7594cf521797ae6f83a98 artifacts/memory-pilot-20261031; exact T15/T17/T14 run separately by minimax_runner.py",
     }
     report["all_checks_passed"] = result.wasSuccessful()
     print(json.dumps(report, indent=2, sort_keys=True))

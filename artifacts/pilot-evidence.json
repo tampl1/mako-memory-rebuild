@@ -130,7 +130,7 @@
     "total_counters_match": true
   },
   "cleanup": "temp dir removed on exit; no background processes started",
-  "duration_seconds": 0.075,
+  "duration_seconds": 0.254,
   "environment": {
     "core_dir": "/Users/Andreyled/MAKO-Local/kimi-code-m5m/attached-assets-price-review/repo/scripts/backend/mnemosyne-core",
     "core_file_digests": {
@@ -142,7 +142,7 @@
     "core_remote": "https://github.com/tampl1/Attached-Assets.git",
     "data": "synthetic multi-agent dialogs only, no personal data",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
-    "python": "3.9.6",
+    "python": "3.12.13",
     "stdlib_only": true
   },
   "expected": {
@@ -195,7 +195,7 @@
     "single-machine SQLite; no concurrency stress, no network, no paid calls",
     "RAM figure is ru_maxrss of this process (platform units), not a controlled measurement"
   ],
-  "ram_ru_maxrss": 22216704,
+  "ram_ru_maxrss": 32669696,
   "receipts": {
     "R1_model": {
       "input_digest": "4dd066abc564f6cba0020c94e4a6645478b05cb25fbc47c58651a6bdf017d768",

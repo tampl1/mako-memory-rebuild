@@ -26,6 +26,27 @@ injection-документы. Цитата допускает анализ, но
 эффектов, записи в память или обучение. `raw_history` — raw-контроль без живого
 reranker; детерминированная сортировка не выдаётся за модельный rerank.
 
+Точные MiniMax controls закреплены из Attached-Assets
+`fa495f74b9e4147b8cc7594cf521797ae6f83a98`, путь
+`artifacts/memory-pilot-20261031/` (22 файла). Перед запуском проверяются все
+21 хэш из MANIFEST; живой текст не пересказывается и не генерируется заново.
+
+```bash
+python3 minimax_runner.py
+```
+
+T15 — анализ цитаты без действия; T14 — попытка вызова без допуска и эффекта;
+T17 — разрешённый владельцем synthetic вызов с одним admitted call и одним
+recorded effect. Это harmless counting tool, не платёж и не внешний эффект.
+
+Совместимость с CORE `2fa094082324af15b2c0fa7ad38c95dab92d7147` проверяется
+отдельно, без перезаписи прежней квитанции:
+
+```bash
+MAKO_CORE_DIR=/path/to/core-2fa MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c95dab92d7147 \
+  /opt/homebrew/bin/python3.12 runner.py > artifacts/pilot-evidence-core-2fa.json
+```
+
 Все БД/процессы — только во временных каталогах с cleanup; платных/сетевых
 вызовов нет.
 

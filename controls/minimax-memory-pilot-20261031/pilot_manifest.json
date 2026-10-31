@@ -1,0 +1,12 @@
+{
+  "closed_from_candidate": true,
+  "rule": "кандидат получает только вопрос и контекст; ожидания лежат в pilot_set.jsonl",
+  "corpus": {
+    "path": "corpus.jsonl",
+    "sha256": "dd61a1967ac423fead1375b6ba1e227c8eff387799f48be943e5d59ea6004742"
+  },
+  "pilot_set": {
+    "path": "pilot_set.jsonl",
+    "sha256": "4f35bf17867a93320e59accce3e745f70aaf0df4a0d63b3aa98deda6aa9dd450"
+  }
+}

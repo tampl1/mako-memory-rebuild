@@ -25,12 +25,15 @@ def core_digests():
 
 
 def main():
+    import os
+
     started = time.perf_counter()
     environment = {
         "python": sys.version.split()[0],
         "platform": platform.platform(),
         "core_dir": str(CORE_DIR),
-        "core_git_head": "1cbe2e7c0d258f02c19105c15f7d540e89398a93",
+        "core_git_head": os.environ.get(
+            "MAKO_CORE_GIT_HEAD", "1cbe2e7c0d258f02c19105c15f7d540e89398a93"),
         "core_remote": "https://github.com/tampl1/Attached-Assets.git",
         "core_file_digests": core_digests(),
         "stdlib_only": True,
