@@ -1,0 +1,52 @@
+{
+  "adapter": {
+    "separate_from_production": true,
+    "target_modules": "paper_only_not_selected",
+    "type": "LoRA"
+  },
+  "base_model": {
+    "blocker": "Ollama inference artifact is not a pinned trainable HF base",
+    "local_inference_candidate": "qwen3.5:9b",
+    "ollama_digest": "d63f830f28d5",
+    "requested_class": "9B",
+    "tokenizer_digest": null,
+    "trainable_hf_revision": null
+  },
+  "data": {
+    "eligible_split": "train only after checker PASS; validation/test never enter SFT",
+    "path": "corpus/reviewed-sample.json",
+    "records": 12,
+    "sha256": "98ef2b14df4e993cda63d3e756660f5c38c573e00fd2b67c1fcfb0752f51edad",
+    "train_records": 8
+  },
+  "evaluation": {
+    "required": [
+      "baseline/after held-out tasks",
+      "general skills retention",
+      "false refusals",
+      "synthetic canary leakage"
+    ],
+    "status": "not_run"
+  },
+  "limits": {
+    "backfill": false,
+    "hub_publish": false,
+    "paid_calls": 0,
+    "wall_seconds_max": 3600
+  },
+  "runtime": {
+    "gpu": "Apple M5 Max; two existing Ollama processes occupy GPU",
+    "gpu_lease": "not_requested",
+    "python_3_12": {
+      "datasets": false,
+      "mlx": false,
+      "peft": false,
+      "torch": true,
+      "transformers": false,
+      "trl": false
+    },
+    "training_runtime": "missing"
+  },
+  "schema": "mako-lora-9b-paper-manifest-v1",
+  "status": "blocked_training_not_started"
+}

@@ -56,3 +56,21 @@ reranker; детерминированная сортировка не выда�
 Synthetic model/tool — не живой LLM; настоящие — CORE runtime, store и
 exactly-once recovery. Reranker — детерминированный keyword-scoring, не
 эмбеддинги. Одиночный SQLite, без concurrency-stress.
+
+## Security/SFT corpus
+
+Ветка `security/sft-corpus-20261031`. Двенадцать synthetic исправлений с
+контрпримерами и ссылками на закреплённые evidence/CORE receipts. Это curated
+кандидаты, а не записи живого LLM. Checker реализован отдельно от builder, но
+не заменяет независимого reviewer. В SFT допускается только train split после
+PASS; validation/test исключены.
+
+```bash
+python3 corpus/build_sample.py
+python3 corpus/independent_checker.py
+```
+
+`training/lora-9b-manifest.json` — paper manifest, не запуск. Training runtime
+отсутствует, GPU занят существующими процессами и lease не запрошен. Поэтому
+SFT, baseline/after и general-skills regression имеют статус SKIP/blocked;
+стоимость и время обучения unknown, не ноль.

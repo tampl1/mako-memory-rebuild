@@ -1,0 +1,7 @@
+{
+  "actual": "FAIL",
+  "control": "unknown-001 cost unknown->0",
+  "effect": "checker rejected modified output; original sample restored and rechecked PASS",
+  "expected": "FAIL",
+  "forbidden_training_actions": 0
+}
