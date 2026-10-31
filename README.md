@@ -74,3 +74,16 @@ python3 corpus/independent_checker.py
 отсутствует, GPU занят существующими процессами и lease не запрошен. Поэтому
 SFT, baseline/after и general-skills regression имеют статус SKIP/blocked;
 стоимость и время обучения unknown, не ноль.
+
+Pinned ZCode registry: Attached-Assets
+`b9c71d6feced831ae5cdc12278e3474d244351ff`, путь `zcode/sources-registry/`.
+Его inference digest не повышается до trainable HF revision автоматически.
+
+```bash
+python3 training/review_sources.py
+```
+
+Review проверяет права каждого input, split 8/2/2 до мутаций, quarantine для
+непроверенных лицензий и untouched eval. `training/frozen-eval-plan.json`
+фиксирует baseline A/B и три seeds без запуска моделей. Предпочтительное окно —
+M1M после явного ACK свободного ресурса; M5M днём не отбирается.

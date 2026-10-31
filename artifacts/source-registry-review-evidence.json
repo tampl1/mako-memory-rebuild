@@ -1,0 +1,42 @@
+{
+  "all_checks_passed": true,
+  "checks": {
+    "labels_still_require_reviewer": true,
+    "no_external_dataset_inputs": true,
+    "no_public_holdout_in_train": true,
+    "registry_pinned": true,
+    "rights_per_input": true,
+    "split_8_2_2": true,
+    "split_precedes_mutations": true,
+    "twelve_synthetic_records": true,
+    "unique_families": true
+  },
+  "corpus_sha256": "98ef2b14df4e993cda63d3e756660f5c38c573e00fd2b67c1fcfb0752f51edad",
+  "external_training_inputs": 0,
+  "gpu_processes_started": 0,
+  "metadata_only_quarantine": [
+    "primevul",
+    "owasp-genai-top10",
+    "purplellama-cyberseceval"
+  ],
+  "model_calls": 0,
+  "paid_calls": 0,
+  "registry": {
+    "commit": "b9c71d6feced831ae5cdc12278e3474d244351ff",
+    "path": "zcode/sources-registry/sources_registry.json",
+    "repo": "tampl1/Attached-Assets",
+    "sha256": "50a8f7588d70d604a619785da8dad302fab98636de9a2b8b3c81d3ef21c089e8"
+  },
+  "split_counts": {
+    "test": 2,
+    "train": 8,
+    "validation": 2
+  },
+  "trainable_blockers": [
+    "qwen3:8b has an Ollama inference digest, not a pinned trainable HF revision",
+    "tokenizer digest and compatible trainable weight format are missing",
+    "12 labels await independent reviewer approval",
+    "free GPU lease has not been granted"
+  ],
+  "training": "SKIP: review is not a license to train"
+}

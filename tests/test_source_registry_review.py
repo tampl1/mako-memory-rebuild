@@ -1,0 +1,24 @@
+import json
+import unittest
+from pathlib import Path
+
+from training.review_sources import main
+
+
+class SourceRegistryReviewTests(unittest.TestCase):
+    def test_review_and_frozen_eval_plan(self):
+        self.assertEqual(main(), 0)
+        root = Path(__file__).resolve().parent.parent
+        report = json.loads((root / "artifacts" / "source-registry-review-evidence.json").read_text())
+        plan = json.loads((root / "training" / "frozen-eval-plan.json").read_text())
+        self.assertTrue(report["all_checks_passed"])
+        self.assertEqual(report["split_counts"], {"train": 8, "validation": 2, "test": 2})
+        self.assertIn("primevul", report["metadata_only_quarantine"])
+        self.assertEqual(report["external_training_inputs"], 0)
+        self.assertEqual(len(plan["untouched_eval"]["record_ids"]), 4)
+        self.assertEqual(plan["gpu_lease"]["status"], "not_requested")
+        self.assertEqual(plan["status"], "prepared_not_run")
+
+
+if __name__ == "__main__":
+    unittest.main()
