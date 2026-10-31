@@ -10,10 +10,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 
-CORE_DIR = Path("/Users/Andreyled/MAKO-Local/kimi-code-m5m/attached-assets-price-review/repo/scripts/backend/mnemosyne-core")
+CORE_DIR = Path(os.environ.get(
+    "MAKO_CORE_DIR",
+    "/Users/Andreyled/MAKO-Local/kimi-code-m5m/attached-assets-price-review/repo/scripts/backend/mnemosyne-core",
+))
 if str(CORE_DIR) not in sys.path:
     sys.path.insert(0, str(CORE_DIR))
 

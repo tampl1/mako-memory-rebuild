@@ -192,10 +192,19 @@ class TemporalStore:
             ).fetchone() is None]
             if missing:
                 raise ValidationError(f"evidence events not found: {missing}")
+            cross_scope = [eid for eid in evidence_event_ids if db.execute(
+                "SELECT 1 FROM source_events WHERE event_id=? AND owner_id=? AND project=?",
+                (eid, owner_id, project)).fetchone() is None]
+            if cross_scope:
+                raise ValidationError(f"cross-owner evidence refused: {cross_scope}")
             for cid in derived_from_claim_ids:
                 if db.execute("SELECT 1 FROM claims WHERE claim_id=?",
                               (cid,)).fetchone() is None:
                     raise ValidationError(f"derived-from claim not found: {cid}")
+                if db.execute(
+                        "SELECT 1 FROM claims WHERE claim_id=? AND owner_id=? AND project=?",
+                        (cid, owner_id, project)).fetchone() is None:
+                    raise ValidationError(f"cross-owner derived-from claim refused: {cid}")
             source_digest = digest({"statement": statement,
                                     "evidence": sorted(evidence_event_ids),
                                     "derived_from": sorted(derived_from_claim_ids)})

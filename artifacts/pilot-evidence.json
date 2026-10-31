@@ -74,6 +74,16 @@
         ],
         "phase": "as_of"
       },
+      "call_counters": {
+        "restart_only": {
+          "memory_recalls": 0,
+          "model_calls": 0
+        },
+        "total": {
+          "memory_recalls": 4,
+          "model_calls": 4
+        }
+      },
       "invalidated_claims": [
         "cl_3ea2e6ff0c57fddf2beddec3",
         "cl_58ce619cdd6aafe0dfe27af5"
@@ -115,20 +125,24 @@
     "no_memory_control_wrong": true,
     "raw_baseline_not_strawman": true,
     "receipt_links_new_fact": true,
-    "restart_exactly_once": true
+    "restart_exactly_once": true,
+    "restart_only_counters_match": true,
+    "total_counters_match": true
   },
   "cleanup": "temp dir removed on exit; no background processes started",
-  "duration_seconds": 0.29,
+  "duration_seconds": 0.075,
   "environment": {
     "core_dir": "/Users/Andreyled/MAKO-Local/kimi-code-m5m/attached-assets-price-review/repo/scripts/backend/mnemosyne-core",
     "core_file_digests": {
-      "core_v1_contract.py": "a43e1e111a5b2389",
-      "core_v1_runtime.py": "f13ffec9e9f81c77",
-      "core_v1_store.py": "f0e034d2944dd427"
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "f0e034d2944dd4278f61ed53befed4183f2fcdf02d4ead15303ba1da15696aa3"
     },
+    "core_git_head": "1cbe2e7c0d258f02c19105c15f7d540e89398a93",
+    "core_remote": "https://github.com/tampl1/Attached-Assets.git",
     "data": "synthetic multi-agent dialogs only, no personal data",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
-    "python": "3.12.13",
+    "python": "3.9.6",
     "stdlib_only": true
   },
   "expected": {
@@ -152,14 +166,24 @@
         "fact_ref": "correction event E2 (!= E1)",
         "version": "v1.3"
       },
+      "call_counters": {
+        "restart_only": {
+          "memory_recalls": 0,
+          "model_calls": 0
+        },
+        "total": {
+          "memory_recalls": 4,
+          "model_calls": 4
+        }
+      },
       "model_swap": {
         "data_digest_unchanged": true,
         "receipts_differ": true
       },
       "restart": {
         "crashed": true,
-        "memory_recalls_after_restart": 1,
-        "model_calls_after_restart": 1,
+        "memory_recalls_after_restart": 0,
+        "model_calls_after_restart": 0,
         "restart_state": "completed",
         "tool_executions_delta": 0
       }
@@ -167,11 +191,11 @@
   },
   "limitations": [
     "synthetic model/tool/policy/transport/verifier adapters are not a live LLM; the CORE runtime, SQLiteRunStore and exactly-once recovery are the real 0.2.6 code",
-    "recall/reranker baselines are deterministic keyword scoring, not embeddings",
+    "raw_history is a deterministic raw control without a live reranker or embeddings",
     "single-machine SQLite; no concurrency stress, no network, no paid calls",
     "RAM figure is ru_maxrss of this process (platform units), not a controlled measurement"
   ],
-  "ram_ru_maxrss": 32587776,
+  "ram_ru_maxrss": 22216704,
   "receipts": {
     "R1_model": {
       "input_digest": "4dd066abc564f6cba0020c94e4a6645478b05cb25fbc47c58651a6bdf017d768",

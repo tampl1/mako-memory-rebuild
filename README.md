@@ -8,10 +8,23 @@
 
 ## Запуск
 
+Закреплённый CORE: Attached-Assets `1cbe2e7c0d258f02c19105c15f7d540e89398a93`,
+каталог `scripts/backend/mnemosyne-core`. Путь можно передать через
+`MAKO_CORE_DIR`; сами файлы CORE пилот не изменяет.
+
 ```bash
-/opt/homebrew/bin/python3.12 -m unittest discover -s tests   # 14 тестов
-/opt/homebrew/bin/python3.12 runner.py                       # JSON evidence, exit 0/1
+export MAKO_CORE_DIR=/path/to/Attached-Assets/scripts/backend/mnemosyne-core
+python3 -m unittest discover -s tests
+python3 runner.py
+python3 negative_runner.py
 ```
+
+Negative acceptance дополнительно проверяет два порядка исправления, as_of,
+недоступный retrieval, потерянные/подменённые evidence links, чужого owner,
+отозванный grant, смену embedding-generation, испорченный checkpoint и
+injection-документы. Цитата допускает анализ, но не даёт прав, tool calls,
+эффектов, записи в память или обучение. `raw_history` — raw-контроль без живого
+reranker; детерминированная сортировка не выдаётся за модельный rerank.
 
 Все БД/процессы — только во временных каталогах с cleanup; платных/сетевых
 вызовов нет.
