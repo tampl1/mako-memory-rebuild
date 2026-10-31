@@ -1,0 +1,47 @@
+{
+  "schema": "memory-bridge/1.0",
+  "source_sha": "2d63b1abe26b02c996a4a8de06777e0624124f34",
+  "execution_candidate_replit": "3202f81eacfb167b1705b07cb1eb0de7fd7974f5",
+  "core_sha": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
+  "entry_points": [
+    "src.live_retrieval.LiveMemoryContext.recall",
+    "src.child_context.FrozenChildMemoryContext.recall"
+  ],
+  "pinned_context_fields": [
+    "source", "version", "as_of", "owner", "tenant", "project",
+    "grant_revision", "embedding_generation", "context_digest"
+  ],
+  "runtime_models": {
+    "embedding": {
+      "name": "bge-m3:latest",
+      "digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+      "capability": "embedding",
+      "dimensions": 1024
+    },
+    "rerank": {
+      "name": "qwen3.5:9b",
+      "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+      "capability": "completion",
+      "kind": "generative_json_score_not_dedicated_cross_encoder"
+    },
+    "verification": "runtime /api/tags digest+capability, not constants only"
+  },
+  "comparison_contract": {
+    "arms": ["no-memory", "raw", "memory-module"],
+    "same_scorer": true,
+    "same_frozen_inputs": true,
+    "expected_improvement": null,
+    "observed": "raw=rerank on three small synthetic questions; no improvement claimed"
+  },
+  "offline_command": "MAKO_CORE_DIR=/path/to/core-2fa /opt/homebrew/bin/python3.12 -m unittest discover -s tests",
+  "evidence": {
+    "offline_replay": "artifacts/offline-replay-evidence.json",
+    "child_context": "artifacts/child-context-evidence.json"
+  },
+  "boundaries": [
+    "memory stores history and references; CORE owns execution state",
+    "no backfill, training, paid calls or production service restart",
+    "caller/deadline/grant checked before and after retrieval",
+    "worker resource accounting ends at actual thread completion"
+  ]
+}

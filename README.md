@@ -6,6 +6,20 @@
 только через локальный `sys.path` в `src/adapters.py`). Только stdlib Python
 3.11+. Только synthetic multi-agent dialogs, без ПДн.
 
+## Integration handoff
+
+Ветка `memory/bridge-package-20261101`.
+
+- `integration/memory-bridge-manifest.json` — единый contract для MiniMax:
+  source/version/as_of/owner/tenant/project/grant_revision/embedding_generation/digest,
+  runtime model digest/capability и одинаковые arms/scorer/inputs.
+- `integration/history-shadow-manifest.json` — read-only shadow только метаданных
+  трёх реальных wire-событий, без содержимого диалогов; rollback и negative controls.
+- `integration/quality-audit.json` — twin-sft и Guard v1/v2: artifact, lineage,
+  license, baseline/heldout/retention. Guard v2 не продвигается по дате файла.
+- `docs/sleep-feasibility.md` — отличие MoE/Hope Sleep от LoRA/replay; это не
+  репликация статьи и не запуск обучения.
+
 ## Запуск
 
 Закреплённый CORE: Attached-Assets `1cbe2e7c0d258f02c19105c15f7d540e89398a93`,

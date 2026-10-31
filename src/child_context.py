@@ -26,6 +26,8 @@ class ChildContext:
     version: str
     as_of: str | None
     owner: str
+    tenant: str
+    project: str
     grant_revision: int
     embedding_generation: str
     items_json: str
@@ -40,7 +42,7 @@ def _digest(fields):
     return digest({k: v for k, v in fields.items() if k != "context_digest"})
 
 
-def freeze_child_context(*, parent_run_id, as_of, owner, grant_revision,
+def freeze_child_context(*, parent_run_id, as_of, owner, tenant, project, grant_revision,
                          embedding_generation, retrieved):
     items = retrieved["items"]
     if len(items) != 1:
@@ -53,7 +55,8 @@ def freeze_child_context(*, parent_run_id, as_of, owner, grant_revision,
         raise EvidenceError("child source/version missing")
     fields = {
         "parent_run_id": parent_run_id, "source": source, "version": version,
-        "as_of": as_of, "owner": owner, "grant_revision": grant_revision,
+        "as_of": as_of, "owner": owner, "tenant": tenant, "project": project,
+        "grant_revision": grant_revision,
         "embedding_generation": embedding_generation,
         "items_json": _canonical(items),
     }
@@ -64,7 +67,7 @@ def verify_child_context(context, store, grants):
     fields = dataclasses.asdict(context)
     if context.context_digest != _digest(fields):
         raise EvidenceError("child context digest mismatch")
-    grants.require(context.owner, "live-synth", context.embedding_generation,
+    grants.require(context.owner, context.project, context.embedding_generation,
                    context.grant_revision)
     items = context.items
     if len(items) != 1:
@@ -78,8 +81,8 @@ def verify_child_context(context, store, grants):
     event = store.get_event(context.source)
     if event is None:
         raise EvidenceError("child source unavailable")
-    if event["owner_id"] != context.owner:
-        raise EvidenceError("child owner mismatch")
+    if event["owner_id"] != context.owner or event["project"] != context.project:
+        raise EvidenceError("child owner/project mismatch")
     expected = digest({"owner_id": event["owner_id"], "project": event["project"],
                        "session": event["session"], "actor": event["actor"],
                        "occurred_at": event["occurred_at"], "payload": event["payload"]})
@@ -91,7 +94,7 @@ def verify_child_context(context, store, grants):
 def restore_child_context(blob, store, grants):
     try:
         raw = json.loads(blob)
-        required = {"parent_run_id", "source", "version", "as_of", "owner",
+        required = {"parent_run_id", "source", "version", "as_of", "owner", "tenant", "project",
                     "grant_revision", "embedding_generation", "items_json", "context_digest"}
         if set(raw) != required:
             raise ValueError("child fields mismatch")

@@ -1,0 +1,57 @@
+{
+  "schema": "history-shadow/1.0",
+  "status": "metadata_shadow_complete_not_content_backfill",
+  "source_inventory": {
+    "ref": "docs/01-source-inventory.md",
+    "sha256": "0f8ad0823a6224e5736aaee4d7c8dd4b455fee55f4f46dd417227f8116b582af",
+    "scope": "read-only aggregate inventory already completed; private dialog text not copied"
+  },
+  "source": {
+    "kind": "kimi-code wire.jsonl",
+    "path": "session_88dc3b44-dca4-40e2-aae3-2f815a25084b/agents/main/wire.jsonl",
+    "access": "read-only metadata; no message content, credentials or personal history exported"
+  },
+  "records": [
+    {
+      "shadow_id": "shadow-wire-001",
+      "source_line": 11,
+      "event_type": "context.append_message",
+      "role": "user",
+      "source_time_epoch_ms": 1790446366367,
+      "source_line_sha256": "b497bea286cd4e881cca999d10eb21c438cf3e28db315588d223e11b5be6fb71",
+      "continuity": "same session; parent/reply links unknown"
+    },
+    {
+      "shadow_id": "shadow-wire-002",
+      "source_line": 12,
+      "event_type": "context.append_message",
+      "role": "user",
+      "source_time_epoch_ms": 1790446366371,
+      "source_line_sha256": "fde3d9482bb8329346d3a2ceaa3c82184773b3696ee98dbf35801f6fbe5c65b8",
+      "continuity": "same session; parent/reply links unknown"
+    },
+    {
+      "shadow_id": "shadow-wire-003",
+      "source_line": 14,
+      "event_type": "context.append_message",
+      "role": "user",
+      "source_time_epoch_ms": 1790446366373,
+      "source_line_sha256": "0466ca4695f416fa51ecb658d5df772f3636ac800ef90cc11b67d5fcf8b6510c",
+      "continuity": "same session; parent/reply links unknown"
+    }
+  ],
+  "counts": {
+    "source_records_read": 3,
+    "shadow_records": 3,
+    "content_bytes_copied": 0
+  },
+  "negative_controls": {
+    "unreadable_source": "unresolved, not model truth",
+    "disputed_origin": "quarantine, no positive label",
+    "wrong_owner_or_tenant": "reject before retrieval",
+    "missing_reply_or_fact_lineage": "unknown, never inferred from text similarity",
+    "old_grant_or_key": "not imported and creates no rights"
+  },
+  "rollback": "delete this shadow manifest only; original wire and inventory remain unchanged",
+  "next_gate": "independent reviewer approves a small content scope and rights before any content shadow-copy"
+}

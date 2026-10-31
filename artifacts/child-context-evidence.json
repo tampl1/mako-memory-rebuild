@@ -19,16 +19,18 @@
   "core": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
   "external_model_calls": 0,
   "limitations": "real CORE runtime/store with synthetic decision/tool adapters; no live model calls",
-  "new_child_digest": "933cc7f7851e69b31d52b6f0e29b39dab5ed6d6fd7e73a77b8ac7b9edcf49229",
+  "new_child_digest": "30d90a4133f9f79d4e69bcab49913d42a6f9bbcc2a680e30ebc874f692797ac6",
   "parent": {
     "as_of": "2026-10-31T00:01:00+00:00",
-    "context_digest": "ef598c9a82976a362af2f35432de51db36b271067bbba14c3bfb7facb6da220f",
+    "context_digest": "c9b5d27d5b536d0e4d36065c5dd05b13820bbb0938394936ffee024d97ae147b",
     "embedding_generation": "bge-m3/1024",
     "grant_revision": 1,
     "items_json": "[{\"certainty\":\"explicit\",\"fact_id\":\"ev_1a4c9bd2dba4afaa7d839cc4\",\"provenance\":{\"evidence_event_ids\":[\"ev_1a4c9bd2dba4afaa7d839cc4\"],\"source_digests\":[\"1a4c9bd2dba4afaa7d839cc4df6d791aef66e17b4cec6aa92d589f937a31b434\"]},\"ref_id\":\"cl_61b3dd77c58c6e8b6e584186\",\"ref_type\":\"claim\",\"structured\":{\"source_event_ids\":[\"ev_1a4c9bd2dba4afaa7d839cc4\"],\"value\":\"v1.0\",\"version\":\"v1.0\"},\"text\":\"ship v1.0\",\"valid_from\":\"2026-10-31T00:01:00+00:00\"}]",
     "owner": "owner-live",
     "parent_run_id": "parent-v1",
+    "project": "live-synth",
     "source": "ev_1a4c9bd2dba4afaa7d839cc4",
+    "tenant": "tenant-synth",
     "version": "v1.0"
   },
   "runs": {
@@ -107,7 +109,7 @@
         "verification": "passed"
       },
       "revision": 5,
-      "run_id": "33ab4acd-8c05-4f8b-82f8-39f87a79d5ad",
+      "run_id": "96e768bc-22c6-4ea8-8182-c6008b603ddb",
       "state": "completed",
       "tool_executions_total": 1
     },
@@ -186,7 +188,7 @@
         "verification": "passed"
       },
       "revision": 5,
-      "run_id": "33ab4acd-8c05-4f8b-82f8-39f87a79d5ad",
+      "run_id": "96e768bc-22c6-4ea8-8182-c6008b603ddb",
       "state": "completed",
       "tool_executions_total": 1
     },
@@ -265,7 +267,7 @@
         "verification": "passed"
       },
       "revision": 5,
-      "run_id": "062d84e9-f985-4c97-ae28-ede4baf803e3",
+      "run_id": "f0a490ca-4659-43e0-8df4-c8c42d54f7d9",
       "state": "completed",
       "tool_executions_total": 2
     },
@@ -302,7 +304,7 @@
         },
         "memory_receipt": {
           "as_of": "2026-10-31T00:01:00+00:00",
-          "context_digest": "ef598c9a82976a362af2f35432de51db36b271067bbba14c3bfb7facb6da220f",
+          "context_digest": "c9b5d27d5b536d0e4d36065c5dd05b13820bbb0938394936ffee024d97ae147b",
           "embedding_generation": "bge-m3/1024",
           "grant_revision": 1,
           "mode": "frozen_child",
@@ -310,7 +312,7 @@
           "version": "v1.0"
         },
         "model_receipt": {
-          "input_digest": "2f44a0b894c535354ef557dd06832e3a6b424406b159fc17c4d908e2f1fb6de8",
+          "input_digest": "127a6e69052a3bdce1b474ae0b63c0ddbe9cb478ffca308039843c95dc8058f4",
           "model": "syn-model-a",
           "model_version": "syn-1.0",
           "policy_revision": "synth-policy-v1",
@@ -329,7 +331,7 @@
         "verification": "passed"
       },
       "revision": 6,
-      "run_id": "6ddbe5de-09ae-45cb-bc82-b4726698687e",
+      "run_id": "a40518f7-0c58-4fb9-9b3d-0c8f5dc34fd9",
       "state": "completed",
       "tool_executions_total": 3
     }

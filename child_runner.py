@@ -44,7 +44,7 @@ def main():
         retrieved = reader.read(owner_id=owner, project="live-synth", query="ship",
                                 mode="temporal_recall", limit=1)
         parent = freeze_child_context(
-            parent_run_id="parent-v1", as_of=ts(1), owner=owner, grant_revision=1,
+            parent_run_id="parent-v1", as_of=ts(1), owner=owner, tenant="tenant-synth", project="live-synth", grant_revision=1,
             embedding_generation="bge-m3/1024", retrieved=retrieved)
         decision = decide(parent.items, "what should we ship?")
         args = {"version": decision["version"], "fact_ref": decision["fact_ref"]}
@@ -75,7 +75,7 @@ def main():
         retrieved2 = reader.read(owner_id=owner, project="live-synth", query="ship",
                                  mode="temporal_recall", limit=1)
         child2 = freeze_child_context(
-            parent_run_id="parent-v2", as_of=None, owner=owner, grant_revision=1,
+            parent_run_id="parent-v2", as_of=None, owner=owner, tenant="tenant-synth", project="live-synth", grant_revision=1,
             embedding_generation="bge-m3/1024", retrieved=retrieved2)
         decision2 = decide(child2.items, "what should we ship?")
         args2 = {"version": decision2["version"], "fact_ref": decision2["fact_ref"]}
@@ -115,6 +115,7 @@ def main():
         grants.allow("owner-foreign", "live-synth", "bge-m3/1024", 1)
         foreign = freeze_child_context(
             parent_run_id="parent-foreign", as_of=ts(1), owner="owner-foreign",
+            tenant="tenant-synth", project="live-synth",
             grant_revision=1, embedding_generation="bge-m3/1024", retrieved=retrieved)
         try:
             verify_child_context(foreign, store, grants)

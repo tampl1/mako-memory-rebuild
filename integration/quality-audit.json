@@ -1,0 +1,49 @@
+{
+  "schema": "weight-quality-audit/1.0",
+  "observed_at": "2026-11-01",
+  "registry_ref": "99afe52921ceb1c4ea116f24eba34ac82bbaa5a2; not a new SSOT",
+  "tracks": [
+    {
+      "track": "twin-sft-adapter-v4",
+      "state": "artifact_present_quality_not_fully_verified",
+      "base": "Qwen3-8B MLX; config sha256 14cbdde4e7726d8a6b5ea422540c298328c43c304140c627232b70fef6776b75",
+      "tokenizer_digest": "sha256:be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+      "base_license": "Apache-2.0",
+      "dataset": "safety-train-v4.jsonl sha256 e4a8599cb18c34029a2670ab26bf202633d086131dba7e762a65aab173a18a42",
+      "adapter_digest": "sha256:61e340b1dbfc428f84fc5313d2b042de1285485a97ae15e9a245f7ca57c13097",
+      "lineage": "v1 60 pairs; v2 88 pairs; v4 lineage and resume semantics incomplete",
+      "baseline_eval": "v1 baseline 9/10",
+      "heldout_eval": "v1 corrected manual 10/10; v2 attacks 50/52 and clean 16/24; v4 unknown",
+      "retention_eval": "missing",
+      "license_review": "source acknowledgements exist; per-record rights review incomplete",
+      "independent_reviewer": "missing; manual author review is not independent",
+      "next_gate": "independent v4 quality+retention+rights review before production"
+    },
+    {
+      "track": "guard-v1",
+      "state": "completed_limited_validation",
+      "base": "from-scratch small classifier",
+      "artifact_digest": "sha256:af490492ea17ddb180eea46f08a689e0d81c3f635936d1f9ec0ea2399a189287",
+      "dataset": "own synthetic plus own logs; dataset digest not pinned",
+      "baseline_eval": "unknown",
+      "heldout_eval": "acc 0.9994; live test 15/15",
+      "retention_eval": "missing",
+      "license_review": "own data; formal per-source review not pinned",
+      "independent_reviewer": "missing",
+      "next_gate": "retain as limited pilot; not replaced by v2"
+    },
+    {
+      "track": "guard-v2",
+      "state": "unknown_not_promoted",
+      "artifact_digest": "sha256:49854a1569ac35adf2f0f41bb9feda6ee41d41844a50506fd7dd474a907cfc3d",
+      "artifact_modified_at": "2026-10-27T12:54:09+03:00",
+      "baseline_eval": "unknown",
+      "heldout_eval": "unknown",
+      "retention_eval": "unknown",
+      "license_review": "unknown",
+      "independent_reviewer": "missing",
+      "next_gate": "establish provenance and rerun acceptance before replacing v1"
+    }
+  ],
+  "rule": "file presence is not quality proof; later timestamp is not promotion"
+}
