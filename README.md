@@ -50,6 +50,23 @@ MAKO_CORE_DIR=/path/to/core-2fa MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c9
 Все БД/процессы — только во временных каталогах с cleanup; платных/сетевых
 вызовов нет.
 
+## Live M1M retrieval
+
+Ветка `memory/live-retrieval-20261031`. Реальный `bge-m3` (1024 dims) и
+generative reranker `qwen3.5:9b` через SSH-туннель на M1M; это не dedicated
+cross-encoder. Полные digest и каждый вызов записываются в evidence. Лимит —
+64 вызова и 30 минут, жёсткий budget в `CallBudget`.
+
+```bash
+MAKO_CORE_DIR=/path/to/core-2fa /opt/homebrew/bin/python3.12 live_runner.py
+```
+
+Сценарий включает CORE old→correction→invalidation→new, as_of, owner/grant,
+retrieval outage, evidence tamper, injection и restart. Reranker получает только
+query/document, не expected source. Raw и rerank сравниваются на одних входах.
+Live-процессы M5M были остановлены после двух smoke, показавших GPU; рабочий
+прогон выполнен только на выделенном M1M.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,

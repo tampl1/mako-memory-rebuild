@@ -173,7 +173,7 @@ class Pilot:
 
     def run_core(self, label, owner, project, query, model_slug, memory_mode,
                  request_key=None, tool_arguments=None, crash_stage=None,
-                 expected_fact_id=None, verifier_cls=None):
+                 expected_fact_id=None, verifier_cls=None, memory_context=None):
         request_key = request_key or (
             f"{label}:{owner}:{hashlib.sha256(query.encode()).hexdigest()[:12]}")
         expected_fact_id = (expected_fact_id if expected_fact_id is not None
@@ -188,7 +188,7 @@ class Pilot:
                             die_on_stage=crash_stage)
                  if crash_stage else self._run_store())
         model = SyntheticModel(model_slug)
-        memory = StoreMemoryContext(self.memory, owner, project, memory_mode)
+        memory = memory_context or StoreMemoryContext(self.memory, owner, project, memory_mode)
         verifier = verifier_cls(expected_fact_id)
         binding = make_binding(owner)
         request = make_request(query, tool=tool, arguments=tool_arguments)
