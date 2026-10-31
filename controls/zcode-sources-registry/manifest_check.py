@@ -55,12 +55,17 @@ def _check_source(s: dict) -> list[str]:
     if exec_rule not in ALLOWED_EXECUTION:
         errs.append(f"{sid}: execution_rule {exec_rule!r} запрещён — "
                     f"допустимы {ALLOWED_EXECUTION}")
-    # ИЕРАРХИЯ USAGE (replit 31.10, разбор поставок): metadata-only <
-    # eval-only < train-possible. Unknown license НЕ разрешает evaluation:
-    # eval-only требует license_reviewed, иначе только metadata-only (кварантин)
-    if usage == "eval-only" and not s.get("license_reviewed"):
-        errs.append(f"{sid}: usage=eval-only без license_reviewed — "
+    # ИЕРАРХИЯ USAGE (replit 31.10): metadata-only < eval-only < train.
+    # v1.3: права eval и train РАЗДЕЛЬНЫЕ — eval_rights_reviewed /
+    # train_rights_reviewed; metadata-only не разрешает evaluation
+    eval_ok = bool(s.get("eval_rights_reviewed"))
+    train_ok = bool(s.get("train_rights_reviewed"))
+    if usage == "eval-only" and not eval_ok:
+        errs.append(f"{sid}: usage=eval-only без eval_rights_reviewed — "
                     f"невыясненные права = metadata-only/quarantine")
+    if usage in USAGES_ALLOWING_TRAIN and not train_ok:
+        errs.append(f"{sid}: usage={usage} без train_rights_reviewed — "
+                    f"eval-ревью НЕ переносится на train")
     # ГЕЙТ ОБУЧЕНИЯ: train требует проверенную лицензию и права upstream
     if usage in USAGES_ALLOWING_TRAIN and not s.get("license_reviewed"):
         errs.append(f"{sid}: usage={usage} без license_reviewed — обучение "
@@ -113,8 +118,15 @@ def _check_model(m: dict) -> list[str]:
 def check_registry(path: str | Path) -> list[str]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     errs: list[str] = []
-    if data.get("schema") not in ("sources-registry/1.0", "sources-registry/1.2"):
-        errs.append("schema не sources-registry/1.0|1.2")
+    # v1.3: если раздельные флаги отсутствуют, наследуем от license_reviewed
+    # (миграция), НО train_rights_reviewed требует явного false/true в файле
+    for s_ in data.get("sources", []):
+        if "eval_rights_reviewed" not in s_:
+            s_["eval_rights_reviewed"] = bool(s_.get("license_reviewed"))
+        s_.setdefault("train_rights_reviewed", False)
+    if data.get("schema") not in ("sources-registry/1.0", "sources-registry/1.2",
+                                  "sources-registry/1.3"):
+        errs.append("schema не sources-registry/1.0|1.2|1.3")
     if data.get("schema") == "sources-registry/1.2":
         # v1.2: чеклист обучения обязателен только при заданном trainable_base
         for m in data.get("models", []):

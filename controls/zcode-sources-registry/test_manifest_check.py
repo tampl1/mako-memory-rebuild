@@ -21,6 +21,7 @@ GOOD_SOURCE = {
                "license_spdx": "MIT"},
     "label_source": "paired", "upstream_code_rights": "MIT + per-source review",
     "coverage": "c", "usage": "train-possible", "license_reviewed": True,
+    "eval_rights_reviewed": True, "train_rights_reviewed": True,
     "duplicates_policy": "project/chronological split",
     "execution_rule": "no-remote-code",
 }
@@ -54,7 +55,8 @@ class SourceGateTests(unittest.TestCase):
 
     # replit 31.10: unknown license НЕ разрешает evaluation
     def test_eval_requires_license_reviewed(self):
-        errs = self._errs(usage="eval-only", license_reviewed=False)
+        errs = self._errs(usage="eval-only", license_reviewed=False,
+                          eval_rights_reviewed=False)
         self.assertTrue(any("metadata-only/quarantine" in e for e in errs))
 
     def test_metadata_only_always_allowed_without_review(self):
@@ -246,3 +248,40 @@ class RegistryV12Tests(unittest.TestCase):
         for s in self._data()["sources"]:
             self.assertEqual(s["review"]["status"], "pending_independent_review")
             self.assertIsNone(s["review"]["reviewer"])
+
+
+class RegistryV13Tests(unittest.TestCase):
+    """v1.3: eval_rights_reviewed и train_rights_reviewed раздельны."""
+
+    def _data(self):
+        return json.loads(REGISTRY.read_text(encoding="utf-8"))
+
+    def test_flags_are_separate_fields(self):
+        for s in self._data()["sources"]:
+            self.assertIn("eval_rights_reviewed", s, s["id"])
+            self.assertIn("train_rights_reviewed", s, s["id"])
+
+    def test_train_never_reviewed_yet(self):
+        # ни один источник не прошёл train-ревью: обучение не разрешено
+        for s in self._data()["sources"]:
+            self.assertFalse(s["train_rights_reviewed"], s["id"])
+            self.assertNotEqual(s["usage"], "train-possible", s["id"])
+
+    def test_train_requires_train_rights_not_eval_only(self):
+        s = source()  # GOOD_SOURCE train-possible c license_reviewed=True
+        s["eval_rights_reviewed"] = True
+        s["train_rights_reviewed"] = False
+        errs = check_registry_dict({"schema": "sources-registry/1.3",
+                                    "sources": [s], "models": [],
+                                    "review_receipts": []})
+        self.assertTrue(any("train_rights_reviewed" in e for e in errs))
+
+    def test_eval_right_does_not_grant_train(self):
+        # eval-ревью не переносится на train (ключевое правило v1.3)
+        s = source(usage="eval-only", license_reviewed=True)
+        s["eval_rights_reviewed"] = True
+        s["train_rights_reviewed"] = False
+        errs = check_registry_dict({"schema": "sources-registry/1.3",
+                                    "sources": [s], "models": [],
+                                    "review_receipts": []})
+        self.assertFalse(any("eval_rights_reviewed" in e for e in errs))

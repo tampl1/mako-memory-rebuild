@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import math
 import time
 import urllib.request
+from datetime import datetime, timezone
 
 from .adapters import CORE_DIR  # noqa: F401,E402
 from core_v1_contract import Context  # noqa: E402
@@ -83,6 +85,22 @@ class OllamaLiveRetriever:
         except Exception as exc:
             raise RetrievalUnavailable(f"live {kind} call failed") from exc
 
+    def verify_runtime(self, mode="raw"):
+        try:
+            with urllib.request.urlopen(self.endpoint + "/api/tags", timeout=10) as response:
+                models = {m["name"]: m for m in json.load(response).get("models", [])}
+        except Exception as exc:
+            raise RetrievalUnavailable("runtime model catalog unavailable") from exc
+        bge = models.get("bge-m3:latest")
+        if not bge or bge.get("digest") != BGE_DIGEST or "embedding" not in bge.get("capabilities", []):
+            raise EvidenceError("runtime embedding model digest/capability mismatch")
+        if mode == "rerank":
+            reranker = models.get("qwen3.5:9b")
+            if not reranker or reranker.get("digest") != RERANK_DIGEST \
+                    or "completion" not in reranker.get("capabilities", []):
+                raise EvidenceError("runtime rerank model digest/capability mismatch")
+        return True
+
     def _embed(self, text):
         key = digest(text)
         if key not in self._embeddings:
@@ -143,6 +161,7 @@ class OllamaLiveRetriever:
         }
 
     def retrieve(self, query, mode="raw", as_of=None, limit=2):
+        self.verify_runtime(mode)
         self.grants.require(self.owner_id, self.project, "bge-m3/1024", 1)
         events = self._events(as_of)
         query_vector = self._embed(query)
@@ -185,14 +204,76 @@ class OllamaLiveRetriever:
 
 
 class LiveMemoryContext:
-    def __init__(self, retriever, mode="raw"):
+    def __init__(self, retriever, mode="raw", tenant_id="tenant-synth"):
         self.retriever = retriever
         self.mode = mode
+        self.tenant_id = tenant_id
         self.recalls = 0
+        self.proposed = 0
+        self.attempted = 0
+        self.admitted = 0
+        self.active = 0
+        self.finished = 0
+        self.cancelled = 0
+
+    @staticmethod
+    def _check_deadline(deadline_at):
+        if isinstance(deadline_at, str):
+            parsed = datetime.fromisoformat(deadline_at.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            deadline = parsed.timestamp()
+        else:
+            deadline = float(deadline_at)
+        if time.time() >= deadline:
+            raise RetrievalUnavailable("deadline expired before context admission")
+
+    def _validate_caller(self, principal):
+        if principal is None or getattr(principal, "owner_id", None) != self.retriever.owner_id:
+            raise EvidenceError("caller owner does not match memory scope")
+        if getattr(principal, "tenant_id", None) != self.tenant_id:
+            raise EvidenceError("caller tenant does not match memory scope")
+        if getattr(principal, "project", self.retriever.project) != self.retriever.project:
+            raise EvidenceError("caller project does not match memory scope")
+
+    def _retrieve_verified(self, query):
+        try:
+            out = self.retriever.retrieve(query, self.mode)
+            self.retriever.verify_runtime(self.mode)
+            return out
+        finally:
+            self.active -= 1
+            self.finished += 1
 
     async def recall(self, principal, run_id, query, deadline_at):
+        self.proposed += 1
+        self._validate_caller(principal)
+        self._check_deadline(deadline_at)
+        self.retriever.grants.require(
+            self.retriever.owner_id, self.retriever.project, "bge-m3/1024", 1)
+        self.attempted += 1
+        self.active += 1
+        task = asyncio.create_task(asyncio.to_thread(self._retrieve_verified, query))
+        try:
+            out = await task
+        except asyncio.CancelledError:
+            self.cancelled += 1
+            raise
+        self._check_deadline(deadline_at)
+        self.retriever.grants.require(
+            self.retriever.owner_id, self.retriever.project, "bge-m3/1024", 1)
+        self.admitted += 1
         self.recalls += 1
-        out = self.retriever.retrieve(query, self.mode)
+        out["retrieval_receipt"]["caller"] = {
+            "owner": self.retriever.owner_id, "tenant": self.tenant_id,
+            "project": self.retriever.project,
+        }
+        out["retrieval_receipt"]["runtime_verified"] = True
+        out["retrieval_receipt"]["admission"] = {
+            "proposed": self.proposed, "attempted": self.attempted,
+            "admitted": self.admitted, "active": self.active, "finished": self.finished,
+            "cancelled": self.cancelled,
+        }
         return Context(items=tuple(out["items"]), retrieval_receipt=out["retrieval_receipt"])
 
     async def remember(self, principal, run_id, operation_key, items):

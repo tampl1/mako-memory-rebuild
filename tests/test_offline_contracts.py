@@ -13,6 +13,9 @@ class OfflineEmbeddingRetriever(OllamaLiveRetriever):
     def _embed(self, text):
         return [1.0, 0.0]
 
+    def verify_runtime(self, mode="raw"):
+        return True
+
 
 class OfflineContractTests(unittest.TestCase):
     def test_saved_receipt_replay_uses_no_models(self):

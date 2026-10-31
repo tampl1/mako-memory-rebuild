@@ -2,6 +2,7 @@
 
 import dataclasses
 import json
+import sqlite3
 import tempfile
 from pathlib import Path
 
@@ -10,9 +11,18 @@ from src.child_context import (
     ContextRestoreUnresolved, FrozenChildMemoryContext, freeze_child_context,
     restore_child_context, verify_child_context,
 )
+from src.live_retrieval import CallBudget, LiveMemoryContext, OllamaLiveRetriever
 from src.pilot import MODEL_A, Pilot
 from src.safety import AccessGrants, EvidenceError, SafeReader
 from live_runner import event, ts
+
+
+class ChildOfflineRetriever(OllamaLiveRetriever):
+    def _embed(self, text):
+        return [1.0, 0.0]
+
+    def verify_runtime(self, mode="raw"):
+        return True
 
 
 def main():
@@ -23,6 +33,9 @@ def main():
         grants = AccessGrants()
         grants.allow(owner, "live-synth", "bge-m3/1024", 1)
         reader = SafeReader(store, grants, "bge-m3/1024", 1)
+        retriever = ChildOfflineRetriever(store, grants, owner, "live-synth",
+                                          "http://offline", CallBudget())
+        live_context = LiveMemoryContext(retriever, "raw")
         old = event(store, owner, "fact", 0, {"release_target": "v1.0"})
         store.add_claim(owner_id=owner, project="live-synth", session="live-session",
                         actor="agent-alpha", certainty="explicit",
@@ -37,9 +50,8 @@ def main():
         args = {"version": decision["version"], "fact_ref": decision["fact_ref"]}
         key = "child-v1-fixed"
         r1 = pilot.run_core("CHILD-R1", owner, "live-synth", "what should we ship?",
-                            MODEL_A, "frozen", request_key=key, tool_arguments=args,
-                            expected_fact_id=old["event_id"],
-                            memory_context=FrozenChildMemoryContext(parent))
+                            MODEL_A, "live", request_key=key, tool_arguments=args,
+                            expected_fact_id=old["event_id"], memory_context=live_context)
 
         new = event(store, owner, "correction", 10, {"release_target": "v2.0"},
                     old["event_id"], actor="agent-beta")
@@ -68,10 +80,29 @@ def main():
         decision2 = decide(child2.items, "what should we ship?")
         args2 = {"version": decision2["version"], "fact_ref": decision2["fact_ref"]}
         r2 = pilot.run_core("CHILD-R2", owner, "live-synth", "what should we ship?",
-                            MODEL_A, "frozen", request_key="child-v2-fixed", tool_arguments=args2,
-                            expected_fact_id=new["event_id"],
-                            memory_context=FrozenChildMemoryContext(child2))
+                            MODEL_A, "live", request_key="child-v2-fixed", tool_arguments=args2,
+                            expected_fact_id=new["event_id"], memory_context=live_context)
         checks["new_task_uses_v2"] = r2["result"]["tool_receipt"]["fact_ref"] == new["event_id"]
+        checks["parent_accepted_verified_result"] = pilot.flush(owner, r2["run_id"])["acknowledged"]
+
+        unknown_key = "child-v1-unknown"
+        unknown = pilot.run_core(
+            "CHILD-unknown", owner, "live-synth", "what should we ship?", MODEL_A, "frozen",
+            request_key=unknown_key, crash_stage="tool_confirmed", tool_arguments=args,
+            expected_fact_id=old["event_id"], memory_context=FrozenChildMemoryContext(parent))
+        with sqlite3.connect(pilot.runs_path) as db:
+            old_state = db.execute("SELECT state FROM runs WHERE request_key=?",
+                                   (unknown_key,)).fetchone()[0]
+        checks["unknown_old_preserved_after_v2"] = old_state != "completed" \
+            and r2["state"] == "completed"
+        pilot.clock.advance(40)
+        recovered = pilot.run_core(
+            "CHILD-unknown-restart", owner, "live-synth", "what should we ship?", MODEL_A,
+            "frozen", request_key=unknown_key, tool_arguments=args,
+            expected_fact_id=old["event_id"], memory_context=FrozenChildMemoryContext(parent))
+        checks["restart_no_duplicate_effect"] = (
+            recovered["state"] == "completed"
+            and recovered["tool_executions_total"] == unknown["tool_executions_total"])
 
         grants.revoke(owner, "live-synth")
         try:
@@ -124,11 +155,12 @@ def main():
 
         checks["no_external_effects"] = r2["tool_executions_total"] == r1["tool_executions_total"] + 1
         report = {
-            "adapter": "FrozenChildMemoryContext",
+            "adapter": "LiveMemoryContext + FrozenChildMemoryContext",
             "core": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
             "parent": dataclasses.asdict(parent),
             "new_child_digest": child2.context_digest,
-            "runs": {"R1": r1, "R1_replay": r1r, "R2": r2},
+            "runs": {"R1": r1, "R1_replay": r1r, "R2": r2,
+                     "unknown": unknown, "unknown_recovered": recovered},
             "checks": checks,
             "all_checks_passed": all(checks.values()),
             "external_model_calls": 0,

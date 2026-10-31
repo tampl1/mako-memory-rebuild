@@ -8,7 +8,7 @@
     "quarantine_not_eval": true,
     "registry_pinned": true,
     "rights_per_input": true,
-    "separate_eval_train_rights": false,
+    "separate_eval_train_rights": true,
     "seven_wycheproof_vectors": true,
     "sft_gate_requires_trainable_base": false,
     "split_8_2_2": true,
@@ -19,7 +19,6 @@
   },
   "consumer_compatible": false,
   "consumer_required_fields": [
-    "eval_rights_reviewed and train_rights_reviewed as separate decisions",
     "train-possible/both gate must require non-null trainable_base for actual SFT",
     "per-record source_registry_ref and source_usage for future external inputs",
     "split_lineage/parent_ids for every future mutation",
@@ -36,10 +35,10 @@
   "model_calls": 0,
   "paid_calls": 0,
   "registry": {
-    "commit": "eeefa5faccb20b15455550e451246a36d37d4035",
+    "commit": "fd28a9ae57456268ea906f01cbfa0095a4afb14a",
     "path": "zcode/sources-registry/sources_registry.json",
     "repo": "tampl1/Attached-Assets",
-    "sha256": "5c605c9ff131d8cfc2665e1bb0e8d2f519aade460a22d404966c0891d7ae15c0"
+    "sha256": "906c239940e748d38eaf88cb0d9c867d76adeca6d39c33fddbef568607c542a6"
   },
   "split_counts": {
     "test": 2,
@@ -51,8 +50,7 @@
     "tokenizer digest and compatible trainable weight format are missing",
     "12 labels await independent reviewer approval",
     "free GPU lease has not been granted",
-    "registry usage=both does not prove train rights or a trainable base",
-    "v1.2 bytes lack separate eval_rights_reviewed/train_rights_reviewed"
+    "registry usage=both does not prove train rights or a trainable base"
   ],
   "training": "BLOCKED: consumer mismatch and missing prerequisites",
   "wycheproof": {

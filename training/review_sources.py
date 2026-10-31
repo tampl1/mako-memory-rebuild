@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REGISTRY_COMMIT = "eeefa5faccb20b15455550e451246a36d37d4035"
+REGISTRY_COMMIT = "fd28a9ae57456268ea906f01cbfa0095a4afb14a"
 
 
 def sha(path):
@@ -70,10 +70,8 @@ def main():
         "12 labels await independent reviewer approval",
         "free GPU lease has not been granted",
         "registry usage=both does not prove train rights or a trainable base",
-        "v1.2 bytes lack separate eval_rights_reviewed/train_rights_reviewed",
     ]
     consumer_required_fields = [
-        "eval_rights_reviewed and train_rights_reviewed as separate decisions",
         "train-possible/both gate must require non-null trainable_base for actual SFT",
         "per-record source_registry_ref and source_usage for future external inputs",
         "split_lineage/parent_ids for every future mutation",

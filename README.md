@@ -84,12 +84,18 @@ Replay проверяет сохранённые receipts без model/embedding
 grant, foreign owner, missing source, tamper и generation shift отклоняются.
 Невосстановимый snapshot имеет статус unresolved, не «ошибка модели».
 
-## Consumer review реестра v1.2
+## Consumer review реестра v1.3
 
-Точные байты: Attached-Assets `eeefa5faccb20b15455550e451246a36d37d4035`.
-Авторские 27/27 проходят, но consumer review отклоняет совместимость: отсутствуют
-раздельные `eval_rights_reviewed`/`train_rights_reviewed`, а `usage=both`
-допускает `trainable_base=null`. Это не разрешение на SFT.
+Ветка `memory/adapter-hardening-20261031`. Точные байты: Attached-Assets
+`fd28a9ae57456268ea906f01cbfa0095a4afb14a`. Авторские 31/31 проходят,
+раздельные eval/train флаги подтверждены. Consumer review сохраняет блокировку
+фактического SFT при `usage=both` и `trainable_base=null`; metadata-only не
+открывает evaluation. Это не разрешение на обучение.
+
+`LiveMemoryContext` дополнительно проверяет caller/deadline до retrieval,
+grant/deadline/runtime после него, выполняет retrieval в worker thread и ведёт
+`active/finished` до фактического завершения потока после отмены. Runtime digest
+сверяется через `/api/tags`, а не только записывается в receipt.
 
 ```bash
 /opt/homebrew/bin/python3.12 training/review_sources.py  # ожидаемый exit 1

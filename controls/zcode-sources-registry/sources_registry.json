@@ -1,5 +1,5 @@
 {
-  "schema": "sources-registry/1.2",
+  "schema": "sources-registry/1.3",
   "pinned_at": "2026-10-31",
   "pinned_by": "zcode-m5m",
   "purpose": "Происхождение материалов и моделей для программы специалистов (CORE-поручение 31.10 п.6). Реестр фиксирует revision/SHA/лицензию/права ДО любой загрузки. Реестр не авторизует исполнение кода и не меняет discovery/router.",
@@ -50,7 +50,10 @@
         "split_policy": "авторы специально работают с дубликатами; наш split: по проекту/семейству/времени, идентичные функции не должны пересекать train/val/test (replit 31.10)",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": false,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "wycheproof-c2sp",
@@ -138,7 +141,10 @@
         "split_policy": "n/a (векторы уникальны по имени кейса)",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "owasp-asvs-5",
@@ -175,7 +181,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "owasp-genai-top10",
@@ -214,7 +223,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": false,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "purplellama-cyberseceval",
@@ -254,7 +266,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": false,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "cybench",
@@ -291,7 +306,10 @@
         "split_policy": "задачи уникальны; пересечения с нашими synthetic-миссиями не ожидается",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "nist-ssdf-sp800-218",
@@ -330,7 +348,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "nist-sp800-218a",
@@ -367,7 +388,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "hf-trl-docs",
@@ -402,7 +426,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     },
     {
       "id": "hf-peft-lora-docs",
@@ -437,7 +464,10 @@
         "split_policy": "n/a",
         "required_for_train": false,
         "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
-      }
+      },
+      "eval_rights_reviewed": true,
+      "train_rights_reviewed": false,
+      "rights_note": "eval и train права раздельны: проверка eval НЕ переносится на train; train-ревью — отдельная процедура"
     }
   ],
   "models": [
@@ -614,5 +644,9 @@
       "at": "2026-10-31",
       "independent": true
     }
+  ],
+  "schema_changes_v1.3": [
+    "eval_rights_reviewed и train_rights_reviewed — РАЗДЕЛЬНЫЕ флаги (требование адресного задания 31.10): metadata-only не разрешает evaluation",
+    "гейты: eval-only требует eval_rights_reviewed; train требует ОБА флага + полный train-набор (base revision, tokenizer digest, weight format, license, split lineage, review receipt) — null допустим только для незапущенного metadata-only, НЕ для SFT"
   ]
 }
