@@ -1,0 +1,43 @@
+{
+  "baseline_a": {
+    "id": "qwen3:8b",
+    "inference_digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "role": "9B-class frozen baseline"
+  },
+  "baseline_b": {
+    "id": "qwen3-coder:30b",
+    "inference_digest": "sha256:06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "role": "stronger frozen baseline"
+  },
+  "budgets": {
+    "paid_calls": 0,
+    "wall_seconds_max": 3600
+  },
+  "candidate": "9B + separate LoRA only after all blockers clear",
+  "general_skills_retention": {
+    "status": "missing_blocks_training"
+  },
+  "gpu_lease": {
+    "preferred_node": "m1m",
+    "rule": "start only after explicit free-window ACK; M5M daytime work is not interrupted",
+    "status": "not_requested"
+  },
+  "schema": "frozen-baseline-eval-plan/1.0",
+  "status": "prepared_not_run",
+  "untouched_eval": {
+    "answers_in_prompt": false,
+    "new_training_data_from_eval": false,
+    "record_ids": [
+      "tool-002",
+      "auth-001",
+      "unknown-001",
+      "unknown-002"
+    ],
+    "sample_sha256": "98ef2b14df4e993cda63d3e756660f5c38c573e00fd2b67c1fcfb0752f51edad",
+    "seeds": [
+      1101,
+      1102,
+      1103
+    ]
+  }
+}

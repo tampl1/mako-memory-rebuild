@@ -1,0 +1,618 @@
+{
+  "schema": "sources-registry/1.2",
+  "pinned_at": "2026-10-31",
+  "pinned_by": "zcode-m5m",
+  "purpose": "Происхождение материалов и моделей для программы специалистов (CORE-поручение 31.10 п.6). Реестр фиксирует revision/SHA/лицензию/права ДО любой загрузки. Реестр не авторизует исполнение кода и не меняет discovery/router.",
+  "rules": {
+    "fetch": "manifest до загрузки; только метаданные до отдельного решения; не скачивать всё подряд",
+    "execution": "install hooks и remote code запрещены (pip install --no-deps из закреплённого архива, если вообще когда-нибудь); датасеты — данные, не код",
+    "models": "код моделей через проверенный runtime (ollama); discovery/router не исполняет неподтверждённый код модели",
+    "hf_keys": "ключи Hugging Face только для реально gated поставки после письменного обоснования необходимости; credentials не печатаются и не коммитятся",
+    "train_gate": "usage=train требует license_reviewed=true И upstream_code_rights != unknown (см. manifest_check.py)",
+    "license_note": "лицензия README репозитория НЕ означает права на всё содержимое корпуса (указано replit) — у каждого источника свои upstream-права",
+    "usage_hierarchy": "metadata-only < eval-only < train-possible; unknown license НЕ разрешает evaluation — только metadata-only/quarantine до проверки права требуемого использования",
+    "license_scope": "лицензия кода не распространяется автоматически на входы, тексты и upstream-уязвимые проекты — права проверяются на каждый вид содержимого отдельно",
+    "holdout": "публичные holdout-наборы НЕ включаются в training split"
+  },
+  "sources": [
+    {
+      "id": "primevul",
+      "name": "PrimeVul (vulnerability dataset)",
+      "kind": "dataset",
+      "url": "https://github.com/DLVulDet/PrimeVul",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "6f54687c84947b1d17486495440b37030d147289",
+        "revision_kind": "git-commit",
+        "license_spdx": "MIT",
+        "license_note": "MIT покрывает КОД репозитория; на датасет отдельная проверка",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "paired vulnerable/fixed functions, авторская курируемая разметка; хронологическое разделение рекомендовано авторами",
+      "upstream_code_rights": "MIT покрывает код репо; функции датасета происходят из Big-Vul (NVD/CVE-производные) с per-function исходными репозиториями — права каждого источника проверять отдельно до любого использования beyond research",
+      "coverage": "C/C++ функции vulnerable/fixed парами; классификация функции НЕ заменяет исправление проекта с тестами (программа 31.10)",
+      "usage": "metadata-only",
+      "license_reviewed": false,
+      "promotion_note": "usage=train-possible возможен ТОЛЬКО после ревью лицензии датасета (не кода) и per-source прав upstream; валидатор не пропустит train с license_reviewed=false",
+      "duplicates_policy": "авторы специально работают с дубликатами; наш split: по проекту/семейству/времени, идентичные функции не должны пересекать train/val/test (replit 31.10)",
+      "execution_rule": "no-remote-code",
+      "fetch_rules": "не скачивать до решения о включении в корпус; проверять размер и формат архива до распаковки",
+      "gaps": "лицензия датасета (не кода) в README не найдена — license_reviewed=false; коммерческое использование заблокировано валидатором до ревью",
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)",
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "авторы специально работают с дубликатами; наш split: по проекту/семейству/времени, идентичные функции не должны пересекать train/val/test (replit 31.10)",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "wycheproof-c2sp",
+      "name": "Project Wycheproof (C2SP)",
+      "kind": "test-vectors",
+      "url": "https://github.com/C2SP/wycheproof",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "d17cc89fa5c8f4f4d378b5385ebf75da5d0926c9",
+        "revision_kind": "git-commit",
+        "license_spdx": "Apache-2.0",
+        "license_note": "лицензия на тест-векторы подтверждена GitHub API (spdx Apache-2.0)",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "n/a (машинно-читаемые векторы: валидные/невалидные/допустимые-по-политике)",
+      "upstream_code_rights": "Apache-2.0; векторы — данные, права ясны",
+      "coverage": "7 закреплённых файлов применимых алгоритмов (45+10+111+113+3+1+5 testGroups); число ПРОГНАННЫХ/всего фиксируется прогоном; 133/181 (данные zcode-win PR #677) — НЕ весь охват стандарта/продукта",
+      "usage": "eval-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a (векторы уникальны по имени кейса)",
+      "execution_rule": "no-remote-code",
+      "fetch_rules": "скачивать только нужные testvectors/*.json с проверкой sha256 файла; репозиторий не клонировать целиком без необходимости",
+      "gaps": "не доказывает безопасность протокола целиком и отсутствие side-channel (программа 31.10) — только края интеграций библиотек",
+      "vectors_pinned": [
+        {
+          "file": "aes_gcm_test.json",
+          "sha256": "985e5ecc172e181eaf49e89508b9470dcf478002eb7e8559c707eb42dc97dfe7",
+          "algorithm": "AES-GCM",
+          "groups": 45
+        },
+        {
+          "file": "chacha20_poly1305_test.json",
+          "sha256": "fe61d25f90e1bde4461d00eafe61049e5f29bd999f36b766df9cda90906ad53d",
+          "algorithm": "CHACHA20-POLY1305",
+          "groups": 10
+        },
+        {
+          "file": "ed25519_test.json",
+          "sha256": "ea80ffebac085e21cb9d3e903e7fa2b448d96702da5b31f061d0b83b430b74b3",
+          "algorithm": "EDDSA",
+          "groups": 111
+        },
+        {
+          "file": "ecdsa_secp256r1_sha256_test.json",
+          "sha256": "182db4f3e230f6f9fa9f800d2a614dede30284b8e8438bbfe1171905402e9332",
+          "algorithm": "ECDSA",
+          "groups": 113
+        },
+        {
+          "file": "rsa_signature_2048_sha256_test.json",
+          "sha256": "94a917b01ff50fb874cfc05bf29b4af44868d944a6558201cf18380da93fb393",
+          "algorithm": "RSASSA-PKCS1-v1_5",
+          "groups": 3
+        },
+        {
+          "file": "x25519_test.json",
+          "sha256": "35c3f5231cf25cc640b524d403461deee9e49441d5d915a3a25b2c8ff5adbe7d",
+          "algorithm": "XDH",
+          "groups": 1
+        },
+        {
+          "file": "hkdf_sha256_test.json",
+          "sha256": "bb2b462a38b251cb52a2aede706d6d4b62b26864f4e80c95497507ddb07c5f1e",
+          "algorithm": "HKDF-SHA-256",
+          "groups": 5
+        }
+      ],
+      "vectors_location": "zcode/sources-registry/wycheproof-vectors/ (этот же ref, sha256.txt)",
+      "library_observed": {
+        "name": "cryptography",
+        "version": "50.0.2",
+        "observed_at": "2026-10-31",
+        "note": "финальный pin версии библиотеки — в manifest миссии K1/K3, не здесь"
+      },
+      "policy_skips": [],
+      "policy_skips_note": "пусто до первого прогона K1: исключения фиксируются при прогоне с причиной, не заранее",
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a (векторы уникальны по имени кейса)",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "owasp-asvs-5",
+      "name": "OWASP ASVS 5.0.0 (stable)",
+      "kind": "doc-checklist",
+      "url": "https://owasp.org/www-project-application-security-verification-standard/",
+      "repo": "https://github.com/OWASP/ASVS",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "9ccce0e3cf47abd6a412fc8a8deadd7fd6da501f",
+        "revision_kind": "git-commit",
+        "version": "5.0.0",
+        "license_spdx": "CC-BY-SA-4.0",
+        "license_note": "подтверждено GitHub API; attribution и share-alike обязательны для производных документов",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "n/a (требования с точными идентификаторами версии)",
+      "upstream_code_rights": "CC BY-SA 4.0 — условия использования материалов в реестре источников, свободное перелицензирование НЕ предполагается (программа 31.10)",
+      "coverage": "привязка заданий к точным идентификаторам V2.x/V3.x/…; не фраза «соответствует OWASP»",
+      "usage": "eval-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-exec",
+      "fetch_rules": "использовать опубликованный release 5.0.0, не master-состояние, если иное не согласовано",
+      "gaps": [],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "owasp-genai-top10",
+      "name": "OWASP Top 10 for LLM Applications (GenAI Security)",
+      "kind": "doc-checklist",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "repo": "https://github.com/OWASP/www-project-top-10-for-large-language-model-applications",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "99f4395589bdbd120ae961f9cd179e79d7f9b27f",
+        "revision_kind": "git-commit",
+        "license_spdx": "NOASSERTION",
+        "license_note": "GitHub не распознал лицензию автоматически — license_reviewed=false до ручного чтения LICENSE/страницы",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "n/a (классы рисков LLM-приложений; цитата вредного текста, намерение, вызов инструмента и реальный эффект — разные наблюдения)",
+      "upstream_code_rights": "не проверено (NOASSERTION) — до ревью только чтение",
+      "coverage": "инъекции, недоверенные результаты, избыточные полномочия — как чек-лист дизайна проверок",
+      "usage": "metadata-only",
+      "license_reviewed": false,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-exec",
+      "fetch_rules": "только страницы/документы проекта; ничего не исполнять",
+      "gaps": [
+        "лицензия не распознана автоматически — ручное ревью перед любым включением текста в корпус"
+      ],
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)",
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "purplellama-cyberseceval",
+      "name": "CyberSecEval (PurpleLlama, Meta)",
+      "kind": "benchmark",
+      "url": "https://github.com/meta-llama/PurpleLlama/tree/main/CybersecurityBenchmarks",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "f64eebd53003a87d9c2d2a3a712133534c214c8d",
+        "revision_kind": "git-commit",
+        "license_spdx": "NOASSERTION",
+        "license_note": "кастомная лицензия Meta (не SPDX) — читать LICENSE перед использованием; это gap, не PASS",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "бенчмарк-разделы: insecure coding, false refusal (интересует нас), defensive analysis, AutoPatchBench",
+      "upstream_code_rights": "кастомная лицензия; опасные разделы предполагают отдельную инфраструктуру и образцы",
+      "coverage": "несколько измерений; НЕ сводить к одному числу или мнению LLM-судьи (программа 31.10)",
+      "usage": "metadata-only",
+      "license_reviewed": false,
+      "dangerous_sections": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-exec",
+      "fetch_rules": "ОПАСНЫЕ РАЗДЕЛЫ (insecure code samples) не скачивать и не запускать автоматически в рабочем окружении; если когда-нибудь понадобится — только в изолированной одобренной песочнице по отдельному решению; false-refusal разделы можно рассматривать отдельно",
+      "gaps": [
+        "лицензия не SPDX — ручное ревью",
+        "опасные разделы — принудительный eval-only + запрет авто-скачивания (валидатор следит)"
+      ],
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)",
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "cybench",
+      "name": "Cybench (40 professional CTF tasks)",
+      "kind": "benchmark",
+      "url": "https://cybench.github.io/",
+      "repo": "https://github.com/andyzorigin/cybench",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "ca483c6443f17a20ba7d6bac3d274859a1721e51",
+        "revision_kind": "git-commit",
+        "license_spdx": "Apache-2.0",
+        "license_note": "репозиторий Apache-2.0 (GitHub API); права на отдельные CTF-задачи остаются у исходных организаторов",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "CTF-задачи с официальными флагами/solved-rate",
+      "upstream_code_rights": "код фреймворка Apache-2.0; задачи — от исходных CTF (указаны в датасете); внешние цели запрещены политикой",
+      "coverage": "независимый сигнал по CTF; НЕ проверяет безопасную эксплуатацию продукта, incident response, лицензирование, управление ключами (программа 31.10)",
+      "usage": "eval-only",
+      "license_reviewed": true,
+      "dangerous_sections": true,
+      "duplicates_policy": "задачи уникальны; пересечения с нашими synthetic-миссиями не ожидается",
+      "execution_rule": "no-remote-code",
+      "fetch_rules": "никаких внешних целей; исполнение эксплойтов задач — только внутри локальной изолированной песочницы, если решим включать; в рабочем окружении не запускать",
+      "gaps": [],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "задачи уникальны; пересечения с нашими synthetic-миссиями не ожидается",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "nist-ssdf-sp800-218",
+      "name": "NIST SSDF v1.1 (SP 800-218)",
+      "kind": "doc-framework",
+      "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision_kind": "document-download",
+        "version": "SP 800-218 final (SSDF v1.1)",
+        "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf",
+        "sha256": "617746e553a9e2da49bfbd4eef0dfc3094758a39b869314e4173ac36605cde22",
+        "fetched_at": "2026-10-31",
+        "license_spdx": "LicenseRef-Public-Domain-US-Government",
+        "provenance_type": "document-download (официальный URL + sha256 полученного файла)"
+      },
+      "label_source": "n/a (каркас процесса)",
+      "upstream_code_rights": "public domain (US gov work)",
+      "coverage": "каркас безопасной разработки: причины дефектов, а не только сканер готового кода",
+      "usage": "eval-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-exec",
+      "fetch_rules": "официальный PDF с csrc.nist.gov",
+      "gaps": [
+        "каркас процесса, не учебный датасет и не автосертификация агента (программа 31.10)"
+      ],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "nist-sp800-218a",
+      "name": "NIST SP 800-218A (secure dev for AI)",
+      "kind": "doc-framework",
+      "url": "https://csrc.nist.gov/pubs/sp/800/218/a/final",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision_kind": "document-download",
+        "version": "SP 800-218A final",
+        "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218A.pdf",
+        "sha256": "e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8",
+        "fetched_at": "2026-10-31",
+        "license_spdx": "LicenseRef-Public-Domain-US-Government",
+        "provenance_type": "document-download (официальный URL + sha256 полученного файла)"
+      },
+      "label_source": "n/a",
+      "upstream_code_rights": "public domain (US gov work)",
+      "coverage": "происхождение данных/моделей/артефактов, проверка обновлений, риски обучения — основа нашего provenance-требования",
+      "usage": "eval-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-exec",
+      "fetch_rules": "официальный PDF",
+      "gaps": [],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "hf-trl-docs",
+      "name": "Hugging Face TRL SFTTrainer (документация)",
+      "kind": "framework-doc",
+      "url": "https://huggingface.co/docs/trl/sft_trainer",
+      "repo": "https://github.com/huggingface/trl",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "a03b8fe31d5f68b645ccf0d6b95c1f1245b5006e",
+        "revision_kind": "git-commit",
+        "license_spdx": "Apache-2.0",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "n/a",
+      "upstream_code_rights": "Apache-2.0",
+      "coverage": "SFT: conversational/prompt-completion, выбор шаблона диалога, маска обучения, версии библиотек — всё входит в manifest обучения (п.5 kimi-code-m5m)",
+      "usage": "manifest-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-remote-code",
+      "fetch_rules": "версия пинится в manifest обучения; сама установка — только в изолированном окружении пилота после свободной GPU-lease",
+      "gaps": [],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    },
+    {
+      "id": "hf-peft-lora-docs",
+      "name": "Hugging Face PEFT / LoRA (документация)",
+      "kind": "framework-doc",
+      "url": "https://huggingface.co/docs/peft/main/en/conceptual_guides/lora",
+      "repo": "https://github.com/huggingface/peft",
+      "pinned": {
+        "at": "2026-10-31",
+        "revision": "03412afcf1e96f74a014e467a313b22baeb74498",
+        "revision_kind": "git-commit",
+        "license_spdx": "Apache-2.0",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
+      },
+      "label_source": "n/a",
+      "upstream_code_rights": "Apache-2.0",
+      "coverage": "LoRA: адаптер привязан к совместимой базе и её токенизатору; перенос между произвольными моделями не обещается; обновление RAG != обновление весов",
+      "usage": "manifest-only",
+      "license_reviewed": true,
+      "duplicates_policy": "n/a",
+      "execution_rule": "no-remote-code",
+      "fetch_rules": "аналогично trl",
+      "gaps": [],
+      "review": {
+        "reviewer": null,
+        "receipt_ref": null,
+        "reviewed_at": null,
+        "status": "pending_independent_review",
+        "note": "самопроверка zcode-m5m (тесты валидатора) НЕ заменяет независимого reviewer"
+      },
+      "split_lineage": {
+        "split_policy": "n/a",
+        "required_for_train": false,
+        "note": "per-record split-lineage ведёт потребитель корпуса при включении в training"
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "qwen3:8b",
+      "name": "Qwen3 8B",
+      "kind": "model",
+      "registry": "ollama@m5m",
+      "pinned": {
+        "at": "2026-10-31",
+        "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "size_mb": 4983,
+        "license_spdx": "Apache-2.0"
+      },
+      "role": "baseline-A (9B-класс, замороженная) + кандидат-основа LoRA (п.7 mini-max-m5m)",
+      "upstream_code_rights": "Qwen3 семейство — Apache-2.0 (официальный релиз Qwen); веса уже в нашем локальном реестре",
+      "compatibility": "LoRA-кандидат обязан оставаться на этой основе и её токенизаторе; смена базы = повторный цикл (программа 31.10)",
+      "usage": "both",
+      "license_reviewed": true,
+      "execution_rule": "verified-runtime-only",
+      "notes": "thinking-модель: reasoning съедает max_tokens (грабля из продакшна 30.10); quantization и контекст фиксировать перед сравнением на 3 seeds",
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля",
+      "train_requirements": {
+        "hf_revision": null,
+        "tokenizer_digest": null,
+        "weight_format": null,
+        "base_license": "Apache-2.0",
+        "required_when": "trainable_base задан (LoRA-пилот начат)",
+        "note": "все поля заполняются ТОЛЬКО из верифицированных источников перед запуском обучения; не заполнять ради заполнения"
+      }
+    },
+    {
+      "id": "qwen3-coder:30b",
+      "name": "Qwen3-Coder 30B (MoE)",
+      "kind": "model",
+      "registry": "ollama@m5m",
+      "pinned": {
+        "at": "2026-10-31",
+        "digest": "sha256:06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "size_mb": 17697,
+        "license_spdx": "Apache-2.0"
+      },
+      "role": "baseline-B (27B-класс, замороженная) для сравнения маршрутизации специалистов",
+      "upstream_code_rights": "Apache-2.0",
+      "compatibility": "не основа для LoRA-кандидата п.5 (основа = qwen3:8b); только сравнительный режим",
+      "usage": "both",
+      "license_reviewed": true,
+      "execution_rule": "verified-runtime-only",
+      "notes": "256K контекст заявлен каталогом discovery; реальные лимиты замерять, не верить каталогу",
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля",
+      "train_requirements": {
+        "hf_revision": null,
+        "tokenizer_digest": null,
+        "weight_format": null,
+        "base_license": "Apache-2.0",
+        "required_when": "trainable_base задан (LoRA-пилот начат)",
+        "note": "все поля заполняются ТОЛЬКО из верифицированных источников перед запуском обучения; не заполнять ради заполнения"
+      }
+    },
+    {
+      "id": "qwen3:0.6b",
+      "name": "Qwen3 0.6B",
+      "kind": "model",
+      "registry": "ollama@m5m",
+      "pinned": {
+        "at": "2026-10-31",
+        "digest": "sha256:7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+        "size_mb": 498,
+        "license_spdx": "Apache-2.0"
+      },
+      "role": "дешёвый smoke перед платными сравнениями; база ПОД ДООБУЧЕНИЕ под конкретную задачу (директива владельца 30.10)",
+      "upstream_code_rights": "Apache-2.0",
+      "compatibility": "крошечная модель врёт о себе и путает identity — не использовать там, где важна self-идентификация",
+      "usage": "both",
+      "license_reviewed": true,
+      "execution_rule": "verified-runtime-only",
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля",
+      "train_requirements": {
+        "hf_revision": null,
+        "tokenizer_digest": null,
+        "weight_format": null,
+        "base_license": "Apache-2.0",
+        "required_when": "trainable_base задан (LoRA-пилот начат)",
+        "note": "все поля заполняются ТОЛЬКО из верифицированных источников перед запуском обучения; не заполнять ради заполнения"
+      }
+    },
+    {
+      "id": "zvuk-text-finetune:latest",
+      "name": "Zvuk text finetune (наша)",
+      "kind": "model",
+      "registry": "ollama@m5m",
+      "pinned": {
+        "at": "2026-10-31",
+        "digest": "sha256:89d98783e470a945079d65a3b8ea2045e034f5b713ad3c2a3393af68e3318329",
+        "size_mb": 2950,
+        "license_spdx": "LicenseRef-Tamplari-Own"
+      },
+      "role": "наша дообученная модель (трек ZVUK); прецедент полного цикла свои-веса",
+      "upstream_code_rights": "веса наши (Tamplari); базовая модель — уточнить поколение в manifest, если включаем в сравнения",
+      "compatibility": "n/a для LoRA-кандидата специалистов",
+      "usage": "both",
+      "license_reviewed": true,
+      "execution_rule": "verified-runtime-only",
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля",
+      "train_requirements": {
+        "hf_revision": null,
+        "tokenizer_digest": null,
+        "weight_format": null,
+        "base_license": "LicenseRef-Tamplari-Own",
+        "required_when": "trainable_base задан (LoRA-пилот начат)",
+        "note": "все поля заполняются ТОЛЬКО из верифицированных источников перед запуском обучения; не заполнять ради заполнения"
+      }
+    },
+    {
+      "id": "zvuk-text-1.5b:latest",
+      "name": "Zvuk text 1.5b (наша)",
+      "kind": "model",
+      "registry": "ollama@m5m",
+      "pinned": {
+        "at": "2026-10-31",
+        "digest": "sha256:27b975aa69c9831506b3057ecd1a9586ab9428c4d624762a882c1f698b1697b4",
+        "size_mb": 940,
+        "license_spdx": "LicenseRef-Tamplari-Own"
+      },
+      "role": "наша лёгкая модель; живая в роутере с 30.10",
+      "upstream_code_rights": "веса наши",
+      "compatibility": "n/a",
+      "usage": "both",
+      "license_reviewed": true,
+      "execution_rule": "verified-runtime-only",
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля",
+      "train_requirements": {
+        "hf_revision": null,
+        "tokenizer_digest": null,
+        "weight_format": null,
+        "base_license": "LicenseRef-Tamplari-Own",
+        "required_when": "trainable_base задан (LoRA-пилот начат)",
+        "note": "все поля заполняются ТОЛЬКО из верифицированных источников перед запуском обучения; не заполнять ради заполнения"
+      }
+    }
+  ],
+  "hf_keys_decision": {
+    "required": false,
+    "justification": "на 31.10 в реестре нет закрытых/gated поставок; все источники публичные (GitHub API), модели уже локальны в ollama@m5m. Ключ HF запрашивается ТОЛЬКО при включении реально gated поставки после письменного обоснования необходимости (правило replit п.6)",
+    "checked_at": "2026-10-31"
+  },
+  "schema_changes_v1.2": [
+    "review: reviewer/receipt_ref/reviewed_at/status на уровне реестра и источника — авторская проверка не считается независимой (reviewer=null до назначения)",
+    "split_lineage: split_policy обязателен для train-usage; per-record lineage ведёт потребитель корпуса",
+    "train_requirements у моделей: чеклист (hf_revision, tokenizer_digest, weight_format, base_license) — обязателен ТОЛЬКО когда trainable_base задан (пилот начат); для metadata-only trainable_base=null допустим (replit 31.10)"
+  ],
+  "review_receipts": [
+    {
+      "what": "sources_registry v1.0 байты (b9c71d6fe, json 50a8f758)",
+      "reviewer": "kimi-code-m5m",
+      "verified_sha256": "50a8f7588d70d604a619785da8dad302fab98636de9a2b8b3c81d3ef21c089e8",
+      "ref": "#640 коммент ACK + mako-memory-rebuild issues/4",
+      "at": "2026-10-31",
+      "independent": true
+    },
+    {
+      "what": "sources_registry v1.1 байты (68311b09f, json ca9d5bd3)",
+      "reviewer": "kimi-code-m5m",
+      "verified_sha256": "ca9d5bd3b888a0496e93a5ba78761c71db34ee8733e7340224250ab01e85f4a5",
+      "ref": "ACK владельцем зафиксирован (адресный ответ 31.10)",
+      "at": "2026-10-31",
+      "independent": true
+    }
+  ]
+}

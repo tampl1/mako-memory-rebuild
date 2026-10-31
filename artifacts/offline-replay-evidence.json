@@ -1,0 +1,81 @@
+{
+  "all_checks_passed": true,
+  "checks": {
+    "R1_source": true,
+    "current_raw_ranking": true,
+    "current_raw_source": true,
+    "current_raw_unique_bounded": true,
+    "current_rerank_ranking": true,
+    "current_rerank_source": true,
+    "current_rerank_unique_bounded": true,
+    "evidence_sha": true,
+    "historical_raw_ranking": true,
+    "historical_raw_source": true,
+    "historical_raw_unique_bounded": true,
+    "historical_rerank_ranking": true,
+    "historical_rerank_source": true,
+    "historical_rerank_unique_bounded": true,
+    "injection_analysis_raw_ranking": true,
+    "injection_analysis_raw_source": true,
+    "injection_analysis_raw_unique_bounded": true,
+    "injection_analysis_rerank_ranking": true,
+    "injection_analysis_rerank_source": true,
+    "injection_analysis_rerank_unique_bounded": true,
+    "restart_no_calls": true,
+    "restart_no_effect": true
+  },
+  "embedding_calls": 0,
+  "limitations": "raw generation strings and embedding vectors were not stored; parsed receipts are replayed",
+  "mode": "offline_replay_of_saved_receipts_not_live",
+  "model_calls": 0,
+  "replay": {
+    "current": {
+      "raw": {
+        "result_ids": [
+          "ev_be3b6505a9d67465889dac2b",
+          "ev_8235c3fbcbccf16fc42212b9"
+        ],
+        "top1": "ev_be3b6505a9d67465889dac2b"
+      },
+      "rerank": {
+        "result_ids": [
+          "ev_be3b6505a9d67465889dac2b",
+          "ev_8235c3fbcbccf16fc42212b9"
+        ],
+        "top1": "ev_be3b6505a9d67465889dac2b"
+      }
+    },
+    "historical": {
+      "raw": {
+        "result_ids": [
+          "ev_897bffff529f04dc723fae93"
+        ],
+        "top1": "ev_897bffff529f04dc723fae93"
+      },
+      "rerank": {
+        "result_ids": [
+          "ev_897bffff529f04dc723fae93"
+        ],
+        "top1": "ev_897bffff529f04dc723fae93"
+      }
+    },
+    "injection_analysis": {
+      "raw": {
+        "result_ids": [
+          "ev_8235c3fbcbccf16fc42212b9",
+          "ev_be3b6505a9d67465889dac2b"
+        ],
+        "top1": "ev_8235c3fbcbccf16fc42212b9"
+      },
+      "rerank": {
+        "result_ids": [
+          "ev_8235c3fbcbccf16fc42212b9",
+          "ev_be3b6505a9d67465889dac2b"
+        ],
+        "top1": "ev_8235c3fbcbccf16fc42212b9"
+      }
+    }
+  },
+  "rerank_calls": 0,
+  "source_evidence_sha256": "893e25c2b3a2f38ac2ddb155eb4555e9d1e66729176c642312b26b8abb635a2c"
+}

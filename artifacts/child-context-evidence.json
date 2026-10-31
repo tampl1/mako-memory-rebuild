@@ -1,0 +1,195 @@
+{
+  "adapter": "FrozenChildMemoryContext",
+  "all_checks_passed": true,
+  "checks": {
+    "embedding_generation_rejected": true,
+    "evidence_tamper_rejected": true,
+    "foreign_owner_rejected": true,
+    "missing_source_rejected": true,
+    "new_task_uses_v2": true,
+    "no_external_effects": true,
+    "original_not_rewritten": true,
+    "original_still_verifies": true,
+    "restore_unresolved_not_model_error": true,
+    "revoked_grant_not_revived": true
+  },
+  "core": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
+  "external_model_calls": 0,
+  "limitations": "real CORE runtime/store with synthetic decision/tool adapters; no live model calls",
+  "new_child_digest": "933cc7f7851e69b31d52b6f0e29b39dab5ed6d6fd7e73a77b8ac7b9edcf49229",
+  "parent": {
+    "as_of": "2026-10-31T00:01:00+00:00",
+    "context_digest": "ef598c9a82976a362af2f35432de51db36b271067bbba14c3bfb7facb6da220f",
+    "embedding_generation": "bge-m3/1024",
+    "grant_revision": 1,
+    "items_json": "[{\"certainty\":\"explicit\",\"fact_id\":\"ev_1a4c9bd2dba4afaa7d839cc4\",\"provenance\":{\"evidence_event_ids\":[\"ev_1a4c9bd2dba4afaa7d839cc4\"],\"source_digests\":[\"1a4c9bd2dba4afaa7d839cc4df6d791aef66e17b4cec6aa92d589f937a31b434\"]},\"ref_id\":\"cl_61b3dd77c58c6e8b6e584186\",\"ref_type\":\"claim\",\"structured\":{\"source_event_ids\":[\"ev_1a4c9bd2dba4afaa7d839cc4\"],\"value\":\"v1.0\",\"version\":\"v1.0\"},\"text\":\"ship v1.0\",\"valid_from\":\"2026-10-31T00:01:00+00:00\"}]",
+    "owner": "owner-live",
+    "parent_run_id": "parent-v1",
+    "source": "ev_1a4c9bd2dba4afaa7d839cc4",
+    "version": "v1.0"
+  },
+  "runs": {
+    "R1": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "CHILD-R1",
+      "memory_mode": "frozen",
+      "memory_recalls": 1,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "child-v1-fixed",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:cl_61b3dd77c58c6e8b6e584186",
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "memory_receipt": {
+          "as_of": "2026-10-31T00:01:00+00:00",
+          "context_digest": "ef598c9a82976a362af2f35432de51db36b271067bbba14c3bfb7facb6da220f",
+          "embedding_generation": "bge-m3/1024",
+          "grant_revision": 1,
+          "mode": "frozen_child",
+          "source": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "model_receipt": {
+          "input_digest": "2f44a0b894c535354ef557dd06832e3a6b424406b159fc17c4d908e2f1fb6de8",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "20722ff84f1798ab7ac08d6e827ed14798da7b963d38d0dbdc8455d97ee0fb68",
+          "executor_seq": 1,
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "operation": "ship_release",
+          "version": "v1.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "611301a8-4141-4227-84c6-15260e58a8d1",
+      "state": "completed",
+      "tool_executions_total": 1
+    },
+    "R1_replay": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "CHILD-R1-replay",
+      "memory_mode": "frozen",
+      "memory_recalls": 0,
+      "model_calls": 0,
+      "model_slug": "syn-model-a",
+      "request_key": "child-v1-fixed",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:cl_61b3dd77c58c6e8b6e584186",
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "memory_receipt": {
+          "as_of": "2026-10-31T00:01:00+00:00",
+          "context_digest": "ef598c9a82976a362af2f35432de51db36b271067bbba14c3bfb7facb6da220f",
+          "embedding_generation": "bge-m3/1024",
+          "grant_revision": 1,
+          "mode": "frozen_child",
+          "source": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "model_receipt": {
+          "input_digest": "2f44a0b894c535354ef557dd06832e3a6b424406b159fc17c4d908e2f1fb6de8",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "20722ff84f1798ab7ac08d6e827ed14798da7b963d38d0dbdc8455d97ee0fb68",
+          "executor_seq": 1,
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "operation": "ship_release",
+          "version": "v1.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "611301a8-4141-4227-84c6-15260e58a8d1",
+      "state": "completed",
+      "tool_executions_total": 1
+    },
+    "R2": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "CHILD-R2",
+      "memory_mode": "frozen",
+      "memory_recalls": 1,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "child-v2-fixed",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:cl_bd835e89ade10d0c49226d73",
+          "fact_ref": "ev_ec13076d483c814a5525a116",
+          "version": "v2.0"
+        },
+        "memory_receipt": {
+          "as_of": null,
+          "context_digest": "933cc7f7851e69b31d52b6f0e29b39dab5ed6d6fd7e73a77b8ac7b9edcf49229",
+          "embedding_generation": "bge-m3/1024",
+          "grant_revision": 1,
+          "mode": "frozen_child",
+          "source": "ev_ec13076d483c814a5525a116",
+          "version": "v2.0"
+        },
+        "model_receipt": {
+          "input_digest": "4719a1d9e0c904317ff46903c8bc4a631512340bdbb5735a208eedc9164de516",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "1bf49fed83581389fcfa5d76de95fa0fc403e6a8acd7e3b22b7b23b76b4cecd8",
+          "executor_seq": 2,
+          "fact_ref": "ev_ec13076d483c814a5525a116",
+          "operation": "ship_release",
+          "version": "v2.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "e2f440f2-186b-477a-9cd9-1c978267835a",
+      "state": "completed",
+      "tool_executions_total": 2
+    }
+  }
+}

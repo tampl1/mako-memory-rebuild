@@ -67,6 +67,34 @@ query/document, не expected source. Raw и rerank сравниваются н�
 Live-процессы M5M были остановлены после двух smoke, показавших GPU; рабочий
 прогон выполнен только на выделенном M1M.
 
+## Offline replay и child context
+
+Ветка `memory/offline-child-context-20261031` не повторяет live runner.
+
+```bash
+/opt/homebrew/bin/python3.12 offline_replay.py
+MAKO_CORE_DIR=/path/to/core-2fa /opt/homebrew/bin/python3.12 child_runner.py
+```
+
+Replay проверяет сохранённые receipts без model/embedding/rerank calls. Это не
+новый live run; сырые generation strings и embedding vectors в старом evidence
+не сохранены, поэтому replay ограничен parsed receipts. `FrozenChildMemoryContext`
+проверяет source/version/as_of/owner/grant_revision/embedding_generation/digest
+на реальном CORE. Мир может смениться на v2 без перезаписи parent v1; revoked
+grant, foreign owner, missing source, tamper и generation shift отклоняются.
+Невосстановимый snapshot имеет статус unresolved, не «ошибка модели».
+
+## Consumer review реестра v1.2
+
+Точные байты: Attached-Assets `eeefa5faccb20b15455550e451246a36d37d4035`.
+Авторские 27/27 проходят, но consumer review отклоняет совместимость: отсутствуют
+раздельные `eval_rights_reviewed`/`train_rights_reviewed`, а `usage=both`
+допускает `trainable_base=null`. Это не разрешение на SFT.
+
+```bash
+/opt/homebrew/bin/python3.12 training/review_sources.py  # ожидаемый exit 1
+```
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,

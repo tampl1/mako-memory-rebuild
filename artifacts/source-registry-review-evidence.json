@@ -1,0 +1,63 @@
+{
+  "all_checks_passed": false,
+  "checks": {
+    "labels_still_require_reviewer": true,
+    "nist_document_provenance": true,
+    "no_external_dataset_inputs": true,
+    "no_public_holdout_in_train": true,
+    "quarantine_not_eval": true,
+    "registry_pinned": true,
+    "rights_per_input": true,
+    "separate_eval_train_rights": false,
+    "seven_wycheproof_vectors": true,
+    "sft_gate_requires_trainable_base": false,
+    "split_8_2_2": true,
+    "split_precedes_mutations": true,
+    "trainable_base_null": true,
+    "twelve_synthetic_records": true,
+    "unique_families": true
+  },
+  "consumer_compatible": false,
+  "consumer_required_fields": [
+    "eval_rights_reviewed and train_rights_reviewed as separate decisions",
+    "train-possible/both gate must require non-null trainable_base for actual SFT",
+    "per-record source_registry_ref and source_usage for future external inputs",
+    "split_lineage/parent_ids for every future mutation",
+    "independent reviewer identity, reviewed_at and review_receipt_ref for current labels"
+  ],
+  "corpus_sha256": "98ef2b14df4e993cda63d3e756660f5c38c573e00fd2b67c1fcfb0752f51edad",
+  "external_training_inputs": 0,
+  "gpu_processes_started": 0,
+  "metadata_only_quarantine": [
+    "primevul",
+    "owasp-genai-top10",
+    "purplellama-cyberseceval"
+  ],
+  "model_calls": 0,
+  "paid_calls": 0,
+  "registry": {
+    "commit": "eeefa5faccb20b15455550e451246a36d37d4035",
+    "path": "zcode/sources-registry/sources_registry.json",
+    "repo": "tampl1/Attached-Assets",
+    "sha256": "5c605c9ff131d8cfc2665e1bb0e8d2f519aade460a22d404966c0891d7ae15c0"
+  },
+  "split_counts": {
+    "test": 2,
+    "train": 8,
+    "validation": 2
+  },
+  "trainable_blockers": [
+    "qwen3:8b has an Ollama inference digest, not a pinned trainable HF revision",
+    "tokenizer digest and compatible trainable weight format are missing",
+    "12 labels await independent reviewer approval",
+    "free GPU lease has not been granted",
+    "registry usage=both does not prove train rights or a trainable base",
+    "v1.2 bytes lack separate eval_rights_reviewed/train_rights_reviewed"
+  ],
+  "training": "BLOCKED: consumer mismatch and missing prerequisites",
+  "wycheproof": {
+    "all_sha256_and_group_counts_match": true,
+    "files": 7,
+    "test_groups": 288
+  }
+}

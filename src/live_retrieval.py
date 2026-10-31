@@ -47,6 +47,21 @@ def parse_score(text):
         raise RetrievalUnavailable("reranker returned no strict JSON score") from exc
 
 
+def validate_rerank_items(items, candidate_ids, limit=2):
+    if not isinstance(items, list) or len(items) > limit:
+        raise EvidenceError("rerank result exceeds the candidate limit")
+    ids = [item.get("ref_id") for item in items]
+    if len(ids) != len(set(ids)):
+        raise EvidenceError("rerank returned duplicate source IDs")
+    if any(source_id not in candidate_ids for source_id in ids):
+        raise EvidenceError("rerank invented a source outside the candidate set")
+    for item in items:
+        structured = item.get("structured") or {}
+        if structured.get("source_event_ids") != [item.get("fact_id")]:
+            raise EvidenceError("rerank source linkage is invalid")
+    return True
+
+
 class OllamaLiveRetriever:
     def __init__(self, store, grants, owner_id, project, endpoint, budget):
         self.store = store
@@ -113,6 +128,9 @@ class OllamaLiveRetriever:
 
     def _item(self, event, similarity, score=None):
         version = event["payload"].get("release_target") or event["payload"].get("version")
+        if event["kind"] in {"fact", "correction"} and (
+                not isinstance(version, str) or not version):
+            raise EvidenceError("fact event is missing required release_target/version")
         return {
             "ref_id": event["event_id"], "ref_type": "event", "fact_id": event["event_id"],
             "text": self._text(event), "certainty": event["certainty"],
@@ -150,11 +168,15 @@ class OllamaLiveRetriever:
                      for score, similarity, event in reranked]
         else:
             items = [self._item(event, similarity) for similarity, event in candidates]
+        candidate_ids = [event["event_id"] for _, event in candidates]
+        if mode == "rerank":
+            validate_rerank_items(items, candidate_ids, limit)
         receipt = {
             "mode": mode, "embedding_model": "bge-m3:latest",
             "embedding_digest": BGE_DIGEST, "rerank_model": "qwen3.5:9b" if mode == "rerank" else None,
             "rerank_digest": RERANK_DIGEST if mode == "rerank" else None,
             "rerank_kind": "generative_llm_json_score" if mode == "rerank" else None,
+            "rerank_error_policy": "typed_unavailable_no_silent_fallback" if mode == "rerank" else None,
             "as_of": as_of, "candidate_ids": [event["event_id"] for _, event in candidates],
             "result_ids": [item["ref_id"] for item in items],
             "calls": {"embedding": self.budget.embedding_calls, "rerank": self.budget.rerank_calls},

@@ -1,7 +1,7 @@
 import unittest
 
-from src.live_retrieval import CallBudget, parse_score
-from src.safety import RetrievalUnavailable
+from src.live_retrieval import CallBudget, parse_score, validate_rerank_items
+from src.safety import EvidenceError, RetrievalUnavailable
 
 
 class LiveRetrievalOfflineTests(unittest.TestCase):
@@ -18,6 +18,20 @@ class LiveRetrievalOfflineTests(unittest.TestCase):
         self.assertEqual(budget.total, 2)
         with self.assertRaises(RetrievalUnavailable):
             budget.take("embedding")
+
+    def test_rerank_ids_must_be_unique_bounded_and_from_candidates(self):
+        def item(source_id):
+            return {"ref_id": source_id, "fact_id": source_id,
+                    "structured": {"source_event_ids": [source_id]}}
+        self.assertTrue(validate_rerank_items([item("a"), item("b")], ["a", "b", "c"]))
+        for items in (
+            [item("a"), item("a")],
+            [item("invented")],
+            [item("a"), item("b"), item("c")],
+            [{"ref_id": "a", "fact_id": "a", "structured": {"source_event_ids": ["b"]}}],
+        ):
+            with self.subTest(items=items), self.assertRaises(EvidenceError):
+                validate_rerank_items(items, ["a", "b"])
 
 
 if __name__ == "__main__":
