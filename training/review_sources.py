@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REGISTRY_COMMIT = "b9c71d6feced831ae5cdc12278e3474d244351ff"
+REGISTRY_COMMIT = "68311b09f2edac023e63bb57bcd92b80d56b75e7"
 
 
 def sha(path):
@@ -18,6 +18,15 @@ def main():
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
     sample = json.loads(sample_path.read_text(encoding="utf-8"))
     records = sample["records"]
+    quarantined = [s["id"] for s in registry["sources"] if not s.get("license_reviewed")]
+    vectors = next(s for s in registry["sources"] if s["id"] == "wycheproof-c2sp")["vectors_pinned"]
+    vector_checks = []
+    for vector in vectors:
+        path = ROOT / "controls" / "zcode-sources-registry" / "wycheproof-vectors" / vector["file"]
+        document = json.loads(path.read_text(encoding="utf-8"))
+        vector_checks.append(
+            sha(path) == vector["sha256"] and len(document["testGroups"]) == vector["groups"])
+    nist = [s for s in registry["sources"] if s["id"].startswith("nist-")]
     checks = {
         "registry_pinned": len(registry["sources"]) == 10 and len(registry["models"]) == 5,
         "twelve_synthetic_records": len(records) == 12 and all(
@@ -32,6 +41,15 @@ def main():
             for r in records),
         "labels_still_require_reviewer": all(
             r["metadata"]["review_status"] == "candidate_until_independent_checker" for r in records),
+        "quarantine_not_eval": all(s["usage"] == "metadata-only" for s in registry["sources"]
+                                   if not s.get("license_reviewed")),
+        "seven_wycheproof_vectors": len(vectors) == 7 and all(vector_checks)
+                                      and sum(v["groups"] for v in vectors) == 288,
+        "nist_document_provenance": len(nist) == 2 and all(
+            s["pinned"]["revision_kind"] == "document-download"
+            and len(s["pinned"]["sha256"]) == 64 and s["pinned"]["url"].startswith("https://")
+            for s in nist),
+        "trainable_base_null": all(m.get("trainable_base") is None for m in registry["models"]),
     }
     split_counts = {name: sum(r["metadata"]["split"] == name for r in records)
                     for name in ("train", "validation", "test")}
@@ -45,8 +63,16 @@ def main():
         "tokenizer digest and compatible trainable weight format are missing",
         "12 labels await independent reviewer approval",
         "free GPU lease has not been granted",
+        "registry usage=both does not prove train rights or a trainable base",
     ]
-    quarantined = [s["id"] for s in registry["sources"] if not s.get("license_reviewed")]
+    consumer_required_fields = [
+        "eval_rights_reviewed and train_rights_reviewed as separate decisions",
+        "train-possible/both gate must require non-null trainable_base for actual SFT",
+        "trainable_base.hf_revision, tokenizer_digest, weight_format and base_license",
+        "per-record source_registry_ref and source_usage for future external inputs",
+        "split_lineage/parent_ids for every future mutation",
+        "independent reviewer identity, reviewed_at and review_receipt_ref",
+    ]
     plan = {
         "schema": "frozen-baseline-eval-plan/1.0",
         "status": "prepared_not_run",
@@ -78,8 +104,11 @@ def main():
         "all_checks_passed": all(checks.values()),
         "split_counts": split_counts,
         "metadata_only_quarantine": quarantined,
+        "wycheproof": {"files": len(vectors), "test_groups": sum(v["groups"] for v in vectors),
+                       "all_sha256_and_group_counts_match": all(vector_checks)},
         "external_training_inputs": 0,
         "trainable_blockers": trainable_blockers,
+        "consumer_required_fields": consumer_required_fields,
         "training": "SKIP: review is not a license to train",
         "model_calls": 0,
         "paid_calls": 0,
@@ -89,7 +118,7 @@ def main():
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({"checks": len(checks), "all_checks_passed": report["all_checks_passed"],
                       "split": split_counts, "quarantined": quarantined,
-                      "training": report["training"]}))
+                      "wycheproof": report["wycheproof"], "training": report["training"]}))
     return 0 if report["all_checks_passed"] else 1
 
 

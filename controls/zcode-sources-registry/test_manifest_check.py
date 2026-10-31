@@ -48,9 +48,32 @@ class SourceGateTests(unittest.TestCase):
         errs = self._errs(upstream_code_rights="unknown")
         self.assertTrue(any("upstream_code_rights" in e for e in errs))
 
-    def test_dangerous_sections_forced_eval_only(self):
+    def test_dangerous_sections_forbid_train(self):
         errs = self._errs(dangerous_sections=True)
-        self.assertTrue(any("eval-only" in e for e in errs))
+        self.assertTrue(any("dangerous_sections" in e for e in errs))
+
+    # replit 31.10: unknown license НЕ разрешает evaluation
+    def test_eval_requires_license_reviewed(self):
+        errs = self._errs(usage="eval-only", license_reviewed=False)
+        self.assertTrue(any("metadata-only/quarantine" in e for e in errs))
+
+    def test_metadata_only_always_allowed_without_review(self):
+        errs = self._errs(usage="metadata-only", license_reviewed=False,
+                          upstream_code_rights="unknown")
+        self.assertEqual([e for e in errs if "usage" in e], [])
+
+    def test_document_download_needs_url_version_sha256(self):
+        errs = self._errs(pinned={"at": "2026-10-31",
+                                  "revision_kind": "document-download",
+                                  "sha256": "a" * 64,
+                                  "license_spdx": "LicenseRef-X"})
+        self.assertTrue(any("document-download требует" in e for e in errs))
+        ok = self._errs(pinned={"at": "2026-10-31",
+                                "revision_kind": "document-download",
+                                "version": "v1", "url": "https://nvlpubs/x.pdf",
+                                "sha256": "a" * 64,
+                                "license_spdx": "LicenseRef-X"})
+        self.assertFalse(any("document-download" in e for e in ok))
 
     def test_revision_format(self):
         errs = self._errs(pinned={"at": "2026-10-31",
@@ -124,14 +147,40 @@ class RegistrySelfTests(unittest.TestCase):
     def test_every_source_has_pinned_revision_and_license(self):
         data = json.loads(REGISTRY.read_text(encoding="utf-8"))
         for s in data["sources"]:
-            self.assertIn("revision", s["pinned"], s["id"])
-            self.assertIn("license_spdx", s["pinned"], s["id"])
+            p = s["pinned"]
+            if p.get("revision_kind") == "document-download":
+                self.assertIn("sha256", p, s["id"])
+                self.assertIn("url", p, s["id"])
+                self.assertIn("version", p, s["id"])
+            else:
+                self.assertIn("revision", p, s["id"])
+            self.assertIn("license_spdx", p, s["id"])
 
-    def test_dangerous_sources_are_eval_only(self):
+    def test_unreviewed_licenses_are_quarantined(self):
         data = json.loads(REGISTRY.read_text(encoding="utf-8"))
         for s in data["sources"]:
-            if s.get("dangerous_sections"):
-                self.assertEqual(s["usage"], "eval-only", s["id"])
+            if not s.get("license_reviewed"):
+                self.assertEqual(s["usage"], "metadata-only", s["id"])
+
+    def test_nist_pinned_by_document_checksum(self):
+        data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        for s in data["sources"]:
+            if s["id"].startswith("nist-"):
+                self.assertEqual(s["pinned"]["revision_kind"], "document-download")
+                self.assertEqual(len(s["pinned"]["sha256"]), 64)
+
+    def test_wycheproof_vectors_pinned(self):
+        data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        w = [s for s in data["sources"] if s["id"] == "wycheproof-c2sp"][0]
+        self.assertEqual(len(w["vectors_pinned"]), 7)
+        for v in w["vectors_pinned"]:
+            self.assertEqual(len(v["sha256"]), 64)
+
+    def test_models_trainable_base_honest_null(self):
+        data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        for m in data["models"]:
+            self.assertIsNone(m["trainable_base"], m["id"])
+            self.assertIn("заменяет", m["trainable_note"])
 
 
 def check_registry_dict(data: dict) -> list[str]:

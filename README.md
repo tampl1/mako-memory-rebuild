@@ -75,9 +75,13 @@ python3 corpus/independent_checker.py
 SFT, baseline/after и general-skills regression имеют статус SKIP/blocked;
 стоимость и время обучения unknown, не ноль.
 
-Pinned ZCode registry: Attached-Assets
-`b9c71d6feced831ae5cdc12278e3474d244351ff`, путь `zcode/sources-registry/`.
+Pinned ZCode registry v1.1: Attached-Assets
+`68311b09f2edac023e63bb57bcd92b80d56b75e7`, путь `zcode/sources-registry/`.
 Его inference digest не повышается до trainable HF revision автоматически.
+Сверены 7 Wycheproof-файлов (288 testGroups), NIST document-download checksums
+и quarantine для непроверенных прав. Потребительские gaps: отдельные
+`eval_rights_reviewed`/`train_rights_reviewed`, обязательный `trainable_base`
+для SFT, lineage мутаций и reviewer receipt.
 
 ```bash
 python3 training/review_sources.py

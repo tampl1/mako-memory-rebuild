@@ -22,7 +22,7 @@ from pathlib import Path
 
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
-ALLOWED_USAGE = ("train-possible", "eval-only", "manifest-only")
+ALLOWED_USAGE = ("metadata-only", "train-possible", "eval-only", "manifest-only")
 ALLOWED_EXECUTION = ("no-exec", "no-remote-code", "verified-runtime-only")
 USAGES_ALLOWING_TRAIN = ("train-possible", "both")
 
@@ -32,10 +32,18 @@ def _check_source(s: dict) -> list[str]:
     sid = s.get("id", "<no-id>")
     p = s.get("pinned") or {}
     rev, rev_kind = p.get("revision"), p.get("revision_kind")
-    if not rev:
-        errs.append(f"{sid}: revision отсутствует")
-    elif rev_kind == "git-commit" and not HEX40.match(str(rev)):
-        errs.append(f"{sid}: revision не 40-hex git-commit: {rev!r}")
+    if p.get("revision_kind") == "document-download":
+        # не-git источник: эквивалент закреплённой revision = официальный
+        # URL + версия + sha256 полученного документа (не выдуманный git SHA)
+        if not (p.get("sha256") and p.get("url") and p.get("version")):
+            errs.append(f"{sid}: document-download требует url + version + sha256")
+        elif not HEX64.match(str(p.get("sha256"))):
+            errs.append(f"{sid}: document-download sha256 не 64-hex")
+    else:
+        if not rev:
+            errs.append(f"{sid}: revision отсутствует")
+        elif rev_kind == "git-commit" and not HEX40.match(str(rev)):
+            errs.append(f"{sid}: revision не 40-hex git-commit: {rev!r}")
     if not p.get("license_spdx"):
         errs.append(f"{sid}: license_spdx отсутствует")
     usage = s.get("usage")
@@ -47,6 +55,12 @@ def _check_source(s: dict) -> list[str]:
     if exec_rule not in ALLOWED_EXECUTION:
         errs.append(f"{sid}: execution_rule {exec_rule!r} запрещён — "
                     f"допустимы {ALLOWED_EXECUTION}")
+    # ИЕРАРХИЯ USAGE (replit 31.10, разбор поставок): metadata-only <
+    # eval-only < train-possible. Unknown license НЕ разрешает evaluation:
+    # eval-only требует license_reviewed, иначе только metadata-only (кварантин)
+    if usage == "eval-only" and not s.get("license_reviewed"):
+        errs.append(f"{sid}: usage=eval-only без license_reviewed — "
+                    f"невыясненные права = metadata-only/quarantine")
     # ГЕЙТ ОБУЧЕНИЯ: train требует проверенную лицензию и права upstream
     if usage in USAGES_ALLOWING_TRAIN and not s.get("license_reviewed"):
         errs.append(f"{sid}: usage={usage} без license_reviewed — обучение "
@@ -55,10 +69,10 @@ def _check_source(s: dict) -> list[str]:
     if usage in USAGES_ALLOWING_TRAIN and \
             str(s.get("upstream_code_rights", "")).strip().lower() == "unknown":
         errs.append(f"{sid}: usage={usage} с upstream_code_rights=unknown")
-    # ОПАСНЫЕ СЕКЦИИ: принудительно eval-only
-    if s.get("dangerous_sections") and usage != "eval-only":
-        errs.append(f"{sid}: dangerous_sections=true требует usage=eval-only, "
-                    f"получен {usage!r}")
+    # ОПАСНЫЕ СЕКЦИИ: train запрещён; eval — только с проверенной лицензией
+    if s.get("dangerous_sections") and usage in USAGES_ALLOWING_TRAIN:
+        errs.append(f"{sid}: dangerous_sections=true запрещает usage={usage!r}, "
+                    f"допустимы eval-only/metadata-only")
     if s.get("kind") == "dataset" and \
             str(s.get("upstream_code_rights", "")).strip().lower() == "unknown":
         errs.append(f"{sid}: dataset с upstream_code_rights=unknown")
@@ -80,6 +94,8 @@ def _check_model(m: dict) -> list[str]:
         errs.append(f"{mid}: license_spdx отсутствует")
     if m.get("usage") in USAGES_ALLOWING_TRAIN and not m.get("license_reviewed"):
         errs.append(f"{mid}: usage с обучением без license_reviewed")
+    if m.get("usage") == "eval-only" and not m.get("license_reviewed"):
+        errs.append(f"{mid}: usage=eval-only без license_reviewed")
     exec_rule = m.get("execution_rule")
     if exec_rule not in ALLOWED_EXECUTION:
         errs.append(f"{mid}: execution_rule {exec_rule!r} запрещён")

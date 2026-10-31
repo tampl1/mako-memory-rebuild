@@ -9,7 +9,10 @@
     "models": "код моделей через проверенный runtime (ollama); discovery/router не исполняет неподтверждённый код модели",
     "hf_keys": "ключи Hugging Face только для реально gated поставки после письменного обоснования необходимости; credentials не печатаются и не коммитятся",
     "train_gate": "usage=train требует license_reviewed=true И upstream_code_rights != unknown (см. manifest_check.py)",
-    "license_note": "лицензия README репозитория НЕ означает права на всё содержимое корпуса (указано replit) — у каждого источника свои upstream-права"
+    "license_note": "лицензия README репозитория НЕ означает права на всё содержимое корпуса (указано replit) — у каждого источника свои upstream-права",
+    "usage_hierarchy": "metadata-only < eval-only < train-possible; unknown license НЕ разрешает evaluation — только metadata-only/quarantine до проверки права требуемого использования",
+    "license_scope": "лицензия кода не распространяется автоматически на входы, тексты и upstream-уязвимые проекты — права проверяются на каждый вид содержимого отдельно",
+    "holdout": "публичные holdout-наборы НЕ включаются в training split"
   },
   "sources": [
     {
@@ -22,18 +25,20 @@
         "revision": "6f54687c84947b1d17486495440b37030d147289",
         "revision_kind": "git-commit",
         "license_spdx": "MIT",
-        "license_note": "MIT покрывает КОД репозитория; на датасет отдельная проверка"
+        "license_note": "MIT покрывает КОД репозитория; на датасет отдельная проверка",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "paired vulnerable/fixed functions, авторская курируемая разметка; хронологическое разделение рекомендовано авторами",
       "upstream_code_rights": "MIT покрывает код репо; функции датасета происходят из Big-Vul (NVD/CVE-производные) с per-function исходными репозиториями — права каждого источника проверять отдельно до любого использования beyond research",
       "coverage": "C/C++ функции vulnerable/fixed парами; классификация функции НЕ заменяет исправление проекта с тестами (программа 31.10)",
-      "usage": "eval-only",
+      "usage": "metadata-only",
       "license_reviewed": false,
       "promotion_note": "usage=train-possible возможен ТОЛЬКО после ревью лицензии датасета (не кода) и per-source прав upstream; валидатор не пропустит train с license_reviewed=false",
       "duplicates_policy": "авторы специально работают с дубликатами; наш split: по проекту/семейству/времени, идентичные функции не должны пересекать train/val/test (replit 31.10)",
       "execution_rule": "no-remote-code",
       "fetch_rules": "не скачивать до решения о включении в корпус; проверять размер и формат архива до распаковки",
-      "gaps": "лицензия датасета (не кода) в README не найдена — license_reviewed=false; коммерческое использование заблокировано валидатором до ревью"
+      "gaps": "лицензия датасета (не кода) в README не найдена — license_reviewed=false; коммерческое использование заблокировано валидатором до ревью",
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)"
     },
     {
       "id": "wycheproof-c2sp",
@@ -45,17 +50,71 @@
         "revision": "d17cc89fa5c8f4f4d378b5385ebf75da5d0926c9",
         "revision_kind": "git-commit",
         "license_spdx": "Apache-2.0",
-        "license_note": "лицензия на тест-векторы подтверждена GitHub API (spdx Apache-2.0)"
+        "license_note": "лицензия на тест-векторы подтверждена GitHub API (spdx Apache-2.0)",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "n/a (машинно-читаемые векторы: валидные/невалидные/допустимые-по-политике)",
       "upstream_code_rights": "Apache-2.0; векторы — данные, права ясны",
-      "coverage": "применимые к нашим миссиям K1/K3/K4 наборы: aes_gcm, chacha20_poly1305, ecdsa, eddsa, rsa_signature, x25519, hkdf; конкретные json фиксировать по SHA при включении",
+      "coverage": "7 закреплённых файлов применимых алгоритмов (45+10+111+113+3+1+5 testGroups); число ПРОГНАННЫХ/всего фиксируется прогоном; 133/181 (данные zcode-win PR #677) — НЕ весь охват стандарта/продукта",
       "usage": "eval-only",
       "license_reviewed": true,
       "duplicates_policy": "n/a (векторы уникальны по имени кейса)",
       "execution_rule": "no-remote-code",
       "fetch_rules": "скачивать только нужные testvectors/*.json с проверкой sha256 файла; репозиторий не клонировать целиком без необходимости",
-      "gaps": "не доказывает безопасность протокола целиком и отсутствие side-channel (программа 31.10) — только края интеграций библиотек"
+      "gaps": "не доказывает безопасность протокола целиком и отсутствие side-channel (программа 31.10) — только края интеграций библиотек",
+      "vectors_pinned": [
+        {
+          "file": "aes_gcm_test.json",
+          "sha256": "985e5ecc172e181eaf49e89508b9470dcf478002eb7e8559c707eb42dc97dfe7",
+          "algorithm": "AES-GCM",
+          "groups": 45
+        },
+        {
+          "file": "chacha20_poly1305_test.json",
+          "sha256": "fe61d25f90e1bde4461d00eafe61049e5f29bd999f36b766df9cda90906ad53d",
+          "algorithm": "CHACHA20-POLY1305",
+          "groups": 10
+        },
+        {
+          "file": "ed25519_test.json",
+          "sha256": "ea80ffebac085e21cb9d3e903e7fa2b448d96702da5b31f061d0b83b430b74b3",
+          "algorithm": "EDDSA",
+          "groups": 111
+        },
+        {
+          "file": "ecdsa_secp256r1_sha256_test.json",
+          "sha256": "182db4f3e230f6f9fa9f800d2a614dede30284b8e8438bbfe1171905402e9332",
+          "algorithm": "ECDSA",
+          "groups": 113
+        },
+        {
+          "file": "rsa_signature_2048_sha256_test.json",
+          "sha256": "94a917b01ff50fb874cfc05bf29b4af44868d944a6558201cf18380da93fb393",
+          "algorithm": "RSASSA-PKCS1-v1_5",
+          "groups": 3
+        },
+        {
+          "file": "x25519_test.json",
+          "sha256": "35c3f5231cf25cc640b524d403461deee9e49441d5d915a3a25b2c8ff5adbe7d",
+          "algorithm": "XDH",
+          "groups": 1
+        },
+        {
+          "file": "hkdf_sha256_test.json",
+          "sha256": "bb2b462a38b251cb52a2aede706d6d4b62b26864f4e80c95497507ddb07c5f1e",
+          "algorithm": "HKDF-SHA-256",
+          "groups": 5
+        }
+      ],
+      "vectors_location": "zcode/sources-registry/wycheproof-vectors/ (этот же ref, sha256.txt)",
+      "library_observed": {
+        "name": "cryptography",
+        "version": "50.0.2",
+        "observed_at": "2026-10-31",
+        "note": "финальный pin версии библиотеки — в manifest миссии K1/K3, не здесь"
+      },
+      "policy_skips": [],
+      "policy_skips_note": "пусто до первого прогона K1: исключения фиксируются при прогоне с причиной, не заранее"
     },
     {
       "id": "owasp-asvs-5",
@@ -69,7 +128,8 @@
         "revision_kind": "git-commit",
         "version": "5.0.0",
         "license_spdx": "CC-BY-SA-4.0",
-        "license_note": "подтверждено GitHub API; attribution и share-alike обязательны для производных документов"
+        "license_note": "подтверждено GitHub API; attribution и share-alike обязательны для производных документов",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "n/a (требования с точными идентификаторами версии)",
       "upstream_code_rights": "CC BY-SA 4.0 — условия использования материалов в реестре источников, свободное перелицензирование НЕ предполагается (программа 31.10)",
@@ -92,17 +152,21 @@
         "revision": "99f4395589bdbd120ae961f9cd179e79d7f9b27f",
         "revision_kind": "git-commit",
         "license_spdx": "NOASSERTION",
-        "license_note": "GitHub не распознал лицензию автоматически — license_reviewed=false до ручного чтения LICENSE/страницы"
+        "license_note": "GitHub не распознал лицензию автоматически — license_reviewed=false до ручного чтения LICENSE/страницы",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "n/a (классы рисков LLM-приложений; цитата вредного текста, намерение, вызов инструмента и реальный эффект — разные наблюдения)",
       "upstream_code_rights": "не проверено (NOASSERTION) — до ревью только чтение",
       "coverage": "инъекции, недоверенные результаты, избыточные полномочия — как чек-лист дизайна проверок",
-      "usage": "eval-only",
+      "usage": "metadata-only",
       "license_reviewed": false,
       "duplicates_policy": "n/a",
       "execution_rule": "no-exec",
       "fetch_rules": "только страницы/документы проекта; ничего не исполнять",
-      "gaps": ["лицензия не распознана автоматически — ручное ревью перед любым включением текста в корпус"]
+      "gaps": [
+        "лицензия не распознана автоматически — ручное ревью перед любым включением текста в корпус"
+      ],
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)"
     },
     {
       "id": "purplellama-cyberseceval",
@@ -114,18 +178,23 @@
         "revision": "f64eebd53003a87d9c2d2a3a712133534c214c8d",
         "revision_kind": "git-commit",
         "license_spdx": "NOASSERTION",
-        "license_note": "кастомная лицензия Meta (не SPDX) — читать LICENSE перед использованием; это gap, не PASS"
+        "license_note": "кастомная лицензия Meta (не SPDX) — читать LICENSE перед использованием; это gap, не PASS",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "бенчмарк-разделы: insecure coding, false refusal (интересует нас), defensive analysis, AutoPatchBench",
       "upstream_code_rights": "кастомная лицензия; опасные разделы предполагают отдельную инфраструктуру и образцы",
       "coverage": "несколько измерений; НЕ сводить к одному числу или мнению LLM-судьи (программа 31.10)",
-      "usage": "eval-only",
+      "usage": "metadata-only",
       "license_reviewed": false,
       "dangerous_sections": true,
       "duplicates_policy": "n/a",
       "execution_rule": "no-exec",
       "fetch_rules": "ОПАСНЫЕ РАЗДЕЛЫ (insecure code samples) не скачивать и не запускать автоматически в рабочем окружении; если когда-нибудь понадобится — только в изолированной одобренной песочнице по отдельному решению; false-refusal разделы можно рассматривать отдельно",
-      "gaps": ["лицензия не SPDX — ручное ревью", "опасные разделы — принудительный eval-only + запрет авто-скачивания (валидатор следит)"]
+      "gaps": [
+        "лицензия не SPDX — ручное ревью",
+        "опасные разделы — принудительный eval-only + запрет авто-скачивания (валидатор следит)"
+      ],
+      "quarantine_note": "кварантин: usage повысится только после ревью права ТРЕБУЕМОГО использования (eval — тоже использование)"
     },
     {
       "id": "cybench",
@@ -138,7 +207,8 @@
         "revision": "ca483c6443f17a20ba7d6bac3d274859a1721e51",
         "revision_kind": "git-commit",
         "license_spdx": "Apache-2.0",
-        "license_note": "репозиторий Apache-2.0 (GitHub API); права на отдельные CTF-задачи остаются у исходных организаторов"
+        "license_note": "репозиторий Apache-2.0 (GitHub API); права на отдельные CTF-задачи остаются у исходных организаторов",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "CTF-задачи с официальными флагами/solved-rate",
       "upstream_code_rights": "код фреймворка Apache-2.0; задачи — от исходных CTF (указаны в датасете); внешние цели запрещены политикой",
@@ -158,10 +228,13 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
       "pinned": {
         "at": "2026-10-31",
-        "revision": "v1.1-final",
-        "revision_kind": "doc-version",
+        "revision_kind": "document-download",
+        "version": "SP 800-218 final (SSDF v1.1)",
+        "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf",
+        "sha256": "617746e553a9e2da49bfbd4eef0dfc3094758a39b869314e4173ac36605cde22",
+        "fetched_at": "2026-10-31",
         "license_spdx": "LicenseRef-Public-Domain-US-Government",
-        "license_note": "произведение правительства США — public domain; ссылка на оригинал обязательна"
+        "provenance_type": "document-download (официальный URL + sha256 полученного файла)"
       },
       "label_source": "n/a (каркас процесса)",
       "upstream_code_rights": "public domain (US gov work)",
@@ -171,7 +244,9 @@
       "duplicates_policy": "n/a",
       "execution_rule": "no-exec",
       "fetch_rules": "официальный PDF с csrc.nist.gov",
-      "gaps": ["каркас процесса, не учебный датасет и не автосертификация агента (программа 31.10)"]
+      "gaps": [
+        "каркас процесса, не учебный датасет и не автосертификация агента (программа 31.10)"
+      ]
     },
     {
       "id": "nist-sp800-218a",
@@ -180,10 +255,13 @@
       "url": "https://csrc.nist.gov/pubs/sp/800/218/a/final",
       "pinned": {
         "at": "2026-10-31",
-        "revision": "final",
-        "revision_kind": "doc-version",
+        "revision_kind": "document-download",
+        "version": "SP 800-218A final",
+        "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218A.pdf",
+        "sha256": "e088c8bc75716824dae7c36a987f408364638561d381ed001b5c12254a7b10d8",
+        "fetched_at": "2026-10-31",
         "license_spdx": "LicenseRef-Public-Domain-US-Government",
-        "license_note": "public domain (US gov work)"
+        "provenance_type": "document-download (официальный URL + sha256 полученного файла)"
       },
       "label_source": "n/a",
       "upstream_code_rights": "public domain (US gov work)",
@@ -205,7 +283,8 @@
         "at": "2026-10-31",
         "revision": "a03b8fe31d5f68b645ccf0d6b95c1f1245b5006e",
         "revision_kind": "git-commit",
-        "license_spdx": "Apache-2.0"
+        "license_spdx": "Apache-2.0",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "n/a",
       "upstream_code_rights": "Apache-2.0",
@@ -227,7 +306,8 @@
         "at": "2026-10-31",
         "revision": "03412afcf1e96f74a014e467a313b22baeb74498",
         "revision_kind": "git-commit",
-        "license_spdx": "Apache-2.0"
+        "license_spdx": "Apache-2.0",
+        "provenance_type": "git-commit (GitHub API, HEAD ветки по умолчанию)"
       },
       "label_source": "n/a",
       "upstream_code_rights": "Apache-2.0",
@@ -258,7 +338,9 @@
       "usage": "both",
       "license_reviewed": true,
       "execution_rule": "verified-runtime-only",
-      "notes": "thinking-модель: reasoning съедает max_tokens (грабля из продакшна 30.10); quantization и контекст фиксировать перед сравнением на 3 seeds"
+      "notes": "thinking-модель: reasoning съедает max_tokens (грабля из продакшна 30.10); quantization и контекст фиксировать перед сравнением на 3 seeds",
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля"
     },
     {
       "id": "qwen3-coder:30b",
@@ -277,7 +359,9 @@
       "usage": "both",
       "license_reviewed": true,
       "execution_rule": "verified-runtime-only",
-      "notes": "256K контекст заявлен каталогом discovery; реальные лимиты замерять, не верить каталогу"
+      "notes": "256K контекст заявлен каталогом discovery; реальные лимиты замерять, не верить каталогу",
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля"
     },
     {
       "id": "qwen3:0.6b",
@@ -296,7 +380,9 @@
       "usage": "both",
       "license_reviewed": true,
       "execution_rule": "verified-runtime-only",
-      "notes": []
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля"
     },
     {
       "id": "zvuk-text-finetune:latest",
@@ -315,7 +401,9 @@
       "usage": "both",
       "license_reviewed": true,
       "execution_rule": "verified-runtime-only",
-      "notes": []
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля"
     },
     {
       "id": "zvuk-text-1.5b:latest",
@@ -334,7 +422,9 @@
       "usage": "both",
       "license_reviewed": true,
       "execution_rule": "verified-runtime-only",
-      "notes": []
+      "notes": [],
+      "trainable_base": null,
+      "trainable_note": "ollama digest = inference-артефакт и НЕ заменяет trainable HF revision + tokenizer digest; пинятся ТОЛЬКО при реальном LoRA-пилоте после свободной GPU-lease; не скачивать/обучать/запрашивать ключи ради заполнения поля"
     }
   ],
   "hf_keys_decision": {

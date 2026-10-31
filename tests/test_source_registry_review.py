@@ -14,6 +14,12 @@ class SourceRegistryReviewTests(unittest.TestCase):
         self.assertTrue(report["all_checks_passed"])
         self.assertEqual(report["split_counts"], {"train": 8, "validation": 2, "test": 2})
         self.assertIn("primevul", report["metadata_only_quarantine"])
+        self.assertEqual(report["registry"]["commit"],
+                         "68311b09f2edac023e63bb57bcd92b80d56b75e7")
+        self.assertEqual(report["wycheproof"]["test_groups"], 288)
+        self.assertTrue(report["wycheproof"]["all_sha256_and_group_counts_match"])
+        self.assertIn("eval_rights_reviewed and train_rights_reviewed as separate decisions",
+                      report["consumer_required_fields"])
         self.assertEqual(report["external_training_inputs"], 0)
         self.assertEqual(len(plan["untouched_eval"]["record_ids"]), 4)
         self.assertEqual(plan["gpu_lease"]["status"], "not_requested")
