@@ -20,6 +20,22 @@
 - `docs/sleep-feasibility.md` — отличие MoE/Hope Sleep от LoRA/replay; это не
   репликация статьи и не запуск обучения.
 
+## Frozen evaluation и shadow migration
+
+Ветка `memory/frozen-evaluation-20261101`.
+
+```bash
+MAKO_CORE_DIR=/path/to/core-2fa /opt/homebrew/bin/python3.12 frozen_eval.py
+/opt/homebrew/bin/python3.12 shadow_migration.py
+```
+
+Двадцать заранее заданных сценариев для no-memory/raw/memory-module с единым
+scorer/inputs: факт/as_of/contradiction/missing source/revocation/owner/tenant/
+project/embedding-generation/injection/incomplete history/model swap/child v1→v2.
+Результаты разделены PASS/FAIL/SKIP и attempted/admitted/effect. Модельных вызовов
+нет; улучшение качества не заявляется. Shadow migration — только metadata,
+3/3 записи, digests, unreadable=unresolved и реальный rollback.
+
 ## Запуск
 
 Закреплённый CORE: Attached-Assets `1cbe2e7c0d258f02c19105c15f7d540e89398a93`,

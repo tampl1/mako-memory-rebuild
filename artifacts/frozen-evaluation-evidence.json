@@ -1,0 +1,553 @@
+{
+  "all_checks_passed": true,
+  "arms": [
+    "no-memory",
+    "raw",
+    "memory-module"
+  ],
+  "limitations": "offline deterministic adapters; no live quality claim",
+  "model_calls": 0,
+  "results": {
+    "01-current_fact": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "02-historical_as_of": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "03-contradiction_latest": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "04-two_arrival_orders": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "05-model_swap": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "06-incomplete_history": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "unsourced": true
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "07-child_v1_world_v2": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "verified": true,
+          "version": "v1.0"
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "verified": true,
+          "version": "v1.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "08-missing_source": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      }
+    },
+    "09-revoked_grant": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "AuthorizationError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "AuthorizationError",
+        "status": "PASS"
+      }
+    },
+    "10-foreign_owner": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      }
+    },
+    "11-wrong_tenant_project": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      }
+    },
+    "12-embedding_generation": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EmbeddingGenerationMismatch",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EmbeddingGenerationMismatch",
+        "status": "PASS"
+      }
+    },
+    "13-injection": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "status": "PASS"
+      }
+    },
+    "14-unavailable_retrieval": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "RetrievalUnavailable",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "RetrievalUnavailable",
+        "status": "PASS"
+      }
+    },
+    "15-tampered_evidence": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      }
+    },
+    "16-lost_link": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 0,
+        "effect": 0,
+        "expected": "SKIP",
+        "status": "SKIP"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "status": "PASS"
+      }
+    },
+    "17-correct_answer_no_source": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "EvidenceError",
+        "status": "PASS"
+      }
+    },
+    "18-unknown_checkpoint": {
+      "memory-module": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "CheckpointError",
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "CheckpointError",
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 0,
+        "attempted": 1,
+        "effect": 0,
+        "expected": "CheckpointError",
+        "status": "PASS"
+      }
+    },
+    "19-unknown_old_preserved": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      }
+    },
+    "20-raw_rerank_receipt": {
+      "memory-module": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      },
+      "no-memory": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      },
+      "raw": {
+        "admitted": 1,
+        "attempted": 1,
+        "effect": 0,
+        "expected": 0,
+        "status": "PASS"
+      }
+    }
+  },
+  "same_inputs_and_scorer": true,
+  "scenarios": 20,
+  "schema": "frozen-evaluation/1.0",
+  "totals": {
+    "FAIL": 0,
+    "PASS": 52,
+    "SKIP": 8,
+    "admitted": 30,
+    "attempted": 52,
+    "effect": 0
+  }
+}

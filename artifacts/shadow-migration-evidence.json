@@ -1,0 +1,18 @@
+{
+  "all_checks_passed": true,
+  "digests_match": true,
+  "input_records": 3,
+  "mode": "metadata_shadow_migration_not_backfill",
+  "output_records": 3,
+  "rollback": {
+    "executed": true,
+    "source_unchanged": true
+  },
+  "source_sha256": "080a00b0cfcc034b327995f8b1e04a57e769bc79b123ad10c5c5c18ea629f989",
+  "unreadable_sources": [
+    {
+      "ref": "synthetic-unreadable-001",
+      "state": "unresolved_not_model_truth"
+    }
+  ]
+}

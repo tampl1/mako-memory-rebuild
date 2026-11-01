@@ -384,6 +384,8 @@ class TemporalStore:
                 (owner_id, project, *(([session] if session else [])))).fetchall()
             scored = []
             for row in rows:
+                if as_of is None and row["valid_to"] is not None:
+                    continue
                 if as_of is not None and not (
                         row["valid_from"] <= as_of and
                         (row["valid_to"] is None or row["valid_to"] > as_of)):

@@ -107,15 +107,15 @@ class SafeReader:
             "source_event_ids": list(evidence_ids),
         }
 
-    def read(self, *, owner_id, project, query, mode, limit):
+    def read(self, *, owner_id, project, query, mode, limit, as_of=None):
         self.grants.require(owner_id, project, self.generation, self.grant_revision)
         try:
             if mode == "raw_history":
                 out = self.store.raw_history(
-                    owner_id=owner_id, project=project, query=query, limit=limit)
+                    owner_id=owner_id, project=project, query=query, limit=limit, as_of=as_of)
             elif mode == "temporal_recall":
                 out = self.store.recall(
-                    owner_id=owner_id, project=project, query=query, limit=limit)
+                    owner_id=owner_id, project=project, query=query, limit=limit, as_of=as_of)
             elif mode == "none":
                 out = {"items": [], "retrieval_receipt": {"mode": "none"}}
             else:

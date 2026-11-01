@@ -1,0 +1,29 @@
+{
+  "schema": "weight-registry-consolidation/1.0",
+  "status": "awaiting_inventory_not_acceptance",
+  "sources": [
+    {
+      "owner": "kimi-code-m5m",
+      "ref": "docs/training/fleet-training-register.json",
+      "sha256": "95a2ed311ac641e4349fd4236716f1cb43dfef7ba7be44d72d3c889b85485aa5"
+    },
+    {
+      "owner": "zcode-m5m",
+      "ref": "Attached-Assets/zcode/training-inventory-zcode-m5m-20261031.json",
+      "sha256": "6f7e14e3f025f81f81c18cbd8f2259de24cd9648cbb3d80939de975c0085259e"
+    }
+  ],
+  "overlap_rule": "one job/artifact ID, two source receipts; disagreements remain explicit",
+  "accepted_promotions": [],
+  "blocked_promotions": [
+    {
+      "track": "twin-sft-adapter-v4",
+      "reason": "retention and independent review missing"
+    },
+    {
+      "track": "guard-v2",
+      "reason": "provenance and acceptance missing; quarantine remains"
+    }
+  ],
+  "next_gate": "independent quality/retention review before accepted status"
+}
