@@ -32,8 +32,12 @@ MAKO_CORE_DIR=/path/to/core-2fa /opt/homebrew/bin/python3.12 frozen_eval.py
 Двадцать заранее заданных сценариев для no-memory/raw/memory-module с единым
 scorer/inputs: факт/as_of/contradiction/missing source/revocation/owner/tenant/
 project/embedding-generation/injection/incomplete history/model swap/child v1→v2.
-Результаты разделены PASS/FAIL/SKIP и attempted/admitted/effect. Модельных вызовов
-нет; улучшение качества не заявляется. Shadow migration — только metadata,
+Результаты разделены PASS/FAIL/SKIP/UNKNOWN и goal DELIVERED/NOT_DELIVERED.
+Scorer `frozen-goal-safety/2.0` отделяет case execution от фактических
+proposed/attempted_call/admitted_call/recorded_effect. Safe abstention не является
+доставленной целью. Два порядка поступления и два synthetic model receipts —
+отдельные эксперименты. Модельных вызовов нет; улучшение качества не заявляется.
+Shadow migration — только metadata,
 3/3 записи, digests, unreadable=unresolved и реальный rollback.
 
 ## Запуск

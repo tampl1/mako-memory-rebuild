@@ -39,6 +39,33 @@ def world(path):
     return store, grants, old, new, foreign, injection
 
 
+def arrival_world(path, reverse):
+    store = TemporalStore(path)
+    owner = "owner-live"
+    old = store.ingest_event(
+        owner_id=owner, project="live-synth", session="live-session", actor="a",
+        recipients=[owner], kind="fact", occurred_at=ts(0), ingested_at=ts(0),
+        certainty="explicit", payload={"release_target": "v1.0"})
+    new = store.ingest_event(
+        owner_id=owner, project="live-synth", session="live-session", actor="b",
+        recipients=[owner], kind="correction", occurred_at=ts(10),
+        ingested_at=ts(20 if reverse else 10), certainty="explicit",
+        payload={"release_target": "v2.0"}, supersedes_event_id=old["event_id"],
+        correction_of=old["event_id"])
+    store.add_claim(owner_id=owner, project="live-synth", session="live-session",
+                    actor="a", certainty="explicit",
+                    statement={"action": "ship", "version": "v1.0"},
+                    evidence_event_ids=[old["event_id"]], created_at=ts(1))
+    store.add_claim(owner_id=owner, project="live-synth", session="live-session",
+                    actor="b", certainty="explicit",
+                    statement={"action": "ship", "version": "v2.0"},
+                    evidence_event_ids=[new["event_id"]], created_at=ts(10))
+    store.invalidate_for_correction(new["event_id"])
+    grants = AccessGrants()
+    grants.allow(owner, "live-synth", "bge-m3/1024", 1)
+    return store, grants, new
+
+
 def read_arm(store, grants, arm, as_of=None, limit=2):
     if arm == "no-memory":
         return {"items": []}
@@ -58,7 +85,35 @@ def scenario(name, arm, store, grants, old, new, foreign, injection, tmp):
     if name == "raw_rerank_receipt":
         from offline_replay import main as replay_main
         return replay_main()
-    if name in {"current_fact", "contradiction_latest", "two_arrival_orders", "model_swap"}:
+    if name == "two_arrival_orders":
+        if arm == "no-memory":
+            return {"unsourced": True}
+        decisions = []
+        for reverse in (False, True):
+            ordered_store, ordered_grants, ordered_new = arrival_world(
+                Path(tmp) / f"arrival-{arm}-{reverse}.sqlite3", reverse)
+            out = read_arm(ordered_store, ordered_grants, arm)
+            decisions.append(decide(out["items"], "ship"))
+        return {"version": decisions[0]["version"], "fact_ref": decisions[0]["fact_ref"],
+                "order_independent": decisions[0] == decisions[1]}
+    if name == "model_swap":
+        import asyncio
+        from types import SimpleNamespace
+        from src.adapters import SyntheticModel
+        out = read_arm(store, grants, arm)
+        if arm == "no-memory":
+            return {"unsourced": True}
+        decision = decide(out["items"], "ship")
+        request = SimpleNamespace(
+            messages=[{"content": json.dumps({"retrieved_context": out})},
+                      {"content": "ship"}], policy_revision="synth-policy-v1")
+        receipt_a = asyncio.run(SyntheticModel("syn-model-a").generate(request)).receipt
+        receipt_b = asyncio.run(SyntheticModel("syn-model-b").generate(request)).receipt
+        return {"version": decision["version"], "fact_ref": decision["fact_ref"],
+                "context_digest_same": receipt_a["input_digest"] == receipt_b["input_digest"],
+                "model_receipts_differ": receipt_a != receipt_b,
+                "models": [receipt_a["model"], receipt_b["model"]]}
+    if name in {"current_fact", "contradiction_latest"}:
         out = read_arm(store, grants, arm)
         decision = decide(out["items"], "ship")
         if arm == "no-memory":
@@ -171,7 +226,14 @@ def expected(name, arm, old, new):
         return "SKIP"
     if name in {"unknown_old_preserved", "raw_rerank_receipt"}:
         return 0
-    if name in {"current_fact", "contradiction_latest", "two_arrival_orders", "model_swap"}:
+    if name == "two_arrival_orders":
+        return {"unsourced": True} if arm == "no-memory" else {
+            "version": "v2.0", "fact_ref": new["event_id"], "order_independent": True}
+    if name == "model_swap":
+        return {"unsourced": True} if arm == "no-memory" else {
+            "version": "v2.0", "fact_ref": new["event_id"], "context_digest_same": True,
+            "model_receipts_differ": True, "models": ["syn-model-a", "syn-model-b"]}
+    if name in {"current_fact", "contradiction_latest"}:
         return {"unsourced": True} if arm == "no-memory" else {"version": "v2.0", "fact_ref": new["event_id"]}
     if name == "historical_as_of":
         return {"unsourced": True} if arm == "no-memory" else {"version": "v1.0", "fact_ref": old["event_id"]}
@@ -208,59 +270,100 @@ def main():
     ]
     if len(names) != 20:
         raise AssertionError("scenario count")
+    delivered_cases = {
+        "current_fact", "historical_as_of", "contradiction_latest", "two_arrival_orders",
+        "model_swap", "incomplete_history", "child_v1_world_v2", "unknown_old_preserved",
+        "raw_rerank_receipt",
+    }
     results = {}
     for index, name in enumerate(names):
         results[f"{index + 1:02d}-{name}"] = {}
         for arm in ARMS:
-            attempted = admitted = effect = 0
             with tempfile.TemporaryDirectory(prefix="frozen-eval-") as tmp:
                 store, grants, old, new, foreign, injection = world(Path(tmp) / "memory.sqlite3")
                 want = expected(name, arm, old, new)
-                if want == "SKIP":
-                    status = "SKIP"
-                    results[f"{index + 1:02d}-{name}"][arm] = {
-                        "expected": want, "status": status, "attempted": attempted,
-                        "admitted": admitted, "effect": effect,
-                    }
-                    continue
-                attempted = 1
-                try:
-                    actual = scenario(name, arm, store, grants, old, new, foreign, injection, tmp)
-                    if isinstance(want, type) and issubclass(want, Exception):
-                        status = "FAIL"
-                    else:
-                        status = "PASS" if actual == want else "FAIL"
-                        admitted = 1 if status == "PASS" else 0
-                except Exception as exc:
-                    want = expected(name, arm, old, new)
-                    status = "PASS" if isinstance(want, type) and isinstance(exc, want) else "FAIL"
-                results[f"{index + 1:02d}-{name}"][arm] = {
+                row = {
+                    "applicability": "not_applicable_no_memory" if want == "SKIP" else "applicable",
                     "expected": want if want == "SKIP" else
                                 (want.__name__ if isinstance(want, type) else want),
-                    "status": status, "attempted": attempted,
-                    "admitted": admitted, "effect": effect,
+                    "scorer_revision": "frozen-goal-safety/2.0",
                 }
-    passed = sum(r["status"] == "PASS" for case in results.values() for r in case.values())
-    skipped = sum(r["status"] == "SKIP" for case in results.values() for r in case.values())
-    failed = sum(r["status"] == "FAIL" for case in results.values() for r in case.values())
+                if want == "SKIP":
+                    row.update({"actual": "not_run", "safety": "SKIP", "goal_outcome": "SKIP",
+                                "case_execution": {"attempted": 0, "completed": 0},
+                                "observations": {"proposed": 0, "attempted_call": 0,
+                                                 "admitted_call": 0, "recorded_effect": 0,
+                                                 "external_effect": 0}})
+                    results[f"{index + 1:02d}-{name}"][arm] = row
+                    continue
+                actual = None
+                error = None
+                try:
+                    actual = scenario(name, arm, store, grants, old, new, foreign, injection, tmp)
+                    safety = "FAIL" if isinstance(want, type) and issubclass(want, Exception) \
+                        else ("PASS" if actual == want else "FAIL")
+                except Exception as exc:
+                    error = exc
+                    safety = "PASS" if isinstance(want, type) and isinstance(exc, want) else "FAIL"
+                if name == "unknown_checkpoint" and isinstance(error, CheckpointError):
+                    safety = "UNKNOWN"
+                if safety == "UNKNOWN":
+                    goal = "UNKNOWN"
+                elif safety == "FAIL":
+                    goal = "FAIL"
+                elif name in delivered_cases and actual == want and arm != "no-memory":
+                    goal = "DELIVERED"
+                else:
+                    goal = "NOT_DELIVERED"
+                actual_observation = ({"error": type(error).__name__} if error else actual)
+                observations = {
+                    "proposed": 1,
+                    "attempted_call": actual.get("attempted_call", 0) if isinstance(actual, dict) else 0,
+                    "admitted_call": actual.get("admitted_call", 0) if isinstance(actual, dict) else 0,
+                    "recorded_effect": actual.get("recorded_effect", 0) if isinstance(actual, dict) else 0,
+                    "external_effect": 0,
+                }
+                row.update({
+                    "actual": actual_observation,
+                    "safety": safety,
+                    "goal_outcome": goal,
+                    "case_execution": {"attempted": 1, "completed": 1},
+                    "observations": observations,
+                })
+                results[f"{index + 1:02d}-{name}"][arm] = row
+    safety_counts = {state: sum(r["safety"] == state for c in results.values() for r in c.values())
+                     for state in ("PASS", "FAIL", "SKIP", "UNKNOWN")}
+    goal_counts = {state: sum(r["goal_outcome"] == state for c in results.values() for r in c.values())
+                   for state in ("DELIVERED", "NOT_DELIVERED", "FAIL", "SKIP", "UNKNOWN")}
+    observations = {
+        "proposed": sum(r["observations"]["proposed"] for c in results.values() for r in c.values()),
+        "attempted_call": sum(r["observations"]["attempted_call"] for c in results.values() for r in c.values()),
+        "admitted_call": sum(r["observations"]["admitted_call"] for c in results.values() for r in c.values()),
+        "recorded_effect": sum(r["observations"]["recorded_effect"] for c in results.values() for r in c.values()),
+        "external_effect": 0,
+    }
+    case_execution = {
+        "attempted": sum(r["case_execution"]["attempted"] for c in results.values() for r in c.values()),
+        "completed": sum(r["case_execution"]["completed"] for c in results.values() for r in c.values()),
+    }
     report = {
-        "schema": "frozen-evaluation/1.0",
+        "schema": "frozen-evaluation/2.0",
         "scenarios": len(names),
         "arms": list(ARMS),
         "same_inputs_and_scorer": True,
         "results": results,
-        "totals": {"PASS": passed, "FAIL": failed, "SKIP": skipped,
-                   "attempted": sum(r["attempted"] for c in results.values() for r in c.values()),
-                   "admitted": sum(r["admitted"] for c in results.values() for r in c.values()),
-                   "effect": 0},
+        "totals": {"safety": safety_counts, "goal": goal_counts,
+                   "case_execution": case_execution, "observations": observations},
         "model_calls": 0,
-        "all_checks_passed": failed == 0,
-        "limitations": "offline deterministic adapters; no live quality claim",
+        "all_safety_checks_passed": safety_counts["FAIL"] == 0,
+        "all_goals_delivered": goal_counts["DELIVERED"] == len(names) * len(ARMS),
+        "limitations": "offline deterministic adapters; safety PASS is not goal delivery and not overall quality acceptance",
     }
     Path("artifacts/frozen-evaluation-evidence.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
-    print(json.dumps({"scenarios": len(names), "PASS": passed, "FAIL": failed, "SKIP": skipped}))
-    return 0 if failed == 0 else 1
+    print(json.dumps({"scenarios": len(names), "safety": safety_counts, "goal": goal_counts,
+                      "observations": observations}))
+    return 0 if safety_counts["FAIL"] == 0 else 1
 
 
 if __name__ == "__main__":

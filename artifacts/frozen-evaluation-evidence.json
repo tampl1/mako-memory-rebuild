@@ -1,553 +1,1434 @@
 {
-  "all_checks_passed": true,
+  "all_goals_delivered": false,
+  "all_safety_checks_passed": true,
   "arms": [
     "no-memory",
     "raw",
     "memory-module"
   ],
-  "limitations": "offline deterministic adapters; no live quality claim",
+  "limitations": "offline deterministic adapters; safety PASS is not goal delivery and not overall quality acceptance",
   "model_calls": 0,
   "results": {
     "01-current_fact": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
           "version": "v2.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
           "version": "v2.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "02-historical_as_of": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
           "version": "v1.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
           "version": "v1.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "03-contradiction_latest": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
           "version": "v2.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
           "version": "v2.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "04-two_arrival_orders": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
-        "expected": {
+        "actual": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "order_independent": true,
           "version": "v2.0"
         },
-        "status": "PASS"
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "order_independent": true,
+          "version": "v2.0"
+        },
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
-        "expected": {
+        "actual": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "order_independent": true,
           "version": "v2.0"
         },
-        "status": "PASS"
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
+        "expected": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "order_independent": true,
+          "version": "v2.0"
+        },
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "05-model_swap": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
-        "expected": {
+        "actual": {
+          "context_digest_same": true,
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "model_receipts_differ": true,
+          "models": [
+            "syn-model-a",
+            "syn-model-b"
+          ],
           "version": "v2.0"
         },
-        "status": "PASS"
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
+        "expected": {
+          "context_digest_same": true,
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "model_receipts_differ": true,
+          "models": [
+            "syn-model-a",
+            "syn-model-b"
+          ],
+          "version": "v2.0"
+        },
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
-        "expected": {
+        "actual": {
+          "context_digest_same": true,
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "model_receipts_differ": true,
+          "models": [
+            "syn-model-a",
+            "syn-model-b"
+          ],
           "version": "v2.0"
         },
-        "status": "PASS"
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
+        "expected": {
+          "context_digest_same": true,
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "model_receipts_differ": true,
+          "models": [
+            "syn-model-a",
+            "syn-model-b"
+          ],
+          "version": "v2.0"
+        },
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "06-incomplete_history": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "unsourced": true
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "unsourced": true
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "version": "v1.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
           "version": "v1.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "07-child_v1_world_v2": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "verified": true,
+          "version": "v1.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
           "verified": true,
           "version": "v1.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
+          "verified": true,
+          "version": "v1.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_1a4c9bd2dba4afaa7d839cc4",
           "verified": true,
           "version": "v1.0"
         },
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "08-missing_source": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "09-revoked_grant": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "AuthorizationError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "AuthorizationError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "AuthorizationError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "AuthorizationError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "10-foreign_owner": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "11-wrong_tenant_project": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "12-embedding_generation": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EmbeddingGenerationMismatch"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EmbeddingGenerationMismatch",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EmbeddingGenerationMismatch"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EmbeddingGenerationMismatch",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "13-injection": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "admitted_call": 0,
           "attempted_call": 1,
           "recorded_effect": 0
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "admitted_call": 0,
           "attempted_call": 1,
           "recorded_effect": 0
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "recorded_effect": 0
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "admitted_call": 0,
           "attempted_call": 1,
           "recorded_effect": 0
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 1,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "14-unavailable_retrieval": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "RetrievalUnavailable"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "RetrievalUnavailable",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "RetrievalUnavailable"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "RetrievalUnavailable",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "15-tampered_evidence": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "16-lost_link": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 0,
-        "effect": 0,
+        "actual": "not_run",
+        "applicability": "not_applicable_no_memory",
+        "case_execution": {
+          "attempted": 0,
+          "completed": 0
+        },
         "expected": "SKIP",
-        "status": "SKIP"
+        "goal_outcome": "SKIP",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 0,
+          "recorded_effect": 0
+        },
+        "safety": "SKIP",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "fact_ref": "ev_98c9a357b2b150c0e0335919",
+          "version": "v2.0"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": {
           "fact_ref": "ev_98c9a357b2b150c0e0335919",
           "version": "v2.0"
         },
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "17-correct_answer_no_source": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "EvidenceError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "EvidenceError",
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "18-unknown_checkpoint": {
       "memory-module": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "CheckpointError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "CheckpointError",
-        "status": "PASS"
+        "goal_outcome": "UNKNOWN",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "UNKNOWN",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "CheckpointError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "CheckpointError",
-        "status": "PASS"
+        "goal_outcome": "UNKNOWN",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "UNKNOWN",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 0,
-        "attempted": 1,
-        "effect": 0,
+        "actual": {
+          "error": "CheckpointError"
+        },
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": "CheckpointError",
-        "status": "PASS"
+        "goal_outcome": "UNKNOWN",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "UNKNOWN",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "19-unknown_old_preserved": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     },
     "20-raw_rerank_receipt": {
       "memory-module": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "no-memory": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "NOT_DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       },
       "raw": {
-        "admitted": 1,
-        "attempted": 1,
-        "effect": 0,
+        "actual": 0,
+        "applicability": "applicable",
+        "case_execution": {
+          "attempted": 1,
+          "completed": 1
+        },
         "expected": 0,
-        "status": "PASS"
+        "goal_outcome": "DELIVERED",
+        "observations": {
+          "admitted_call": 0,
+          "attempted_call": 0,
+          "external_effect": 0,
+          "proposed": 1,
+          "recorded_effect": 0
+        },
+        "safety": "PASS",
+        "scorer_revision": "frozen-goal-safety/2.0"
       }
     }
   },
   "same_inputs_and_scorer": true,
   "scenarios": 20,
-  "schema": "frozen-evaluation/1.0",
+  "schema": "frozen-evaluation/2.0",
   "totals": {
-    "FAIL": 0,
-    "PASS": 52,
-    "SKIP": 8,
-    "admitted": 30,
-    "attempted": 52,
-    "effect": 0
+    "case_execution": {
+      "attempted": 52,
+      "completed": 52
+    },
+    "goal": {
+      "DELIVERED": 18,
+      "FAIL": 0,
+      "NOT_DELIVERED": 31,
+      "SKIP": 8,
+      "UNKNOWN": 3
+    },
+    "observations": {
+      "admitted_call": 0,
+      "attempted_call": 3,
+      "external_effect": 0,
+      "proposed": 52,
+      "recorded_effect": 0
+    },
+    "safety": {
+      "FAIL": 0,
+      "PASS": 49,
+      "SKIP": 8,
+      "UNKNOWN": 3
+    }
   }
 }
