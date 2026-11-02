@@ -1,0 +1,1092 @@
+{
+  "base_sha": "6327be6e0879e4d4f8446e8384e2fea25704991d",
+  "calls": {
+    "embedding": 3,
+    "limit": 12,
+    "rerank": 0,
+    "router": 1,
+    "total": 4
+  },
+  "checks": {
+    "call_ceiling": true,
+    "consumer_results_acks": true,
+    "crash_replay_no_new_effects": true,
+    "frozen_child_v2": true,
+    "lease_active": true,
+    "live_recall_v1": true,
+    "parent_v1_intact_after_v2": true,
+    "replay_no_new_recall_model_tool": true,
+    "router_result_and_ledger": true,
+    "source_version_as_of": true
+  },
+  "core": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "modules": {
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_errors.py": "201f01f14188efdc837813851be4a566276a0c425e0819db338627c35bb23479",
+      "core_v1_output_budget.py": "6bb3dd15ccfb534bd60df95928196f51346a17d2b16ca54f0c3298ae5ed8b303",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "cfb54a754ee455b92f924e9e399c5da565659338bba930a0f0698492e1a18167"
+    },
+    "path": "scripts/backend/mnemosyne-core"
+  },
+  "derived_envelope": {
+    "adapter_contract": {
+      "invocation": {
+        "endpoint_ref": "m5m:ollama",
+        "model": "qwen2.5:1.5b-instruct",
+        "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+        "transport": "lan-http"
+      },
+      "readback_usage_ledger": {
+        "cost_state": "known",
+        "cost_usd": 0.0,
+        "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+        "tokens_in": 32,
+        "tokens_out": 3
+      },
+      "request": {
+        "account_type": "local",
+        "admission": {
+          "max_cost_usd": 0.0,
+          "require_price_known": true
+        },
+        "card": {
+          "binding_generation": 1,
+          "capabilities_assumed": [],
+          "capabilities_declared": [
+            "chat"
+          ],
+          "context_window": 32768,
+          "endpoint": "http://10.1.0.80:11434/v1",
+          "freshness_s": 0,
+          "id": "m5m-lan:qwen2.5:1.5b-instruct",
+          "is_local": true,
+          "last_seen_at": "2026-11-02T10:34:45.266Z",
+          "model": "qwen2.5:1.5b-instruct",
+          "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+          "node": "m5m",
+          "policy_allowed": true,
+          "region": null,
+          "smoke_current": false,
+          "smoke_model_digest": null,
+          "smoke_verified": [],
+          "stale": false
+        },
+        "channel": "local",
+        "currency": "USD",
+        "deadline_at": "2026-11-02T14:36:34.279Z",
+        "id": "m5m-lan:qwen2.5:1.5b-instruct",
+        "messages": [
+          {
+            "content": "Say OK.",
+            "role": "user"
+          }
+        ],
+        "mode": "online",
+        "model": "qwen2.5:1.5b-instruct",
+        "operation_key": "fixture-run:model:0",
+        "principal": {
+          "connection_id": "fixture",
+          "generation": 1,
+          "identity_id": "mini-max-m5m",
+          "key_thumbprint": "fixture-thumb",
+          "owner_id": "owner-fixture",
+          "tenant_id": "tenant-fixture"
+        },
+        "provider": "ollama",
+        "region": null,
+        "run_id": "fixture-run",
+        "tools": [],
+        "unit": "1M_tokens",
+        "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+      },
+      "selected_offer": {
+        "card_id": "m5m-lan:qwen2.5:1.5b-instruct",
+        "generation": 1,
+        "model": "qwen2.5:1.5b-instruct",
+        "provider": "ollama"
+      }
+    },
+    "base_sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "captured_at": "2026-11-02T14:26:34.279Z",
+    "cards": [
+      {
+        "binding_generation": 1,
+        "capabilities_assumed": [],
+        "capabilities_declared": [
+          "chat"
+        ],
+        "context_window": 32768,
+        "endpoint": "http://10.1.0.80:11434/v1",
+        "freshness_s": 0,
+        "id": "m5m-lan:qwen2.5:1.5b-instruct",
+        "is_local": true,
+        "last_seen_at": "2026-11-02T10:34:45.266Z",
+        "model": "qwen2.5:1.5b-instruct",
+        "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+        "node": "m5m",
+        "policy_allowed": true,
+        "region": null,
+        "smoke_current": false,
+        "smoke_model_digest": null,
+        "smoke_verified": [],
+        "stale": false
+      }
+    ],
+    "controls": {
+      "exhausted_budget": {
+        "expect": "refusal",
+        "request": {
+          "account_type": "local",
+          "admission": {
+            "max_cost_usd": -1.0,
+            "require_price_known": true
+          },
+          "card": {
+            "binding_generation": 1,
+            "capabilities_assumed": [],
+            "capabilities_declared": [
+              "chat"
+            ],
+            "context_window": 32768,
+            "endpoint": "http://10.1.0.80:11434/v1",
+            "freshness_s": 0,
+            "id": "m5m-lan:qwen2.5:1.5b-instruct",
+            "is_local": true,
+            "last_seen_at": "2026-11-02T10:34:45.266Z",
+            "model": "qwen2.5:1.5b-instruct",
+            "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+            "node": "m5m",
+            "policy_allowed": true,
+            "region": null,
+            "smoke_current": false,
+            "smoke_model_digest": null,
+            "smoke_verified": [],
+            "stale": false
+          },
+          "channel": "local",
+          "currency": "USD",
+          "deadline_at": "2026-11-02T10:36:45.266234Z",
+          "id": "m5m-lan:qwen2.5:1.5b-instruct",
+          "messages": [
+            {
+              "content": "Say OK.",
+              "role": "user"
+            }
+          ],
+          "mode": "online",
+          "model": "qwen2.5:1.5b-instruct",
+          "operation_key": "fixture-run:model:0",
+          "principal": {
+            "connection_id": "fixture",
+            "generation": 1,
+            "identity_id": "mini-max-m5m",
+            "key_thumbprint": "fixture-thumb",
+            "owner_id": "owner-fixture",
+            "tenant_id": "tenant-fixture"
+          },
+          "provider": "ollama",
+          "region": null,
+          "run_id": "fixture-run",
+          "tools": [],
+          "unit": "1M_tokens",
+          "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+        }
+      },
+      "revoked_generation": {
+        "call_generation": 2,
+        "expect": "refusal",
+        "request": {
+          "account_type": "local",
+          "admission": {
+            "max_cost_usd": 0.0,
+            "require_price_known": true
+          },
+          "card": {
+            "binding_generation": 1,
+            "capabilities_assumed": [],
+            "capabilities_declared": [
+              "chat"
+            ],
+            "context_window": 32768,
+            "endpoint": "http://10.1.0.80:11434/v1",
+            "freshness_s": 0,
+            "id": "m5m-lan:qwen2.5:1.5b-instruct",
+            "is_local": true,
+            "last_seen_at": "2026-11-02T10:34:45.266Z",
+            "model": "qwen2.5:1.5b-instruct",
+            "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+            "node": "m5m",
+            "policy_allowed": true,
+            "region": null,
+            "smoke_current": false,
+            "smoke_model_digest": null,
+            "smoke_verified": [],
+            "stale": false
+          },
+          "channel": "local",
+          "currency": "USD",
+          "deadline_at": "2026-11-02T10:36:45.266234Z",
+          "id": "m5m-lan:qwen2.5:1.5b-instruct",
+          "messages": [
+            {
+              "content": "Say OK.",
+              "role": "user"
+            }
+          ],
+          "mode": "online",
+          "model": "qwen2.5:1.5b-instruct",
+          "operation_key": "fixture-run:model:0",
+          "principal": {
+            "connection_id": "fixture",
+            "generation": 1,
+            "identity_id": "mini-max-m5m",
+            "key_thumbprint": "fixture-thumb",
+            "owner_id": "owner-fixture",
+            "tenant_id": "tenant-fixture"
+          },
+          "provider": "ollama",
+          "region": null,
+          "run_id": "fixture-run",
+          "tools": [],
+          "unit": "1M_tokens",
+          "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+        }
+      },
+      "stale_offer": {
+        "call_generation": 2,
+        "expect": "refusal",
+        "request": {
+          "account_type": "local",
+          "admission": {
+            "max_cost_usd": 0.0,
+            "require_price_known": true
+          },
+          "card": {
+            "binding_generation": 1,
+            "capabilities_assumed": [],
+            "capabilities_declared": [
+              "chat"
+            ],
+            "context_window": 32768,
+            "endpoint": "http://10.1.0.80:11434/v1",
+            "freshness_s": 0,
+            "id": "m5m-lan:qwen2.5:1.5b-instruct",
+            "is_local": true,
+            "last_seen_at": "2026-11-02T10:34:45.266Z",
+            "model": "qwen2.5:1.5b-instruct",
+            "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+            "node": "m5m",
+            "policy_allowed": true,
+            "region": null,
+            "smoke_current": false,
+            "smoke_model_digest": null,
+            "smoke_verified": [],
+            "stale": false
+          },
+          "channel": "local",
+          "currency": "USD",
+          "deadline_at": "2026-11-02T10:36:45.266234Z",
+          "id": "m5m-lan:qwen2.5:1.5b-instruct",
+          "messages": [
+            {
+              "content": "Say OK.",
+              "role": "user"
+            }
+          ],
+          "mode": "online",
+          "model": "qwen2.5:1.5b-instruct",
+          "operation_key": "fixture-run:model:0",
+          "principal": {
+            "connection_id": "fixture",
+            "generation": 1,
+            "identity_id": "mini-max-m5m",
+            "key_thumbprint": "fixture-thumb",
+            "owner_id": "owner-fixture",
+            "tenant_id": "tenant-fixture"
+          },
+          "provider": "ollama",
+          "region": null,
+          "run_id": "fixture-run",
+          "tools": [],
+          "unit": "1M_tokens",
+          "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+        }
+      },
+      "tool_incompatibility": {
+        "expect": "refusal",
+        "request": {
+          "account_type": "local",
+          "admission": {
+            "max_cost_usd": 0.0,
+            "require_price_known": true,
+            "require_tools": true
+          },
+          "card": {
+            "binding_generation": 1,
+            "capabilities_assumed": [],
+            "capabilities_declared": [
+              "chat"
+            ],
+            "context_window": 32768,
+            "endpoint": "http://10.1.0.80:11434/v1",
+            "freshness_s": 0,
+            "id": "m5m-lan:qwen2.5:1.5b-instruct",
+            "is_local": true,
+            "last_seen_at": "2026-11-02T10:34:45.266Z",
+            "model": "qwen2.5:1.5b-instruct",
+            "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+            "node": "m5m",
+            "policy_allowed": true,
+            "region": null,
+            "smoke_current": false,
+            "smoke_model_digest": null,
+            "smoke_verified": [],
+            "stale": false
+          },
+          "channel": "local",
+          "currency": "USD",
+          "deadline_at": "2026-11-02T10:36:45.266234Z",
+          "id": "m5m-lan:qwen2.5:1.5b-instruct",
+          "messages": [
+            {
+              "content": "Say OK.",
+              "role": "user"
+            }
+          ],
+          "mode": "online",
+          "model": "qwen2.5:1.5b-instruct",
+          "operation_key": "fixture-run:model:0",
+          "principal": {
+            "connection_id": "fixture",
+            "generation": 1,
+            "identity_id": "mini-max-m5m",
+            "key_thumbprint": "fixture-thumb",
+            "owner_id": "owner-fixture",
+            "tenant_id": "tenant-fixture"
+          },
+          "provider": "ollama",
+          "region": null,
+          "run_id": "fixture-run",
+          "tools": [],
+          "unit": "1M_tokens",
+          "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+        }
+      }
+    },
+    "derived_from": {
+      "clock": "trusted-clock",
+      "commit": "bf1467154c8783b2bd3dd6974f0ca8d1e94996a8",
+      "derived_at": "2026-11-02T14:26:34.279Z",
+      "path": "/Users/Andreyled/mako-local/kimi-code-m5m/mako-memory-rebuild/controls/g4-derived-consumer-20261102/minimax-decision-input.json",
+      "reason": "G4 live window; fresh local-lan observation",
+      "repo": "tampl1/Attached-Assets",
+      "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+    },
+    "envelope_sha256": "4a86b74122c17b532514e350e2ad08a2609a2d3b13bd5cc9c6cc846afab4c13e",
+    "offer": {
+      "budget_usd": 0.0,
+      "capabilities": [
+        "chat"
+      ],
+      "card_id": "m5m-lan:qwen2.5:1.5b-instruct",
+      "generation": 1,
+      "source_price_state": "known"
+    },
+    "producer": {
+      "branch": "local",
+      "canonicalization_spec_version": "1.0",
+      "repo": "mini-max-m5m",
+      "sha": "reference"
+    },
+    "route": {
+      "account_type": "local",
+      "channel": "local",
+      "currency": "USD",
+      "mode": "online",
+      "model": "qwen2.5:1.5b-instruct",
+      "provider": "ollama",
+      "region": null,
+      "unit": "1M_tokens",
+      "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+    },
+    "schema": "router-producer-fixture/1.1",
+    "view": {
+      "ollama|local|qwen2.5:1.5b-instruct|65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b||online|USD|1M_tokens|local": {
+        "freshness_until": "2026-11-02T15:26:34.279Z",
+        "observed_at": "2026-11-02T14:26:34.279Z",
+        "price_in": 0.0,
+        "price_out": 0.0,
+        "price_status": "known",
+        "source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+        "valid_until": null
+      }
+    }
+  },
+  "goal": {
+    "checks": [
+      {
+        "id": "live_recall_v1",
+        "status": "PASS"
+      },
+      {
+        "id": "source_version_as_of",
+        "status": "PASS"
+      },
+      {
+        "id": "parent_v1_intact_after_v2",
+        "status": "PASS"
+      },
+      {
+        "id": "frozen_child_v2",
+        "status": "PASS"
+      },
+      {
+        "id": "consumer_results_acks",
+        "status": "PASS"
+      },
+      {
+        "id": "replay_no_new_recall_model_tool",
+        "status": "PASS"
+      },
+      {
+        "id": "crash_replay_no_new_effects",
+        "status": "PASS"
+      },
+      {
+        "id": "router_result_and_ledger",
+        "status": "PASS"
+      },
+      {
+        "id": "call_ceiling",
+        "status": "PASS"
+      },
+      {
+        "id": "lease_active",
+        "status": "PASS"
+      }
+    ]
+  },
+  "lease": {
+    "activated_at": "2026-11-02T14:26:34.278756+00:00",
+    "concurrency": 1,
+    "expires_at": "2026-11-02T14:34:47.771000+00:00",
+    "lease_id": "g4-m1m-20261102-once-01",
+    "max_calls": 12,
+    "operator": "kimi-code-m5m",
+    "preflight": {
+      "models": [
+        "bge-m3:latest",
+        "qwen3.5:9b"
+      ],
+      "other_workloads_count": 3,
+      "other_workloads_present": true
+    },
+    "released_at": "2026-11-02T14:26:38.689248+00:00",
+    "resource": "m1m",
+    "status": "released"
+  },
+  "limitations": "isolated runner, synthetic data; no production host or independent reviewer",
+  "model_budget": {
+    "current": 4,
+    "limit": 59,
+    "previously_spent": 47,
+    "total": 51
+  },
+  "router": {
+    "cost_state": "known",
+    "dispatch_state": "done",
+    "dispatches": [
+      {
+        "content": "OK",
+        "elapsed_ms": 2448,
+        "model": "qwen3.5:9b",
+        "operation_key": "live-derived-router:model:0",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 191,
+          "prompt_tokens": 14,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 205
+        }
+      }
+    ],
+    "effect_unknown": false,
+    "ledger": {
+      "attempts": [
+        {
+          "actual_cost_usd": 0.0,
+          "attempt_id": "live-derived-router:model:0:attempt:1",
+          "child_operation_ids": [],
+          "cost_state": "known",
+          "elapsed_ms": 2448,
+          "estimated_cost_usd": 0.0,
+          "model": "ollama:qwen3.5:9b",
+          "operation_id": "live-derived-router:model:0",
+          "outcome": "ok",
+          "parent_operation_id": null,
+          "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена)",
+          "price_status": "known",
+          "price_usd_per_1m": 0.0,
+          "provider": "ollama",
+          "reserved_usd": 0.0,
+          "run_id": "live-derived-router",
+          "tokens_in": 14,
+          "tokens_out": 191,
+          "unknown_reason": ""
+        }
+      ],
+      "reservations": []
+    },
+    "ledger_records": 1,
+    "notes": [],
+    "operation_key": "live-derived-router:model:0",
+    "physical_calls": 1,
+    "price_known": {
+      "price_out": 0.0,
+      "source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены"
+    },
+    "price_unknown": [],
+    "price_usd": 0.0,
+    "reason": "",
+    "receipt": {
+      "allowed_alternatives": [
+        "m1m-lan:qwen3.5:9b"
+      ],
+      "attempts": 1,
+      "cost_state": "known",
+      "decision": {
+        "calls": 0,
+        "canonicalization_state": "known",
+        "chosen": {
+          "admitted": true,
+          "calls": 0,
+          "candidate_id": "m1m-lan:qwen3.5:9b",
+          "canonicalization_state": "known",
+          "conflict_sides": [],
+          "cost_state": "known",
+          "excluded_count": 0,
+          "key_fallback_policy": "applicability-norm/1.0",
+          "key_schema": "applicability-key/1",
+          "live_view_empty_reason": "",
+          "live_view_status": "",
+          "matched_by": "exact",
+          "model": "qwen3.5:9b",
+          "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+          "price_status": "known",
+          "price_usd": 0.0,
+          "provider": "ollama",
+          "reason": "",
+          "snapshot_age_s": 0.001,
+          "snapshot_digest": "sha256:f73317820cd51d620f6c220aee84ce422b0165ed879c094605ca967f6f680fa4",
+          "snapshot_schema": "catalog-snapshot/1.0",
+          "snapshot_sha256": "527f5e28f7700930cb8d074c6b4d13b36a0a5ab1d7a5364d84e99290d81c20fc",
+          "stage": "ranking",
+          "update_attempts": 0,
+          "update_failed": false,
+          "view_kind": "live"
+        },
+        "excluded_count": 0,
+        "key_schema": "applicability-key/1",
+        "live_view_empty_reason": "",
+        "live_view_status": "",
+        "rejected": [],
+        "snapshot_age_s": 0.001,
+        "snapshot_digest": "sha256:f73317820cd51d620f6c220aee84ce422b0165ed879c094605ca967f6f680fa4",
+        "snapshot_schema": "catalog-snapshot/1.0",
+        "snapshot_sha256": "527f5e28f7700930cb8d074c6b4d13b36a0a5ab1d7a5364d84e99290d81c20fc",
+        "update_attempts": 0,
+        "update_failed": false,
+        "view_kind": "live"
+      },
+      "dispatch_state": "done",
+      "dispatches": 1,
+      "effect_unknown": false,
+      "error_after_dispatch": "",
+      "fallback_allowed": false,
+      "forbidden_dispatches": 0,
+      "notes": [],
+      "price_known": {
+        "price_out": 0.0,
+        "source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены"
+      },
+      "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+      "price_unknown": [],
+      "price_usd": 0.0,
+      "reason": "",
+      "reconcile_required": false,
+      "refused_before_dispatch": false,
+      "reservations": 0,
+      "retries": 0,
+      "source_revision": {
+        "canonicalization_state": "known",
+        "canonicalization_version": "1.0",
+        "captured_at": "2026-11-02T14:26:36.237907+00:00",
+        "catalog_digest": "sha256:4e26d0a9ce8c0968b0965c18e6ab028ec6dff949680a4bac603b1476c8d3ea07",
+        "file_sha256": "527f5e28f7700930cb8d074c6b4d13b36a0a5ab1d7a5364d84e99290d81c20fc",
+        "key_schema": "applicability-key/1",
+        "schema": "catalog-snapshot/1.0",
+        "snapshot_digest": "sha256:f73317820cd51d620f6c220aee84ce422b0165ed879c094605ca967f6f680fa4"
+      }
+    },
+    "reconcile_required": false,
+    "refused_before_dispatch": false,
+    "selected_card_lineage": {
+      "admitted": true,
+      "calls": 0,
+      "candidate_id": "m1m-lan:qwen3.5:9b",
+      "canonicalization_state": "known",
+      "conflict_sides": [],
+      "cost_state": "known",
+      "excluded_count": 0,
+      "key_fallback_policy": "applicability-norm/1.0",
+      "key_schema": "applicability-key/1",
+      "live_view_empty_reason": "",
+      "live_view_status": "",
+      "matched_by": "exact",
+      "model": "qwen3.5:9b",
+      "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+      "price_status": "known",
+      "price_usd": 0.0,
+      "provider": "ollama",
+      "reason": "",
+      "snapshot_age_s": 0.001,
+      "snapshot_digest": "sha256:f73317820cd51d620f6c220aee84ce422b0165ed879c094605ca967f6f680fa4",
+      "snapshot_schema": "catalog-snapshot/1.0",
+      "snapshot_sha256": "527f5e28f7700930cb8d074c6b4d13b36a0a5ab1d7a5364d84e99290d81c20fc",
+      "stage": "ranking",
+      "update_attempts": 0,
+      "update_failed": false,
+      "view_kind": "live"
+    },
+    "selected_offer": "m1m-lan:qwen3.5:9b"
+  },
+  "router_profile": {
+    "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "model": "qwen3.5:9b",
+    "snapshot": {
+      "captured_at": "2026-11-02T14:26:36.237907+00:00",
+      "cards": [
+        {
+          "binding_generation": 1,
+          "capabilities_assumed": [],
+          "capabilities_declared": [
+            "chat"
+          ],
+          "context_window": 32768,
+          "endpoint": "http://10.1.0.80:11434",
+          "freshness_s": 0,
+          "id": "m1m-lan:qwen3.5:9b",
+          "is_local": true,
+          "last_seen_at": "2026-11-02T14:26:36.237907+00:00",
+          "model": "qwen3.5:9b",
+          "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+          "node": "m1m",
+          "policy_allowed": true,
+          "region": null,
+          "smoke_current": false,
+          "smoke_model_digest": null,
+          "smoke_verified": [],
+          "stale": false
+        }
+      ],
+      "catalog_digest": "sha256:4e26d0a9ce8c0968b0965c18e6ab028ec6dff949680a4bac603b1476c8d3ea07",
+      "counts": {
+        "cards": 1,
+        "digest_changed": 0,
+        "smoke_current": 0,
+        "unknown_digest": 0
+      },
+      "freshness_policy": {
+        "fresh_max_s": 600,
+        "frozen": true,
+        "stale_ttl_s": 1800
+      },
+      "rules": {
+        "grants_rights": false,
+        "role": "receipt-input-not-ssot"
+      },
+      "schema": "catalog-snapshot/1.0",
+      "snapshot_digest": "sha256:f73317820cd51d620f6c220aee84ce422b0165ed879c094605ca967f6f680fa4",
+      "sources": {
+        "canonicalization_spec_version": "1.0",
+        "producer": {
+          "clock": "trusted-clock",
+          "commit": "bf1467154c8783b2bd3dd6974f0ca8d1e94996a8",
+          "derived_at": "2026-11-02T14:26:34.279Z",
+          "path": "/Users/Andreyled/mako-local/kimi-code-m5m/mako-memory-rebuild/controls/g4-derived-consumer-20261102/minimax-decision-input.json",
+          "reason": "G4 live window; fresh local-lan observation",
+          "repo": "tampl1/Attached-Assets",
+          "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+        }
+      },
+      "view": {
+        "ollama|local|qwen3.5:9b|6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7||online|USD|1M_tokens|local": {
+          "freshness_until": "2026-11-02T15:26:34.279Z",
+          "observed_at": "2026-11-02T14:26:34.279Z",
+          "price_in": 0.0,
+          "price_out": 0.0,
+          "price_status": "known",
+          "source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+          "valid_until": null
+        }
+      },
+      "view_digest": "sha256:f6d404b93a8e969cfbc3979084cefdc7e5076ece893548630d2b27abd279ad24"
+    }
+  },
+  "runs": {
+    "R1": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "LIVE-DERIVED-R1",
+      "memory_mode": "live",
+      "memory_recalls": 1,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "live-derived-v1",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_daded1a39332c0e1627766c8",
+          "fact_ref": "ev_daded1a39332c0e1627766c8",
+          "version": "v1.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 1,
+            "attempted": 1,
+            "cancelled": 0,
+            "finished": 1,
+            "proposed": 1
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 2,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_daded1a39332c0e1627766c8"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_daded1a39332c0e1627766c8"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "a927afc71657bce9ac3a096128ed232c3dc00bf9a5022e4b1ba6f1ca732b4fd2",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "a4c3448454cfbadd001a6e16193a7456b10dafc7ed523bc4dd734d608586abf2",
+          "executor_seq": 1,
+          "fact_ref": "ev_daded1a39332c0e1627766c8",
+          "operation": "ship_release",
+          "version": "v1.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "1f0fd9de-9393-416b-9a09-c9d229b8c5eb",
+      "state": "completed",
+      "tool_executions_total": 1
+    },
+    "R2": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "LIVE-DERIVED-R2",
+      "memory_mode": "live",
+      "memory_recalls": 2,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "live-derived-v2",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_565012f50f56deffb724873f",
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "version": "v2.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 2,
+            "attempted": 2,
+            "cancelled": 0,
+            "finished": 2,
+            "proposed": 2
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 3,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "a22648577d13fa4514b9889a22782d21f41ab4aceea53643c46b2a79bd8aa3ad",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "f95709f2fddb0cd1b4349b92d255e3d98163592e4b27126084a7e31a91685634",
+          "executor_seq": 2,
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "operation": "ship_release",
+          "version": "v2.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "f98936bb-1bb9-403a-b7af-14ab2bc8fe35",
+      "state": "completed",
+      "tool_executions_total": 2
+    },
+    "R2_replay": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "LIVE-DERIVED-R2-replay",
+      "memory_mode": "frozen",
+      "memory_recalls": 0,
+      "model_calls": 0,
+      "model_slug": "syn-model-a",
+      "request_key": "live-derived-v2",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_565012f50f56deffb724873f",
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "version": "v2.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 2,
+            "attempted": 2,
+            "cancelled": 0,
+            "finished": 2,
+            "proposed": 2
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 3,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "a22648577d13fa4514b9889a22782d21f41ab4aceea53643c46b2a79bd8aa3ad",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "f95709f2fddb0cd1b4349b92d255e3d98163592e4b27126084a7e31a91685634",
+          "executor_seq": 2,
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "operation": "ship_release",
+          "version": "v2.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "f98936bb-1bb9-403a-b7af-14ab2bc8fe35",
+      "state": "completed",
+      "tool_executions_total": 2
+    },
+    "R3_crash": {
+      "crashed_after_tool": true,
+      "label": "LIVE-DERIVED-R3-crash",
+      "memory_mode": "live",
+      "memory_recalls": 3,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "live-derived-crash",
+      "tool_executions_total": 3
+    },
+    "R3_replay": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "LIVE-DERIVED-R3-replay",
+      "memory_mode": "frozen",
+      "memory_recalls": 0,
+      "model_calls": 0,
+      "model_slug": "syn-model-a",
+      "request_key": "live-derived-crash",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_565012f50f56deffb724873f",
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "version": "v2.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 3,
+            "attempted": 3,
+            "cancelled": 0,
+            "finished": 3,
+            "proposed": 3
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 3,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_565012f50f56deffb724873f"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "c080aeac79da8a23afe4a0ef030516e9ce5068edb5f96fbc72e1736a233b2ff3",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "f95709f2fddb0cd1b4349b92d255e3d98163592e4b27126084a7e31a91685634",
+          "executor_seq": 3,
+          "fact_ref": "ev_565012f50f56deffb724873f",
+          "operation": "ship_release",
+          "version": "v2.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 6,
+      "run_id": "7d7deaab-039a-4a05-b9ce-67c8058bc256",
+      "state": "completed",
+      "tool_executions_total": 3
+    }
+  },
+  "safety": {
+    "checks": [
+      {
+        "id": "no_paid_backfill_training_or_worker_restart",
+        "status": "PASS"
+      },
+      {
+        "id": "local_lan_only_and_synthetic_data",
+        "status": "PASS"
+      },
+      {
+        "id": "replay_zero_new_model_recall_tool_effects",
+        "status": "PASS"
+      }
+    ]
+  },
+  "schema": "memory-consumer-g4-live/1.0",
+  "verdict": {
+    "FAIL": 0,
+    "PASS": 13,
+    "SKIP": 0,
+    "UNKNOWN": 0,
+    "overall": "PASS"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "memory-consumer-g4-live-manifest/1.0",
+  "base_sha": "6327be6e0879e4d4f8446e8384e2fea25704991d",
+  "entry_point": "live_derived_runner.py",
+  "command": "MAKO_G4_LIVE_EVIDENCE=/path/to/new-live-evidence.json MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 live_derived_runner.py",
+  "required_env": ["MAKO_G4_LIVE_EVIDENCE", "MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "source_zip_sha256": "6e6bd0c4b6b29de7552e728def01cb9237b6ae39cd7d2716e95c222f6f87c1db",
+    "source_closure_manifest_files": 139,
+    "source_closure_mismatches": 0
+  },
+  "own_modules": {
+    "live_derived_runner.py": "39ab2208ea01534b44bea98a5141f556b92417cdb4fe68f1b5c7e079eb36fde7",
+    "src/lan_host_adapter.py": "654394c82a27368205eb71dc3d9d0e194ce316f2cf032bbfc08be518d9058cef"
+  },
+  "runtime_models": {
+    "embedding": {
+      "name": "bge-m3:latest",
+      "digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab"
+    },
+    "router": {
+      "name": "qwen3.5:9b",
+      "digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+      "operation_key": "live-derived-router:model:0",
+      "offer": "m1m-lan:qwen3.5:9b"
+    }
+  },
+  "lease": {
+    "lease_id": "g4-m1m-20261102-once-01",
+    "operator": "kimi-code-m5m",
+    "resource": "m1m",
+    "activated_at": "2026-11-02T14:26:34.278756+00:00",
+    "expires_at": "2026-11-02T14:34:47.771000+00:00",
+    "released_at": "2026-11-02T14:26:38.689248+00:00",
+    "status": "released",
+    "concurrency": 1
+  },
+  "calls": {
+    "embedding": 3,
+    "rerank": 0,
+    "router": 1,
+    "total": 4,
+    "limit": 12,
+    "previous_spend": 47,
+    "total_spend": 51,
+    "overall_limit": 59,
+    "price_per_call": {"usd": 0.0, "state": "known"},
+    "hardware_energy_cost": "unknown, not zero"
+  },
+  "evidence": {
+    "first_attempt": {
+      "path": "artifacts/live-derived-g4-evidence.json",
+      "sha256": "52153420d70b06be761a489e63c5a5356c81f2164986480f7e4f86c8312f746c",
+      "verdict": "UNKNOWN",
+      "calls": 0
+    },
+    "successful_attempt": {
+      "path": "artifacts/live-derived-g4-evidence-attempt-02.json",
+      "sha256": "2c5dbdc76a6c92c2f3e673885de7a5037d2f882cfe3c2761033635a740f64207",
+      "verdict": "PASS",
+      "goal_pass": 10,
+      "safety_pass": 3,
+      "fail": 0,
+      "unknown": 0
+    }
+  },
+  "boundaries": [
+    "isolated runner with synthetic data; no production host",
+    "first UNKNOWN preserved; no repeated completed run",
+    "no backfill, training, paid API or memory worker restart",
+    "replay and crash/replay added zero model/recall/tool effects"
+  ]
+}

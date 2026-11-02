@@ -1,0 +1,30 @@
+{
+  "error": "ValueError",
+  "lease": {
+    "activated_at": "2026-11-02T14:23:13.097841+00:00",
+    "concurrency": 1,
+    "expires_at": "2026-11-02T14:34:47.771000+00:00",
+    "lease_id": "g4-m1m-20261102-once-01",
+    "max_calls": 12,
+    "operator": "kimi-code-m5m",
+    "preflight": {
+      "models": [
+        "bge-m3:latest",
+        "qwen3.5:9b"
+      ],
+      "other_workloads_count": 3,
+      "other_workloads_present": true
+    },
+    "released_at": "2026-11-02T14:23:13.100246+00:00",
+    "resource": "m1m",
+    "status": "released"
+  },
+  "schema": "memory-consumer-g4-live/1.0",
+  "verdict": {
+    "FAIL": 0,
+    "PASS": 0,
+    "SKIP": 0,
+    "UNKNOWN": 1,
+    "overall": "UNKNOWN"
+  }
+}

@@ -203,6 +203,20 @@ read-only через `/api/tags`; на M1M есть другие активны�
 `integration/derived-consumer-g4-manifest.json`; evidence:
 `artifacts/derived-consumer-g4-evidence.json`.
 
+## G4 live M1M: завершённый контроль
+
+`live_derived_runner.py` выполнил одно короткое окно `g4-m1m-20261102-once-01`:
+live recall → source/version/as_of → frozen child v2 → consumer/router →
+result/ACK, затем replay и crash/replay без новых model/recall/tool effects.
+Router-профиль использует фактически доступную `qwen3.5:9b`, а не отсутствующую
+на M1M qwen2.5. Первый preflight UNKNOWN с нулём вызовов сохранён отдельно.
+
+Успешный результат: 13 PASS, 0 FAIL/UNKNOWN; 3 embedding + 1 router = 4 вызова,
+общий расход 51/64. Router вернул OK, 1 call = 1 ledger record. Lease
+активирована 2026-11-02T14:26:34Z и выпущена 14:26:38Z, собственный tunnel
+закрыт. Manifest: `integration/live-derived-g4-manifest.json`; evidence:
+`artifacts/live-derived-g4-evidence-attempt-02.json`.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,
