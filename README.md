@@ -158,6 +158,30 @@ model run и не независимая приёмка качества. Source
 `integration/consumer-g4-manifest.json`; evidence:
 `artifacts/consumer-g4-evidence.json`.
 
+## Memory Onboarding v1.1
+
+Ветка `memory/bootstrap-v1-1-20261102` реализует спеку Attached-Assets
+`0e6f19bd06835b6e83275f8f1469f2583fa6ba07`: `MemoryBootstrapConsumer.validate`,
+`MemoryBootstrapConsumer.recover` и отдельный `MemoryStatusWriter.append`.
+Существующие `recall()` и `remember` не меняются.
+
+```bash
+MAKO_CORE_DIR=/path/to/core-2fa \
+MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c95dab92d7147 \
+  /opt/homebrew/bin/python3.12 bootstrap_runner.py
+```
+
+Проверяются signature/expiry/audience/scope, independent principal/grant/embedding
+generations, recovery по digest-ссылкам, local/shared conflict=unresolved,
+read-only recovery, append-only done/doing/will_do, idempotency и обязательная
+внешняя goal verification для done. Результат: 21 PASS, 0 FAIL; tool/model/
+external effects 0, три status append и один idempotent replay без новой записи.
+
+Offline использует HMAC test double с публичным synthetic ключом; production
+signature verifier должен предоставить коннектор. Живой invite, host и юридический
+PASS не заявляются. Source closure: `integration/memory-bootstrap-v1-1-manifest.json`;
+evidence: `artifacts/memory-bootstrap-v1-1-evidence.json`.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,

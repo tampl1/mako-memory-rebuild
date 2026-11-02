@@ -1,0 +1,52 @@
+{
+  "schema": "memory-bootstrap-offline-fixture/1.0",
+  "spec": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "0e6f19bd06835b6e83275f8f1469f2583fa6ba07",
+    "path": "docs/connector/MEMORY-ONBOARDING-SPEC-20261102.md"
+  },
+  "now": "2026-11-02T12:00:00+00:00",
+  "bundle": {
+    "bundle_id": "bootstrap-offline-001",
+    "issuer": "connector-offline",
+    "audience": "kimi-code-m5m",
+    "issued_at": "2026-11-02T00:00:00+00:00",
+    "expires_at": "2026-11-03T00:00:00+00:00",
+    "bundle_generation": 1,
+    "canonicalization": "JCS",
+    "key_id": "offline-hmac-key-1",
+    "memory_endpoint": "https://memory.example.invalid",
+    "memory_protocol_version": "1.1",
+    "credential_ref": "offline/synthetic/credential-ref",
+    "principal": {
+      "owner_id": "owner-fixture",
+      "tenant_id": "tenant-fixture",
+      "identity_id": "kimi-code-m5m",
+      "connection_id": "offline-connection",
+      "generation": 3,
+      "key_thumbprint": "offline-thumb"
+    },
+    "grant": {
+      "owner": "owner-fixture",
+      "tenant": "tenant-fixture",
+      "project": "g4-memory-consumer",
+      "revision": 7,
+      "embedding_generation": "bge-m3/1024",
+      "scopes": ["memory:read", "memory:status:write"]
+    },
+    "recovery_contract": {
+      "read_only": true,
+      "execution_owner": "CORE",
+      "on_conflict": "unresolved",
+      "prohibited": ["model_calls", "effects", "backfill", "training", "worker_restart"]
+    },
+    "notice": {"rkn": "submitted"},
+    "data_residency": "rf",
+    "retention": "offline-test-only",
+    "metadata_allowlist": ["track", "state", "artifact_ref", "artifact_sha256", "updated_at"]
+  },
+  "signing": {
+    "algorithm": "hmac-sha256",
+    "purpose": "offline test double only; production verifier supplied by connector"
+  }
+}

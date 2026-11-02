@@ -1,0 +1,53 @@
+{
+  "schema": "memory-bootstrap-v1-1-manifest/1.0",
+  "base_sha": "563b2a9329390fed64956f80337c99840388b6a6",
+  "spec": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "0e6f19bd06835b6e83275f8f1469f2583fa6ba07",
+    "path": "docs/connector/MEMORY-ONBOARDING-SPEC-20261102.md"
+  },
+  "entry_points": [
+    "src.bootstrap.MemoryBootstrapConsumer.validate",
+    "src.bootstrap.MemoryBootstrapConsumer.recover",
+    "src.bootstrap.MemoryStatusWriter.append"
+  ],
+  "command": "MAKO_CORE_DIR=/path/to/core-2fa MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c95dab92d7147 /opt/homebrew/bin/python3.12 bootstrap_runner.py",
+  "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
+    "path": "scripts/backend/mnemosyne-core",
+    "modules": {
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_errors.py": "a9b76b97a756b00af3f27e66bf1b5d669eaf9ec31d7976e96cd7b844dd62c09b",
+      "core_v1_output_budget.py": "6bb3dd15ccfb534bd60df95928196f51346a17d2b16ca54f0c3298ae5ed8b303",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "3cd5780bda29e13f40a71a6d8f2d5925dd94a54316ab0b23e7c246fa12fb56e3"
+    }
+  },
+  "own_modules": {
+    "bootstrap_runner.py": "c4d12d06680dde275ce1cde6272d8cc261ef46e41fa545e57e003d6f360351e9",
+    "src/bootstrap.py": "b9d531b75e9a21d3d7c8708eed9b6830a5792a0bab74aa47674c4d0df8d7caf7",
+    "src/source_closure.py": "b02c67a4f61e6d3e4e58f05a385f709430e81b5a0a625a98da10f9305a836fc0",
+    "src/decision_consumer.py": "5ac1235cac7e77828a04b1c99a33e4b8ed89a00dc6a5e2e76ecd98c312ead0e9",
+    "src/child_context.py": "69e3c543a274c1fff7a77e10ed63115f65ab09d16c102c1e374ea1b9ee1ae10d",
+    "src/pilot.py": "c4efb6403f3f32bb2b3e491de45fec24b46164cf97eaf42d49eb9a14447b2121",
+    "src/safety.py": "c2373e73bbf8852b30aa981ddbfea5de1560a50000e96b180d7eff6c72df42cd",
+    "controls/memory-bootstrap-v1-1/consumer-frozen-input.json": "b9b57d3055236e19ff6477161d0fb9d226229001876bafed03a8f48f6e028f46",
+    "tests/test_bootstrap.py": "3e6319b34fa09fb1be3947aff2db3fac40843291f943b1022f0f4f9b37de01eb"
+  },
+  "evidence": {
+    "path": "artifacts/memory-bootstrap-v1-1-evidence.json",
+    "sha256": "3ee5e7d35d27081f854467fcb15e58694c97785f52007ca534201bf18d43938d"
+  },
+  "signature": {
+    "offline": "hmac-sha256 test double with public synthetic key",
+    "production": "connector-supplied verifier; not implemented or attested here"
+  },
+  "boundaries": [
+    "offline validate/recover/append controls only",
+    "no live invite, host, production, model calls or worker restart",
+    "no legal acceptance or independent reviewer",
+    "existing recall signatures unchanged"
+  ]
+}
