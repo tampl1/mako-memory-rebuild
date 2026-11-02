@@ -38,6 +38,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 import pathlib
 from datetime import datetime, timedelta, timezone
 from typing import Any, Mapping
@@ -65,7 +66,10 @@ def _sha256(data: bytes) -> str:
 
 def _iso_to_dt(text: str) -> datetime:
     cleaned = str(text).replace("Z", "+00:00")
-    return datetime.fromisoformat(cleaned).astimezone(timezone.utc)
+    parsed = datetime.fromisoformat(cleaned)
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("timestamp requires an explicit timezone")
+    return parsed.astimezone(timezone.utc)
 
 
 def _digest_of(payload: Mapping[str, Any]) -> str:
@@ -185,13 +189,49 @@ def verify_derived_envelope(envelope: Mapping[str, Any], *,
         linkage.get("sha256") == base_sha256,
         f"ссылка {str(linkage.get('sha256'))[:16]}… vs база {base_sha256[:16]}…")
 
-    _base, actual_base_sha = load_base(base_path)
+    base, actual_base_sha = load_base(base_path)
     add("база по SHA совпадает (файл не переписан)", actual_base_sha == base_sha256,
         f"файл {actual_base_sha[:16]}… vs заявлено {base_sha256[:16]}…")
 
     digest = str(envelope.get("envelope_sha256") or "")
     add("digest envelope пересчитан", digest == _digest_of(envelope),
         f"заявлен {digest[:16]}…, пересчитан {_digest_of(envelope)[:16]}…")
+
+    # A self-computed digest proves integrity, not permission to change the
+    # principal, route, admission, tools, messages or historical usage.
+    normalized = copy.deepcopy(dict(envelope))
+    for name in ("schema", "captured_at", "derived_from", "base_sha256",
+                 "envelope_sha256"):
+        if name in base:
+            normalized[name] = copy.deepcopy(base[name])
+        else:
+            normalized.pop(name, None)
+    contract = normalized.get("adapter_contract", {})
+    if isinstance(contract, dict):
+        base_contract = base.get("adapter_contract", {})
+        req = contract.get("request", {})
+        if isinstance(req, dict):
+            req["deadline_at"] = base_contract.get("request", {}).get("deadline_at")
+        usage = contract.get("readback_usage_ledger", {})
+        base_usage = base_contract.get("readback_usage_ledger", {})
+        if isinstance(usage, dict):
+            for name in ("cost_usd", "cost_state", "price_source"):
+                if name in base_usage:
+                    usage[name] = copy.deepcopy(base_usage[name])
+                else:
+                    usage.pop(name, None)
+    mutable_price_fields = ("observed_at", "valid_until", "freshness_until",
+                            "source", "price_in", "price_out", "price_status")
+    for key, value in (normalized.get("view") or {}).items():
+        original = (base.get("view") or {}).get(key, {})
+        if isinstance(value, dict):
+            for name in mutable_price_fields:
+                if name in original:
+                    value[name] = copy.deepcopy(original[name])
+                else:
+                    value.pop(name, None)
+    add("immutable base projection preserved", normalized == base,
+        "Only declared time/price/derivation fields may change")
 
     request = dict((envelope.get("adapter_contract") or {}).get("request") or {})
     deadline_text = str(request.get("deadline_at") or "")
@@ -217,6 +257,31 @@ def verify_derived_envelope(envelope: Mapping[str, Any], *,
             stale.append(key)
     add("ценовой горизонт свежий по всем маршрутам", not stale,
         "просроченных горизонтов: 0" if not stale else f"просрочены: {stale}")
+
+    bad_prices = []
+    for key, group in (envelope.get("view") or {}).items():
+        try:
+            observed = _iso_to_dt(group["observed_at"])
+            fresh = _iso_to_dt(group["freshness_until"])
+            valid_time = observed <= moment < fresh and (
+                0 < (fresh - observed).total_seconds() <= DEFAULT_PRICE_HORIZON_S
+            )
+            status = group.get("price_status")
+            values = (group.get("price_in"), group.get("price_out"))
+            valid_values = (
+                status == "unknown" and all(value is None for value in values)
+            ) or (
+                status == "known" and all(
+                    type(value) in (int, float) and math.isfinite(value) and value >= 0
+                    for value in values
+                )
+            )
+            if not valid_time or not valid_values:
+                bad_prices.append(key)
+        except (KeyError, TypeError, ValueError, OverflowError):
+            bad_prices.append(key)
+    add("bounded price observation and explicit unknown", not bad_prices,
+        f"invalid observations: {len(bad_prices)}")
 
     scenario = [k for k, g in (envelope.get("view") or {}).items()
                 if "scenario" in str(g.get("source") or "").lower()]

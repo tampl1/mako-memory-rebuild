@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 from pathlib import Path
 import sys
@@ -25,6 +26,8 @@ DERIVED_CORE_MODULES = {
     "core_v1_store.py": "cfb54a754ee455b92f924e9e399c5da565659338bba930a0f0698492e1a18167",
 }
 CORE_PROFILES = {CORE_COMMIT: CORE_MODULES, DERIVED_CORE_COMMIT: DERIVED_CORE_MODULES}
+FULL_INVENTORY = Path(__file__).resolve().parent.parent / "integration/core-4c31-runtime.sha256.json"
+FULL_INVENTORY_SHA256 = "6ec41dff8dfe906265931b58fb1079651438610b40f313e23ada68b4c00db659"
 
 
 class SourceClosureError(Exception):
@@ -46,7 +49,12 @@ def configure_core():
     if not root.is_dir():
         raise SourceClosureError("MAKO_CORE_DIR is not a directory")
     measured = {}
-    for name, expected in CORE_PROFILES[core_head].items():
+    modules = CORE_PROFILES[core_head]
+    if core_head == DERIVED_CORE_COMMIT:
+        if sha256_file(FULL_INVENTORY) != FULL_INVENTORY_SHA256:
+            raise SourceClosureError("full CORE inventory digest mismatch")
+        modules = json.loads(FULL_INVENTORY.read_text())
+    for name, expected in modules.items():
         path = root / name
         if not path.is_file():
             raise SourceClosureError(f"missing CORE runtime module: {name}")

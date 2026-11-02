@@ -65,13 +65,20 @@ def validate_rerank_items(items, candidate_ids, limit=2):
 
 
 class OllamaLiveRetriever:
-    def __init__(self, store, grants, owner_id, project, endpoint, budget):
+    def __init__(self, store, grants, owner_id, project, endpoint, budget, *,
+                 grant_revision=1, embedding_generation="bge-m3/1024"):
+        if type(grant_revision) is not int or grant_revision < 1:
+            raise ValueError("invalid independent grant revision")
+        if not isinstance(embedding_generation, str) or not embedding_generation:
+            raise ValueError("invalid embedding generation")
         self.store = store
         self.grants = grants
         self.owner_id = owner_id
         self.project = project
         self.endpoint = endpoint.rstrip("/")
         self.budget = budget
+        self.grant_revision = grant_revision
+        self.embedding_generation = embedding_generation
         self._embeddings = {}
 
     def _post(self, path, payload, kind):
@@ -162,7 +169,8 @@ class OllamaLiveRetriever:
 
     def retrieve(self, query, mode="raw", as_of=None, limit=2):
         self.verify_runtime(mode)
-        self.grants.require(self.owner_id, self.project, "bge-m3/1024", 1)
+        self.grants.require(self.owner_id, self.project,
+                            self.embedding_generation, self.grant_revision)
         events = self._events(as_of)
         query_vector = self._embed(query)
         ranked = []
@@ -204,10 +212,21 @@ class OllamaLiveRetriever:
 
 
 class LiveMemoryContext:
-    def __init__(self, retriever, mode="raw", tenant_id="tenant-synth"):
+    def __init__(self, retriever, mode="raw", tenant_id="tenant-synth", *,
+                 grant_revision=None, embedding_generation=None):
+        if grant_revision is None:
+            grant_revision = getattr(retriever, "grant_revision", 1)
+        if embedding_generation is None:
+            embedding_generation = getattr(retriever, "embedding_generation", "bge-m3/1024")
+        if type(grant_revision) is not int or grant_revision < 1:
+            raise ValueError("invalid independent grant revision")
+        if not isinstance(embedding_generation, str) or not embedding_generation:
+            raise ValueError("invalid embedding generation")
         self.retriever = retriever
         self.mode = mode
         self.tenant_id = tenant_id
+        self.grant_revision = grant_revision
+        self.embedding_generation = embedding_generation
         self.recalls = 0
         self.proposed = 0
         self.attempted = 0
@@ -250,7 +269,8 @@ class LiveMemoryContext:
         self._validate_caller(principal)
         self._check_deadline(deadline_at)
         self.retriever.grants.require(
-            self.retriever.owner_id, self.retriever.project, "bge-m3/1024", 1)
+            self.retriever.owner_id, self.retriever.project,
+            self.embedding_generation, self.grant_revision)
         self.attempted += 1
         self.active += 1
         task = asyncio.create_task(asyncio.to_thread(self._retrieve_verified, query))
@@ -261,7 +281,8 @@ class LiveMemoryContext:
             raise
         self._check_deadline(deadline_at)
         self.retriever.grants.require(
-            self.retriever.owner_id, self.retriever.project, "bge-m3/1024", 1)
+            self.retriever.owner_id, self.retriever.project,
+            self.embedding_generation, self.grant_revision)
         self.admitted += 1
         self.recalls += 1
         out["retrieval_receipt"]["caller"] = {

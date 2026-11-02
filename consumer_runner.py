@@ -85,13 +85,14 @@ def _negative(pilot, binding, deadline, label, context, expected_fact_id,
     }
 
 
-def run_consumer(controls=CONTROLS):
+def run_consumer(controls=CONTROLS, *, now=None):
     config_bytes = (controls / "consumer-frozen-input.json").read_bytes()
     config = json.loads(config_bytes)
     envelope_name = config.get("envelope_file", "minimax-decision-input.json")
     envelope = load_decision_envelope(
         controls / envelope_name,
         base_path=controls / "minimax-decision-input.json",
+        now=now,
     )
     config_sha = hashlib.sha256(config_bytes).hexdigest()
     decision_input_digest = hashlib.sha256(_canonical({
@@ -101,6 +102,7 @@ def run_consumer(controls=CONTROLS):
     owner = envelope.principal_data["owner_id"]
     tenant = envelope.principal_data["tenant_id"]
     generation = envelope.principal_data["generation"]
+    grant_revision = config.get("grant_revision", 1)
     project = config["project"]
     query = config["query"]
     binding = binding_from_envelope(envelope)
@@ -110,12 +112,17 @@ def run_consumer(controls=CONTROLS):
         pilot = Pilot(tmp)
         store = pilot.memory
         grants = AccessGrants()
-        grants.allow(owner, project, config["embedding_generation"], generation)
-        reader = SafeReader(store, grants, config["embedding_generation"], generation)
+        grants.allow(owner, project, config["embedding_generation"], grant_revision)
+        reader = SafeReader(store, grants, config["embedding_generation"], grant_revision)
         retriever = OfflineRetriever(
             store, grants, owner, project, "http://offline", CallBudget(),
+            grant_revision=grant_revision,
+            embedding_generation=config["embedding_generation"],
         )
-        live_context = LiveMemoryContext(retriever, "raw", tenant_id=tenant)
+        live_context = LiveMemoryContext(
+            retriever, "raw", tenant_id=tenant, grant_revision=grant_revision,
+            embedding_generation=config["embedding_generation"],
+        )
 
         old = _seed(store, owner, project, config["v1"], "2026-10-31T00:00:00+00:00")
         retrieved = reader.read(
@@ -125,6 +132,7 @@ def run_consumer(controls=CONTROLS):
         parent = freeze_from_envelope(
             envelope, parent_run_id=config["parent_run_id"], as_of=config["as_of"],
             project=project, embedding_generation=config["embedding_generation"],
+            grant_revision=grant_revision,
             retrieved=retrieved,
         )
         original_json = json.dumps(dataclasses.asdict(parent), sort_keys=True)
@@ -160,6 +168,7 @@ def run_consumer(controls=CONTROLS):
         child2 = freeze_from_envelope(
             envelope, parent_run_id=config["new_parent_run_id"], as_of=None,
             project=project, embedding_generation=config["embedding_generation"],
+            grant_revision=grant_revision,
             retrieved=retrieved2,
         )
         decision2 = decide(child2.items, query)
@@ -181,15 +190,15 @@ def run_consumer(controls=CONTROLS):
             FrozenDecisionContext(parent, store, grants), old["event_id"], args,
             query, project, owner,
         )
-        grants.allow(owner, project, config["embedding_generation"], generation)
+        grants.allow(owner, project, config["embedding_generation"], grant_revision)
 
         foreign = freeze_child_context(
             parent_run_id="parent-foreign", as_of=config["as_of"],
             owner="owner-foreign", tenant=tenant, project=project,
-            grant_revision=generation, embedding_generation=config["embedding_generation"],
+            grant_revision=grant_revision, embedding_generation=config["embedding_generation"],
             retrieved=retrieved,
         )
-        grants.allow("owner-foreign", project, config["embedding_generation"], generation)
+        grants.allow("owner-foreign", project, config["embedding_generation"], grant_revision)
         negatives["foreign"] = _negative(
             pilot, binding, deadline, "G4-N-foreign",
             FrozenDecisionContext(foreign, store, grants), old["event_id"], args,
@@ -215,7 +224,7 @@ def run_consumer(controls=CONTROLS):
             query, project, owner,
         )
 
-        grants.allow(owner, project, "bge-m3/1025", generation)
+        grants.allow(owner, project, "bge-m3/1025", grant_revision)
         negatives["embedding_generation"] = _negative(
             pilot, binding, deadline, "G4-N-embedding-generation",
             FrozenDecisionContext(parent, store, grants), old["event_id"], args,
@@ -227,7 +236,10 @@ def run_consumer(controls=CONTROLS):
                 envelope.sha256 == EXPECTED_MINIMAX_SHA256
                 or (envelope.derived_from or {}).get("sha256") == EXPECTED_MINIMAX_SHA256
             ),
-            "source_closure_exact": len(CORE_CLOSURE["modules"]) == 5,
+            "source_closure_exact": len(CORE_CLOSURE["modules"]) == (
+                135 if CORE_CLOSURE["commit"] == "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d"
+                else 5
+            ),
             "parent_v1_still_verifies_after_v2": parent_still_verifies,
             "parent_v1_not_rewritten": (
                 parent.context_digest == original_digest
@@ -247,7 +259,7 @@ def run_consumer(controls=CONTROLS):
         }
         for name, observed in negatives.items():
             checks[f"{name}_zero_effect"] = (
-                observed["error"] is not None and observed["effect"] == 0
+                observed["error"] == "DependencyUnavailable" and observed["effect"] == 0
                 and observed["admitted"] == 0
             )
         goal_checks = [
@@ -275,6 +287,7 @@ def run_consumer(controls=CONTROLS):
                 "consumer_frozen_input_sha256": config_sha,
                 "context_input_digest": decision_input_digest,
                 "principal_generation": generation,
+                "grant_revision": grant_revision,
                 "generation_source": "adapter_contract.request.principal.generation",
             },
             "entry_point": "consumer_runner.py",

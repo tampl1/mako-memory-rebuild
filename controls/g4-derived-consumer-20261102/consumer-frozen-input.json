@@ -17,6 +17,7 @@
   },
   "envelope_file": "minimax-derived-input.json",
   "offline_only": true,
+  "grant_revision": 7,
   "project": "g4-memory-consumer",
   "query": "what should we ship?",
   "parent_run_id": "parent-v1",

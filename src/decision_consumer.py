@@ -49,8 +49,9 @@ def load_decision_envelope(path, *, base_path=None, now=None):
             raise ValueError("derived envelope is not linked to the frozen MiniMax input")
         if base_path is None:
             raise ValueError("derived envelope requires the frozen base for verification")
-        trusted_now = now or datetime.fromisoformat(
-            linkage["derived_at"].replace("Z", "+00:00"))
+        if now is None or now.tzinfo is None or now.utcoffset() is None:
+            raise ValueError("derived envelope requires an external timezone-aware clock")
+        trusted_now = now
         checks = verify_derived_envelope(
             data, base_path=base_path,
             base_sha256=EXPECTED_MINIMAX_SHA256, now=trusted_now,
@@ -87,15 +88,17 @@ def binding_from_envelope(envelope):
 
 
 def freeze_from_envelope(envelope, *, parent_run_id, as_of, project,
-                         embedding_generation, retrieved):
+                         embedding_generation, grant_revision, retrieved):
     principal = envelope.principal_data
+    if type(grant_revision) is not int or grant_revision < 1:
+        raise ValueError("grant_revision must be an independent positive revision")
     return freeze_child_context(
         parent_run_id=parent_run_id,
         as_of=as_of,
         owner=principal["owner_id"],
         tenant=principal["tenant_id"],
         project=project,
-        grant_revision=principal["generation"],
+        grant_revision=grant_revision,
         embedding_generation=embedding_generation,
         retrieved=retrieved,
     )

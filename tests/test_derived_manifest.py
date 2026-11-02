@@ -7,7 +7,7 @@ from pathlib import Path
 class DerivedManifestTests(unittest.TestCase):
     def test_derived_source_closure_and_base(self):
         root = Path(__file__).resolve().parent.parent
-        manifest = json.loads((root / "integration" / "derived-consumer-g4-manifest.json").read_text())
+        manifest = json.loads((root / "integration" / "replit-g4-hardening-manifest.json").read_text())
         for name, expected in manifest["own_modules"].items():
             actual = hashlib.sha256((root / name).read_bytes()).hexdigest()
             self.assertEqual(actual, expected, name)

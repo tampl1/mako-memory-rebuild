@@ -17,11 +17,12 @@ ROOT = Path(__file__).resolve().parent
 CONTROLS = ROOT / "controls" / "g4-derived-consumer-20261102"
 BASE = CONTROLS / "minimax-decision-input.json"
 DERIVED = CONTROLS / "minimax-derived-input.json"
+FROZEN_NOW = datetime(2026, 11, 2, 13, 19, 4, 809000, tzinfo=timezone.utc)
 
 
 def _derived_controls():
     results = {}
-    envelope = load_decision_envelope(DERIVED, base_path=BASE)
+    envelope = load_decision_envelope(DERIVED, base_path=BASE, now=FROZEN_NOW)
     results["derived_envelope_accepted"] = {
         "passed": envelope.sha256 != EXPECTED_MINIMAX_SHA256
                   and envelope.derived_from["sha256"] == EXPECTED_MINIMAX_SHA256,
@@ -34,7 +35,7 @@ def _derived_controls():
         wrong_path = tmp / "wrong-link.json"
         wrong_path.write_text(json.dumps(wrong_link))
         try:
-            load_decision_envelope(wrong_path, base_path=BASE)
+            load_decision_envelope(wrong_path, base_path=BASE, now=FROZEN_NOW)
             results["wrong_base_rejected"] = {"passed": False, "error": None, "effect": 0}
         except ValueError as exc:
             results["wrong_base_rejected"] = {"passed": True, "error": type(exc).__name__, "effect": 0}
@@ -43,7 +44,7 @@ def _derived_controls():
         in_place.write_text(BASE.read_text().replace(
             "2026-11-02T10:36:45.266234Z", "2026-11-02T10:46:45.266234Z"))
         try:
-            load_decision_envelope(DERIVED, base_path=in_place)
+            load_decision_envelope(DERIVED, base_path=in_place, now=FROZEN_NOW)
             results["in_place_edit_rejected"] = {"passed": False, "error": None, "effect": 0}
         except ValueError as exc:
             results["in_place_edit_rejected"] = {"passed": True, "error": type(exc).__name__, "effect": 0}
@@ -53,7 +54,7 @@ def _derived_controls():
         bad_path = tmp / "bad-digest.json"
         bad_path.write_text(json.dumps(bad_digest))
         try:
-            load_decision_envelope(bad_path, base_path=BASE)
+            load_decision_envelope(bad_path, base_path=BASE, now=FROZEN_NOW)
             results["digest_tamper_rejected"] = {"passed": False, "error": None, "effect": 0}
         except ValueError as exc:
             results["digest_tamper_rejected"] = {"passed": True, "error": type(exc).__name__, "effect": 0}
@@ -68,14 +69,15 @@ def _derived_controls():
         except DerivedEnvelopeError as exc:
             results["infinite_deadline_rejected"] = {"passed": True, "error": type(exc).__name__, "effect": 0}
 
+        unknown_now = datetime.now(timezone.utc)
         unknown = build_derived_envelope(
             base_path=BASE, base_sha256=EXPECTED_MINIMAX_SHA256,
-            now=datetime.now(timezone.utc), price_in=None, price_out=None,
+            now=unknown_now, price_in=None, price_out=None,
             price_source="producer-unavailable", price_status="unknown",
         )
         unknown_path = tmp / "unknown-price.json"
         unknown_path.write_text(json.dumps(unknown))
-        loaded = load_decision_envelope(unknown_path, base_path=BASE)
+        loaded = load_decision_envelope(unknown_path, base_path=BASE, now=unknown_now)
         results["unknown_price_stays_unknown"] = {
             "passed": all(item["price_in"] is None and item["price_status"] == "unknown"
                           for item in loaded.data["view"].values()),
@@ -85,7 +87,7 @@ def _derived_controls():
 
 
 def run_derived():
-    report = run_consumer(controls=CONTROLS)
+    report = run_consumer(controls=CONTROLS, now=FROZEN_NOW)
     derived = _derived_controls()
     report["schema"] = "memory-consumer-g4-derived/1.0"
     report["base_sha"] = "563b2a9329390fed64956f80337c99840388b6a6"
@@ -118,7 +120,7 @@ def run_derived():
 
 def main():
     report = run_derived()
-    out = ROOT / "artifacts" / "derived-consumer-g4-evidence.json"
+    out = ROOT / "artifacts" / "derived-consumer-g4-hardened-evidence.json"
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     print(json.dumps({
         "verdict": report["verdict"], "counters": report["counters"],
