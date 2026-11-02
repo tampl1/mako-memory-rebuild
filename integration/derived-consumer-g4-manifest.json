@@ -1,0 +1,62 @@
+{
+  "schema": "memory-consumer-g4-derived-manifest/1.0",
+  "base_sha": "563b2a9329390fed64956f80337c99840388b6a6",
+  "entry_point": "derived_consumer_runner.py",
+  "command": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 derived_consumer_runner.py",
+  "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "source_zip": "g2-source-closure-4c31e0e0-20261102.zip",
+    "source_zip_sha256": "6e6bd0c4b6b29de7552e728def01cb9237b6ae39cd7d2716e95c222f6f87c1db",
+    "source_closure_manifest_files": 139,
+    "source_closure_mismatches": 0,
+    "modules": {
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_errors.py": "201f01f14188efdc837813851be4a566276a0c425e0819db338627c35bb23479",
+      "core_v1_output_budget.py": "6bb3dd15ccfb534bd60df95928196f51346a17d2b16ca54f0c3298ae5ed8b303",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "cfb54a754ee455b92f924e9e399c5da565659338bba930a0f0698492e1a18167"
+    }
+  },
+  "decision_input": {
+    "base_sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "derived_file_sha256": "9b27b9979238e5c4e4115df865eb416f0d5534fbb8212328cd6deb934c4cda23",
+    "envelope_sha256": "1e316a9a3b3467e88f8b9595db0dedfac1efac1b4fba028ff7b49a8f74a40afc",
+    "schema": "router-producer-fixture/1.1",
+    "acceptance": "derived_from.sha256 == base_sha256 AND base bytes unchanged AND envelope digest recomputed"
+  },
+  "own_modules": {
+    "derived_consumer_runner.py": "3473246d9ddb5b19748414fe0c7e62aeb618fd7932402080d24230ebeb73c4f6",
+    "src/derived_envelope.py": "9ebb146db57774ecdbd12996bf1cf86c26c7d7f17bb8ef20e92080cc99e69597",
+    "src/decision_consumer.py": "98b3af5ba7abc1565ce7a71bccbd80fd1af9714bb706c120d2a4be771686d8e6",
+    "src/source_closure.py": "77d384709ee4627a836167d837148977a423bf8d97135a67a6ee0102a867f45e",
+    "consumer_runner.py": "df0907c7cea2bdba48875cf4e77f21a2d59c95f5f5db836dc51b62c635285ca3",
+    "controls/g4-derived-consumer-20261102/minimax-decision-input.json": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "controls/g4-derived-consumer-20261102/minimax-derived-input.json": "9b27b9979238e5c4e4115df865eb416f0d5534fbb8212328cd6deb934c4cda23",
+    "controls/g4-derived-consumer-20261102/consumer-frozen-input.json": "c150b869576d4e9622f3bd71ff5daa26730191d9852cf715f009999e36245667",
+    "tests/test_derived_consumer.py": "0197beab5bd41ad2764a7d4038b3e4b87ad71d1c79eef16733a59b5003d1ec4f"
+  },
+  "evidence": {
+    "path": "artifacts/derived-consumer-g4-evidence.json",
+    "sha256": "4d3c334c120ab08cd4dab3566919f3fc5e10b06b22710c9bb2a2ef8db4e89787"
+  },
+  "model_runtime_readback": {
+    "bge-m3:latest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+    "qwen3.5:9b": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "other_workloads_present": true,
+    "gpu_lease_issued": false
+  },
+  "live": {
+    "status": "UNKNOWN",
+    "reason": "lease_not_issued",
+    "additional_calls": 0,
+    "max_additional_calls_after_lease": 12,
+    "max_ttl_seconds": 1200,
+    "concurrency": 1
+  },
+  "boundaries": [
+    "offline derived profile only; live memory recall remains UNKNOWN",
+    "original fixture, dates and previous evidence unchanged",
+    "no GPU inference, backfill, training, production or worker restart"
+  ]
+}

@@ -5,10 +5,12 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import json
+from datetime import datetime
 from pathlib import Path
 
 from core_v1_contract import Binding, Context, Principal
 from .child_context import freeze_child_context, verify_child_context
+from .derived_envelope import SCHEMA as DERIVED_SCHEMA, verify_derived_envelope
 from .live_retrieval import LiveMemoryContext
 
 EXPECTED_MINIMAX_SHA256 = "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
@@ -27,14 +29,36 @@ class DecisionEnvelope:
     def principal_data(self):
         return self.request["principal"]
 
+    @property
+    def derived_from(self):
+        return self.data.get("derived_from")
 
-def load_decision_envelope(path):
+
+def load_decision_envelope(path, *, base_path=None, now=None):
     raw = Path(path).read_bytes()
     actual = hashlib.sha256(raw).hexdigest()
-    if actual != EXPECTED_MINIMAX_SHA256:
-        raise ValueError("MiniMax decision input digest mismatch")
     data = json.loads(raw)
-    if data.get("schema") != "router-producer-fixture/1.0":
+    schema = data.get("schema")
+    if schema == "router-producer-fixture/1.0":
+        if actual != EXPECTED_MINIMAX_SHA256:
+            raise ValueError("MiniMax decision input digest mismatch")
+    elif schema == DERIVED_SCHEMA:
+        linkage = data.get("derived_from") or {}
+        if linkage.get("sha256") != EXPECTED_MINIMAX_SHA256 \
+                or data.get("base_sha256") != EXPECTED_MINIMAX_SHA256:
+            raise ValueError("derived envelope is not linked to the frozen MiniMax input")
+        if base_path is None:
+            raise ValueError("derived envelope requires the frozen base for verification")
+        trusted_now = now or datetime.fromisoformat(
+            linkage["derived_at"].replace("Z", "+00:00"))
+        checks = verify_derived_envelope(
+            data, base_path=base_path,
+            base_sha256=EXPECTED_MINIMAX_SHA256, now=trusted_now,
+        )
+        failed = [check["name"] for check in checks if not check["ok"]]
+        if failed:
+            raise ValueError(f"derived envelope verification failed: {failed}")
+    else:
         raise ValueError("unsupported MiniMax decision input schema")
     request = data.get("adapter_contract", {}).get("request", {})
     principal = request.get("principal", {})

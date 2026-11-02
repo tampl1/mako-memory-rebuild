@@ -1,0 +1,35 @@
+{
+  "schema": "memory-consumer-frozen-input/1.1",
+  "derived_from": {
+    "consumer_frozen_input_sha256": "ea0dfca43290b57019923a03154441dcc323d0fef9e6fcc90438b32dfe696453",
+    "offline_candidate_sha": "563b2a9329390fed64956f80337c99840388b6a6"
+  },
+  "core_profile": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "source_zip": "g2-source-closure-4c31e0e0-20261102.zip",
+    "source_zip_sha256": "6e6bd0c4b6b29de7552e728def01cb9237b6ae39cd7d2716e95c222f6f87c1db"
+  },
+  "minimax_source": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "d05e6f969596bcfb0c71427d5c64156a0fb4192f",
+    "path": "artifacts/g5-lan-integration-20261102/producer-fixture-reference-20261102.json",
+    "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+  },
+  "envelope_file": "minimax-derived-input.json",
+  "offline_only": true,
+  "project": "g4-memory-consumer",
+  "query": "what should we ship?",
+  "parent_run_id": "parent-v1",
+  "new_parent_run_id": "parent-v2",
+  "as_of": "2026-10-31T00:01:00+00:00",
+  "deadline_at": "2026-11-03T00:00:00+00:00",
+  "embedding_generation": "bge-m3/1024",
+  "v1": "v1.0",
+  "v2": "v2.0",
+  "model_budget": {
+    "limit": 64,
+    "previously_spent": 47,
+    "current_run": 0,
+    "additional_live_limit": 12
+  }
+}

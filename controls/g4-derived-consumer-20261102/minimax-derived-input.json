@@ -1,0 +1,394 @@
+{
+ "adapter_contract": {
+  "invocation": {
+   "endpoint_ref": "m5m:ollama",
+   "model": "qwen2.5:1.5b-instruct",
+   "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+   "transport": "lan-http"
+  },
+  "readback_usage_ledger": {
+   "cost_state": "known",
+   "cost_usd": 0.0,
+   "price_source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+   "tokens_in": 32,
+   "tokens_out": 3
+  },
+  "request": {
+   "account_type": "local",
+   "admission": {
+    "max_cost_usd": 0.0,
+    "require_price_known": true
+   },
+   "card": {
+    "binding_generation": 1,
+    "capabilities_assumed": [],
+    "capabilities_declared": [
+     "chat"
+    ],
+    "context_window": 32768,
+    "endpoint": "http://10.1.0.80:11434/v1",
+    "freshness_s": 0,
+    "id": "m5m-lan:qwen2.5:1.5b-instruct",
+    "is_local": true,
+    "last_seen_at": "2026-11-02T10:34:45.266Z",
+    "model": "qwen2.5:1.5b-instruct",
+    "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+    "node": "m5m",
+    "policy_allowed": true,
+    "region": null,
+    "smoke_current": false,
+    "smoke_model_digest": null,
+    "smoke_verified": [],
+    "stale": false
+   },
+   "channel": "local",
+   "currency": "USD",
+   "deadline_at": "2026-11-02T13:29:04.809Z",
+   "id": "m5m-lan:qwen2.5:1.5b-instruct",
+   "messages": [
+    {
+     "content": "Say OK.",
+     "role": "user"
+    }
+   ],
+   "mode": "online",
+   "model": "qwen2.5:1.5b-instruct",
+   "operation_key": "fixture-run:model:0",
+   "principal": {
+    "connection_id": "fixture",
+    "generation": 1,
+    "identity_id": "mini-max-m5m",
+    "key_thumbprint": "fixture-thumb",
+    "owner_id": "owner-fixture",
+    "tenant_id": "tenant-fixture"
+   },
+   "provider": "ollama",
+   "region": null,
+   "run_id": "fixture-run",
+   "tools": [],
+   "unit": "1M_tokens",
+   "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+  },
+  "selected_offer": {
+   "card_id": "m5m-lan:qwen2.5:1.5b-instruct",
+   "generation": 1,
+   "model": "qwen2.5:1.5b-instruct",
+   "provider": "ollama"
+  }
+ },
+ "base_sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+ "captured_at": "2026-11-02T13:19:04.809Z",
+ "cards": [
+  {
+   "binding_generation": 1,
+   "capabilities_assumed": [],
+   "capabilities_declared": [
+    "chat"
+   ],
+   "context_window": 32768,
+   "endpoint": "http://10.1.0.80:11434/v1",
+   "freshness_s": 0,
+   "id": "m5m-lan:qwen2.5:1.5b-instruct",
+   "is_local": true,
+   "last_seen_at": "2026-11-02T10:34:45.266Z",
+   "model": "qwen2.5:1.5b-instruct",
+   "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+   "node": "m5m",
+   "policy_allowed": true,
+   "region": null,
+   "smoke_current": false,
+   "smoke_model_digest": null,
+   "smoke_verified": [],
+   "stale": false
+  }
+ ],
+ "controls": {
+  "exhausted_budget": {
+   "expect": "refusal",
+   "request": {
+    "account_type": "local",
+    "admission": {
+     "max_cost_usd": -1.0,
+     "require_price_known": true
+    },
+    "card": {
+     "binding_generation": 1,
+     "capabilities_assumed": [],
+     "capabilities_declared": [
+      "chat"
+     ],
+     "context_window": 32768,
+     "endpoint": "http://10.1.0.80:11434/v1",
+     "freshness_s": 0,
+     "id": "m5m-lan:qwen2.5:1.5b-instruct",
+     "is_local": true,
+     "last_seen_at": "2026-11-02T10:34:45.266Z",
+     "model": "qwen2.5:1.5b-instruct",
+     "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+     "node": "m5m",
+     "policy_allowed": true,
+     "region": null,
+     "smoke_current": false,
+     "smoke_model_digest": null,
+     "smoke_verified": [],
+     "stale": false
+    },
+    "channel": "local",
+    "currency": "USD",
+    "deadline_at": "2026-11-02T10:36:45.266234Z",
+    "id": "m5m-lan:qwen2.5:1.5b-instruct",
+    "messages": [
+     {
+      "content": "Say OK.",
+      "role": "user"
+     }
+    ],
+    "mode": "online",
+    "model": "qwen2.5:1.5b-instruct",
+    "operation_key": "fixture-run:model:0",
+    "principal": {
+     "connection_id": "fixture",
+     "generation": 1,
+     "identity_id": "mini-max-m5m",
+     "key_thumbprint": "fixture-thumb",
+     "owner_id": "owner-fixture",
+     "tenant_id": "tenant-fixture"
+    },
+    "provider": "ollama",
+    "region": null,
+    "run_id": "fixture-run",
+    "tools": [],
+    "unit": "1M_tokens",
+    "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+   }
+  },
+  "revoked_generation": {
+   "call_generation": 2,
+   "expect": "refusal",
+   "request": {
+    "account_type": "local",
+    "admission": {
+     "max_cost_usd": 0.0,
+     "require_price_known": true
+    },
+    "card": {
+     "binding_generation": 1,
+     "capabilities_assumed": [],
+     "capabilities_declared": [
+      "chat"
+     ],
+     "context_window": 32768,
+     "endpoint": "http://10.1.0.80:11434/v1",
+     "freshness_s": 0,
+     "id": "m5m-lan:qwen2.5:1.5b-instruct",
+     "is_local": true,
+     "last_seen_at": "2026-11-02T10:34:45.266Z",
+     "model": "qwen2.5:1.5b-instruct",
+     "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+     "node": "m5m",
+     "policy_allowed": true,
+     "region": null,
+     "smoke_current": false,
+     "smoke_model_digest": null,
+     "smoke_verified": [],
+     "stale": false
+    },
+    "channel": "local",
+    "currency": "USD",
+    "deadline_at": "2026-11-02T10:36:45.266234Z",
+    "id": "m5m-lan:qwen2.5:1.5b-instruct",
+    "messages": [
+     {
+      "content": "Say OK.",
+      "role": "user"
+     }
+    ],
+    "mode": "online",
+    "model": "qwen2.5:1.5b-instruct",
+    "operation_key": "fixture-run:model:0",
+    "principal": {
+     "connection_id": "fixture",
+     "generation": 1,
+     "identity_id": "mini-max-m5m",
+     "key_thumbprint": "fixture-thumb",
+     "owner_id": "owner-fixture",
+     "tenant_id": "tenant-fixture"
+    },
+    "provider": "ollama",
+    "region": null,
+    "run_id": "fixture-run",
+    "tools": [],
+    "unit": "1M_tokens",
+    "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+   }
+  },
+  "stale_offer": {
+   "call_generation": 2,
+   "expect": "refusal",
+   "request": {
+    "account_type": "local",
+    "admission": {
+     "max_cost_usd": 0.0,
+     "require_price_known": true
+    },
+    "card": {
+     "binding_generation": 1,
+     "capabilities_assumed": [],
+     "capabilities_declared": [
+      "chat"
+     ],
+     "context_window": 32768,
+     "endpoint": "http://10.1.0.80:11434/v1",
+     "freshness_s": 0,
+     "id": "m5m-lan:qwen2.5:1.5b-instruct",
+     "is_local": true,
+     "last_seen_at": "2026-11-02T10:34:45.266Z",
+     "model": "qwen2.5:1.5b-instruct",
+     "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+     "node": "m5m",
+     "policy_allowed": true,
+     "region": null,
+     "smoke_current": false,
+     "smoke_model_digest": null,
+     "smoke_verified": [],
+     "stale": false
+    },
+    "channel": "local",
+    "currency": "USD",
+    "deadline_at": "2026-11-02T10:36:45.266234Z",
+    "id": "m5m-lan:qwen2.5:1.5b-instruct",
+    "messages": [
+     {
+      "content": "Say OK.",
+      "role": "user"
+     }
+    ],
+    "mode": "online",
+    "model": "qwen2.5:1.5b-instruct",
+    "operation_key": "fixture-run:model:0",
+    "principal": {
+     "connection_id": "fixture",
+     "generation": 1,
+     "identity_id": "mini-max-m5m",
+     "key_thumbprint": "fixture-thumb",
+     "owner_id": "owner-fixture",
+     "tenant_id": "tenant-fixture"
+    },
+    "provider": "ollama",
+    "region": null,
+    "run_id": "fixture-run",
+    "tools": [],
+    "unit": "1M_tokens",
+    "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+   }
+  },
+  "tool_incompatibility": {
+   "expect": "refusal",
+   "request": {
+    "account_type": "local",
+    "admission": {
+     "max_cost_usd": 0.0,
+     "require_price_known": true,
+     "require_tools": true
+    },
+    "card": {
+     "binding_generation": 1,
+     "capabilities_assumed": [],
+     "capabilities_declared": [
+      "chat"
+     ],
+     "context_window": 32768,
+     "endpoint": "http://10.1.0.80:11434/v1",
+     "freshness_s": 0,
+     "id": "m5m-lan:qwen2.5:1.5b-instruct",
+     "is_local": true,
+     "last_seen_at": "2026-11-02T10:34:45.266Z",
+     "model": "qwen2.5:1.5b-instruct",
+     "model_digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+     "node": "m5m",
+     "policy_allowed": true,
+     "region": null,
+     "smoke_current": false,
+     "smoke_model_digest": null,
+     "smoke_verified": [],
+     "stale": false
+    },
+    "channel": "local",
+    "currency": "USD",
+    "deadline_at": "2026-11-02T10:36:45.266234Z",
+    "id": "m5m-lan:qwen2.5:1.5b-instruct",
+    "messages": [
+     {
+      "content": "Say OK.",
+      "role": "user"
+     }
+    ],
+    "mode": "online",
+    "model": "qwen2.5:1.5b-instruct",
+    "operation_key": "fixture-run:model:0",
+    "principal": {
+     "connection_id": "fixture",
+     "generation": 1,
+     "identity_id": "mini-max-m5m",
+     "key_thumbprint": "fixture-thumb",
+     "owner_id": "owner-fixture",
+     "tenant_id": "tenant-fixture"
+    },
+    "provider": "ollama",
+    "region": null,
+    "run_id": "fixture-run",
+    "tools": [],
+    "unit": "1M_tokens",
+    "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+   }
+  }
+ },
+ "derived_from": {
+  "clock": "trusted-clock",
+  "commit": "bf1467154c8783b2bd3dd6974f0ca8d1e94996a8",
+  "derived_at": "2026-11-02T13:19:04.809Z",
+  "path": "controls/g4-derived-consumer-20261102/minimax-decision-input.json",
+  "reason": "offline derived profile; live requires fresh producer observation and lease",
+  "repo": "tampl1/Attached-Assets",
+  "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+ },
+ "envelope_sha256": "1e316a9a3b3467e88f8b9595db0dedfac1efac1b4fba028ff7b49a8f74a40afc",
+ "offer": {
+  "budget_usd": 0.0,
+  "capabilities": [
+   "chat"
+  ],
+  "card_id": "m5m-lan:qwen2.5:1.5b-instruct",
+  "generation": 1,
+  "source_price_state": "known"
+ },
+ "producer": {
+  "branch": "local",
+  "canonicalization_spec_version": "1.0",
+  "repo": "mini-max-m5m",
+  "sha": "reference"
+ },
+ "route": {
+  "account_type": "local",
+  "channel": "local",
+  "currency": "USD",
+  "mode": "online",
+  "model": "qwen2.5:1.5b-instruct",
+  "provider": "ollama",
+  "region": null,
+  "unit": "1M_tokens",
+  "version": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b"
+ },
+ "schema": "router-producer-fixture/1.1",
+ "view": {
+  "ollama|local|qwen2.5:1.5b-instruct|65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b||online|USD|1M_tokens|local": {
+   "freshness_until": "2026-11-02T14:19:04.809Z",
+   "observed_at": "2026-11-02T13:19:04.809Z",
+   "price_in": 0.0,
+   "price_out": 0.0,
+   "price_status": "known",
+   "source": "local-lan-runtime: денежной платы нет (известная нулевая цена); серверные затраты считаются отдельно от per-call цены",
+   "valid_until": null
+  }
+ }
+}

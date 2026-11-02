@@ -85,10 +85,14 @@ def _negative(pilot, binding, deadline, label, context, expected_fact_id,
     }
 
 
-def run_consumer():
-    config_bytes = (CONTROLS / "consumer-frozen-input.json").read_bytes()
+def run_consumer(controls=CONTROLS):
+    config_bytes = (controls / "consumer-frozen-input.json").read_bytes()
     config = json.loads(config_bytes)
-    envelope = load_decision_envelope(CONTROLS / "minimax-decision-input.json")
+    envelope_name = config.get("envelope_file", "minimax-decision-input.json")
+    envelope = load_decision_envelope(
+        controls / envelope_name,
+        base_path=controls / "minimax-decision-input.json",
+    )
     config_sha = hashlib.sha256(config_bytes).hexdigest()
     decision_input_digest = hashlib.sha256(_canonical({
         "minimax_sha256": envelope.sha256,
@@ -219,7 +223,10 @@ def run_consumer():
         )
 
         checks = {
-            "exact_minimax_decision_input": envelope.sha256 == EXPECTED_MINIMAX_SHA256,
+            "exact_minimax_decision_input": (
+                envelope.sha256 == EXPECTED_MINIMAX_SHA256
+                or (envelope.derived_from or {}).get("sha256") == EXPECTED_MINIMAX_SHA256
+            ),
             "source_closure_exact": len(CORE_CLOSURE["modules"]) == 5,
             "parent_v1_still_verifies_after_v2": parent_still_verifies,
             "parent_v1_not_rewritten": (

@@ -182,6 +182,27 @@ signature verifier должен предоставить коннектор. Ж�
 PASS не заявляются. Source closure: `integration/memory-bootstrap-v1-1-manifest.json`;
 evidence: `artifacts/memory-bootstrap-v1-1-evidence.json`.
 
+## Derived G4 profile и live lease gate
+
+Ветка `memory/derived-live-g4-20261102` сохраняет offline PASS `563b2a9…` и
+добавляет CORE `4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d`. Source closure zip
+имеет SHA-256 `6e6bd0c4…`, все 139 manifest files совпали. Consumer принимает
+`router-producer-fixture/1.1` только при совпадающем `derived_from.sha256`,
+неизменной базе и пересчитанном `envelope_sha256`; правка базы на месте отклоняется.
+
+```bash
+MAKO_CORE_DIR=/path/to/core-4c31/runtime \
+MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d \
+  /opt/homebrew/bin/python3.12 derived_consumer_runner.py
+```
+
+Offline: 22 PASS, 0 FAIL, live UNKNOWN. Model digests bge-m3/qwen3.5:9b совпали
+read-only через `/api/tags`; на M1M есть другие активные workloads, поэтому GPU
+не занимается без фактической lease. После lease: TTL ≤20 минут, concurrency=1,
+до 12 дополнительных вызовов, прежний расход 47/64 не обнуляется. Manifest:
+`integration/derived-consumer-g4-manifest.json`; evidence:
+`artifacts/derived-consumer-g4-evidence.json`.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,
