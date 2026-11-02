@@ -1,0 +1,68 @@
+{
+  "schema": "memory-consumer-g4-final-manifest/1.0",
+  "base_sha": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+  "entry_point": "final_live_runner.py",
+  "command": "MAKO_G4_SHARED_LEASE=/path/to/active-lease.json MAKO_G4_PRICE_OBSERVATION=/path/to/fresh-price.json MAKO_G4_LIVE_EVIDENCE=/path/to/new-evidence.json MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 final_live_runner.py",
+  "required_env": ["MAKO_G4_SHARED_LEASE", "MAKO_G4_PRICE_OBSERVATION", "MAKO_G4_LIVE_EVIDENCE", "MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "sources": {
+    "hardening": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+    "model_port": "2dd31dc4413bc5075fa8be68e8291ba6de874105",
+    "transport": "0d232a31583b10b94224a83dea21e663f32fa2b3",
+    "producer": "6706207e3088a0cfeca33ea40cafa313e50cdb3e",
+    "core": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d"
+  },
+  "core_closure": {
+    "runtime_modules_verified": 135,
+    "mismatches": 0,
+    "source_zip_sha256": "6e6bd0c4b6b29de7552e728def01cb9237b6ae39cd7d2716e95c222f6f87c1db"
+  },
+  "own_modules": {
+    "final_live_runner.py": "77e2ff46aeb4815d25179ffbfa7bea38d99b57a193542484566ca1a538d5ae78",
+    "src/final_answer.py": "e2884f019d0f59d3187dd7901dc6c2ce0a117314372aee6f5a9fac7774bc8ea5",
+    "src/final_profile.py": "e2ad69f527bff0fd3d6c24990f1e47c985d06e7bf1b78badeb5f199e3c036880",
+    "src/g5_model_port.py": "cd2b59b41ea86eb53df2bb73e00d2b5862aafa5f8f721ae0ff570406bf548fee",
+    "src/g5_host_adapter.py": "4dbc3d65271e9395389fa529dc2a0f44ba91a0d69561105617df2afea2613f4a",
+    "core_v1_g5_host_adapter.py": "4dbc3d65271e9395389fa529dc2a0f44ba91a0d69561105617df2afea2613f4a",
+    "controls/g4-final-m1m/producer-profile.json": "f60bf7478c7715769c07cdc81ca694fda4eb4f26fc3bbdabb3970c898a04a0d4",
+    "tests/test_final_answer.py": "20d7a0f6d141347bc6ca8aa521fd0e3b5fe246b51e430b517c101469dacbdad2",
+    "tests/test_g5_model_port_abi.py": "b2738c0f3c69da83b027a4dfd71daa705dcf7c839ce71c32c09119867d4328f3"
+  },
+  "producer_profile": {
+    "node": "m1m",
+    "endpoint": "http://10.1.0.75:11434/v1",
+    "binding_generation": 2,
+    "model": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "ssh_alias": "mako-lan-m1m"
+  },
+  "policy": {
+    "principal_generation": 1,
+    "grant_revision": 7,
+    "grant_source": "policy",
+    "final_answer_tools": []
+  },
+  "offline": {
+    "hardening_verdict": "22 PASS / 0 FAIL / 1 UNKNOWN",
+    "hardening_unit": "9/9",
+    "final_abi_unit": "4/4",
+    "offline_evidence_sha256": "a91fdd0113b93eee900661d76fc7b02764a56683a70a67369e1011df6223cf43",
+    "model_calls": 0
+  },
+  "live": {
+    "lease_id": "M1M-G4-FINAL-20261102-003",
+    "state": "ARMED_not_active",
+    "previous_spend": 51,
+    "campaign_cap": 59,
+    "max_new_calls": 8,
+    "planned_embedding": 3,
+    "planned_model": 2,
+    "concurrency": 1,
+    "max_ttl_seconds": 1200
+  },
+  "boundaries": [
+    "one bounded final-answer run, no native tools",
+    "no backfill, training, paid API or memory worker restart",
+    "no activation before actual lease and fresh producer price observation",
+    "old fixture, evidence and lease IDs are not rewritten"
+  ]
+}

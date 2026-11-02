@@ -1,0 +1,55 @@
+{
+ "schema": "g4-final-m1m-profile/1.0",
+ "source": {
+  "repo": "tampl1/Attached-Assets",
+  "commit": "6706207e3088a0cfeca33ea40cafa313e50cdb3e",
+  "path": "g4_route_reconciliation.json"
+ },
+ "binding_generation": 2,
+ "card": {
+  "id": "m1m:qwen3.5:9b",
+  "node": "m1m",
+  "model": "qwen3.5:9b",
+  "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+  "endpoint": "http://10.1.0.75:11434/v1",
+  "region": null,
+  "is_local": true,
+  "context_window": null,
+  "capabilities_declared": [],
+  "capabilities_assumed": [
+   "chat"
+  ],
+  "smoke_verified": [],
+  "smoke_model_digest": null,
+  "smoke_current": false,
+  "policy_allowed": true,
+  "stale": false,
+  "last_seen_at": "2026-11-02T15:13:02Z",
+  "freshness_s": 0.0,
+  "binding_generation": 2
+ },
+ "route": {
+  "provider": "ollama",
+  "channel": "local",
+  "model": "qwen3.5:9b",
+  "version": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+  "region": null,
+  "mode": "online",
+  "currency": "USD",
+  "unit": "1M_tokens",
+  "account_type": "local"
+ },
+ "view": {
+  "ollama|local|qwen3.5:9b|6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7||online|USD|1M_tokens|local": {
+   "price_in": 0.0,
+   "price_out": 0.0,
+   "source": "local-lan-runtime (M1M, свой узел)",
+   "observed_at": "2026-11-02T15:13:02Z",
+   "valid_until": null,
+   "freshness_until": "2026-11-02T16:13:02.109814+00:00"
+  }
+ },
+ "endpoint": "http://10.1.0.75:11434",
+ "ssh_alias": "mako-lan-m1m",
+ "price_observation_required_on_start": true
+}

@@ -203,6 +203,20 @@ read-only через `/api/tags`; на M1M есть другие активны�
 `integration/derived-consumer-g4-manifest.json`; evidence:
 `artifacts/derived-consumer-g4-evidence.json`.
 
+## Final G4 candidate: real model port на M1M
+
+Ветка `memory/final-g4-20261102` объединяет hardening `5cd5d6e8…`, MiniMax model
+port `2dd31dc…` + transport `0d232a…` и ZCode M1M profile `6706207e…`.
+`final_live_runner.py` использует `CoreAgent` final-answer с пустым tool catalog:
+FrozenDecisionContext(v2) → настоящий ModelRequest → ModelResult(source/version)
+→ result/ACK. Предварительный decide() ответа не подставляет.
+
+Offline: final answer 1/1, ABI 3/3, manifest 1/1. ModelRequest не перестраивается,
+malformed/drop не являются успехом, native tools отклоняются. До live требуются
+активная lease M1M-G4-FINAL-20261102-003 и свежая price observation. Budget:
+51/64 потрачено, не более 8 новых вызовов, план 3 embedding + 2 model.
+Source closure: `integration/final-g4-manifest.json`.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,
