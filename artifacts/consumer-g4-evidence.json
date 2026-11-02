@@ -1,0 +1,435 @@
+{
+  "base_sha": "07be33f815e4104086f61794c86b6e8b47f474ae",
+  "core": {
+    "commit": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
+    "modules": {
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_errors.py": "a9b76b97a756b00af3f27e66bf1b5d669eaf9ec31d7976e96cd7b844dd62c09b",
+      "core_v1_output_budget.py": "6bb3dd15ccfb534bd60df95928196f51346a17d2b16ca54f0c3298ae5ed8b303",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "3cd5780bda29e13f40a71a6d8f2d5925dd94a54316ab0b23e7c246fa12fb56e3"
+    },
+    "path": "scripts/backend/mnemosyne-core"
+  },
+  "counters": {
+    "ACK": 2,
+    "admitted": 2,
+    "attempted": 4,
+    "cost": {
+      "state": "known",
+      "usd": 0.0
+    },
+    "effect": 2,
+    "external_calls": 0,
+    "proposed": 7,
+    "result": 2,
+    "retries": 0,
+    "synthetic_model_calls": 2
+  },
+  "decision_input": {
+    "consumer_frozen_input_sha256": "ea0dfca43290b57019923a03154441dcc323d0fef9e6fcc90438b32dfe696453",
+    "context_input_digest": "97a2a2938cb57f1e0179c96c27a88830d489b62d1335f379f877bbb65516b2f5",
+    "generation_source": "adapter_contract.request.principal.generation",
+    "measured_sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "principal_generation": 1,
+    "source": {
+      "commit": "d05e6f969596bcfb0c71427d5c64156a0fb4192f",
+      "path": "artifacts/g5-lan-integration-20261102/producer-fixture-reference-20261102.json",
+      "repo": "tampl1/Attached-Assets",
+      "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+    }
+  },
+  "entry_point": "consumer_runner.py",
+  "goal": {
+    "checks": [
+      {
+        "id": "exact_minimax_decision_input",
+        "status": "PASS"
+      },
+      {
+        "id": "source_closure_exact",
+        "status": "PASS"
+      },
+      {
+        "id": "parent_v1_still_verifies_after_v2",
+        "status": "PASS"
+      },
+      {
+        "id": "parent_v1_not_rewritten",
+        "status": "PASS"
+      },
+      {
+        "id": "parent_replay_same_result_no_effect",
+        "status": "PASS"
+      },
+      {
+        "id": "new_task_uses_v2",
+        "status": "PASS"
+      },
+      {
+        "id": "positive_results_and_acks",
+        "status": "PASS"
+      },
+      {
+        "id": "two_synthetic_effects_only",
+        "status": "PASS"
+      },
+      {
+        "id": "revoked_zero_effect",
+        "status": "PASS"
+      },
+      {
+        "id": "foreign_zero_effect",
+        "status": "PASS"
+      },
+      {
+        "id": "missing_zero_effect",
+        "status": "PASS"
+      },
+      {
+        "id": "tampered_zero_effect",
+        "status": "PASS"
+      },
+      {
+        "id": "embedding_generation_zero_effect",
+        "status": "PASS"
+      }
+    ]
+  },
+  "limitations": "offline deterministic model/tool adapters on real CORE runtime/store; no live model or independent reviewer; safety PASS is not a quality claim",
+  "model_budget": {
+    "current_run": 0,
+    "limit": 64,
+    "previously_spent": 47,
+    "remaining": 17
+  },
+  "negative_controls": {
+    "embedding_generation": {
+      "ACK": 0,
+      "admitted": 0,
+      "attempted": 0,
+      "effect": 0,
+      "error": "DependencyUnavailable",
+      "label": "G4-N-embedding-generation",
+      "proposed": 1,
+      "result": 0
+    },
+    "foreign": {
+      "ACK": 0,
+      "admitted": 0,
+      "attempted": 0,
+      "effect": 0,
+      "error": "DependencyUnavailable",
+      "label": "G4-N-foreign",
+      "proposed": 1,
+      "result": 0
+    },
+    "missing": {
+      "ACK": 0,
+      "admitted": 0,
+      "attempted": 1,
+      "effect": 0,
+      "error": "DependencyUnavailable",
+      "label": "G4-N-missing",
+      "proposed": 1,
+      "result": 0
+    },
+    "revoked": {
+      "ACK": 0,
+      "admitted": 0,
+      "attempted": 0,
+      "effect": 0,
+      "error": "DependencyUnavailable",
+      "label": "G4-N-revoked",
+      "proposed": 1,
+      "result": 0
+    },
+    "tampered": {
+      "ACK": 0,
+      "admitted": 0,
+      "attempted": 1,
+      "effect": 0,
+      "error": "DependencyUnavailable",
+      "label": "G4-N-tampered",
+      "proposed": 1,
+      "result": 0
+    }
+  },
+  "parent_v1": {
+    "as_of": "2026-10-31T00:01:00+00:00",
+    "context_digest": "4357eb930bfaafaf78fd1e7ab0270630ab7a8cf86fb4856496bb493c415d28ed",
+    "embedding_generation": "bge-m3/1024",
+    "grant_revision": 1,
+    "items_json": "[{\"certainty\":\"explicit\",\"fact_id\":\"ev_dbadd15c034fb6ef69edda1a\",\"provenance\":{\"evidence_event_ids\":[\"ev_dbadd15c034fb6ef69edda1a\"],\"source_digests\":[\"dbadd15c034fb6ef69edda1ad5ca3e35a14f708f87f226677f0673e40d8a8835\"]},\"ref_id\":\"cl_b21fcc7b5564da35c0d33a87\",\"ref_type\":\"claim\",\"structured\":{\"source_event_ids\":[\"ev_dbadd15c034fb6ef69edda1a\"],\"value\":\"v1.0\",\"version\":\"v1.0\"},\"text\":\"ship v1.0\",\"valid_from\":\"2026-10-31T00:00:00+00:00\"}]",
+    "owner": "owner-fixture",
+    "parent_run_id": "parent-v1",
+    "project": "g4-memory-consumer",
+    "source": "ev_dbadd15c034fb6ef69edda1a",
+    "tenant": "tenant-fixture",
+    "version": "v1.0"
+  },
+  "parent_v2_digest": "b0b9f228291daf5ee6c5540ceea2fc778e768a97b4a0af442cab584e74661e8f",
+  "runs": {
+    "R1": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "G4-R1",
+      "memory_mode": "live",
+      "memory_recalls": 1,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "g4-parent-v1",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_dbadd15c034fb6ef69edda1a",
+          "fact_ref": "ev_dbadd15c034fb6ef69edda1a",
+          "version": "v1.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 1,
+            "attempted": 1,
+            "cancelled": 0,
+            "finished": 1,
+            "proposed": 1
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 0,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_dbadd15c034fb6ef69edda1a"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_dbadd15c034fb6ef69edda1a"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "012ef64f8e7e8403c4b54c883ab913ed0b770e62dfd3bfb536cb9b6b95239706",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "d92b742c6c07fb963a2d8ebc0868b261c7b61172634aa4b3d7dcd285b2601128",
+          "executor_seq": 1,
+          "fact_ref": "ev_dbadd15c034fb6ef69edda1a",
+          "operation": "ship_release",
+          "version": "v1.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "b8238175-6065-4129-8d99-ea91de4899fc",
+      "state": "completed",
+      "tool_executions_total": 1
+    },
+    "R1_replay": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "G4-R1-replay",
+      "memory_mode": "frozen",
+      "memory_recalls": 0,
+      "model_calls": 0,
+      "model_slug": "syn-model-a",
+      "request_key": "g4-parent-v1",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_dbadd15c034fb6ef69edda1a",
+          "fact_ref": "ev_dbadd15c034fb6ef69edda1a",
+          "version": "v1.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 1,
+            "attempted": 1,
+            "cancelled": 0,
+            "finished": 1,
+            "proposed": 1
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 0,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_dbadd15c034fb6ef69edda1a"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_dbadd15c034fb6ef69edda1a"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "012ef64f8e7e8403c4b54c883ab913ed0b770e62dfd3bfb536cb9b6b95239706",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "d92b742c6c07fb963a2d8ebc0868b261c7b61172634aa4b3d7dcd285b2601128",
+          "executor_seq": 1,
+          "fact_ref": "ev_dbadd15c034fb6ef69edda1a",
+          "operation": "ship_release",
+          "version": "v1.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "b8238175-6065-4129-8d99-ea91de4899fc",
+      "state": "completed",
+      "tool_executions_total": 1
+    },
+    "R2": {
+      "checkpoint_stages": [
+        "memory",
+        "model",
+        "outbox",
+        "tool"
+      ],
+      "crashed_after_tool": false,
+      "label": "G4-R2",
+      "memory_mode": "live",
+      "memory_recalls": 2,
+      "model_calls": 1,
+      "model_slug": "syn-model-a",
+      "request_key": "g4-parent-v2",
+      "result": {
+        "answer": {
+          "action": "ship_release",
+          "basis": "item:ev_0fb548d1df5e2aa709aba40e",
+          "fact_ref": "ev_0fb548d1df5e2aa709aba40e",
+          "version": "v2.0"
+        },
+        "memory_receipt": {
+          "admission": {
+            "active": 0,
+            "admitted": 2,
+            "attempted": 2,
+            "cancelled": 0,
+            "finished": 2,
+            "proposed": 2
+          },
+          "as_of": null,
+          "caller": {
+            "owner": "owner-fixture",
+            "project": "g4-memory-consumer",
+            "tenant": "tenant-fixture"
+          },
+          "calls": {
+            "embedding": 0,
+            "rerank": 0
+          },
+          "candidate_ids": [
+            "ev_0fb548d1df5e2aa709aba40e"
+          ],
+          "embedding_digest": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+          "embedding_model": "bge-m3:latest",
+          "mode": "raw",
+          "rerank_digest": null,
+          "rerank_error_policy": null,
+          "rerank_kind": null,
+          "rerank_model": null,
+          "result_ids": [
+            "ev_0fb548d1df5e2aa709aba40e"
+          ],
+          "runtime_verified": true
+        },
+        "model_receipt": {
+          "input_digest": "828f994c93c2f530c5f292e87ae98d986838cee8553d1659aec3be32669165c8",
+          "model": "syn-model-a",
+          "model_version": "syn-1.0",
+          "policy_revision": "synth-policy-v1",
+          "usage": {
+            "calls": 1,
+            "context_items": 1
+          }
+        },
+        "tool_receipt": {
+          "arguments_digest": "59709fe81a3678b4081f59fe26193ef729daa4663b781ef3199ac61a8eca9b07",
+          "executor_seq": 2,
+          "fact_ref": "ev_0fb548d1df5e2aa709aba40e",
+          "operation": "ship_release",
+          "version": "v2.0"
+        },
+        "verification": "passed"
+      },
+      "revision": 5,
+      "run_id": "90764ea7-638f-4cb9-a0af-4d8eebfc6c4f",
+      "state": "completed",
+      "tool_executions_total": 2
+    }
+  },
+  "safety": {
+    "checks": [
+      {
+        "id": "no_external_or_paid_calls",
+        "status": "PASS"
+      },
+      {
+        "id": "no_backfill_training_production_or_worker_restart",
+        "status": "PASS"
+      },
+      {
+        "id": "negative_controls_have_no_result_or_ack",
+        "status": "PASS"
+      }
+    ]
+  },
+  "schema": "memory-consumer-g4/1.0",
+  "verdict": {
+    "FAIL": 0,
+    "PASS": 16,
+    "SKIP": 0,
+    "UNKNOWN": 0,
+    "overall": "PASS"
+  }
+}

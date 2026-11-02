@@ -1,0 +1,60 @@
+{
+  "schema": "memory-consumer-g4-manifest/1.0",
+  "base_sha": "07be33f815e4104086f61794c86b6e8b47f474ae",
+  "entry_point": "consumer_runner.py",
+  "command": "MAKO_CORE_DIR=/path/to/core-2fa MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c95dab92d7147 /opt/homebrew/bin/python3.12 consumer_runner.py",
+  "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "2fa094082324af15b2c0fa7ad38c95dab92d7147",
+    "path": "scripts/backend/mnemosyne-core",
+    "modules": {
+      "core_v1_contract.py": "a43e1e111a5b23892c44d24938bbd97af4a922793c773bfb2838aca56c315b30",
+      "core_v1_errors.py": "a9b76b97a756b00af3f27e66bf1b5d669eaf9ec31d7976e96cd7b844dd62c09b",
+      "core_v1_output_budget.py": "6bb3dd15ccfb534bd60df95928196f51346a17d2b16ca54f0c3298ae5ed8b303",
+      "core_v1_runtime.py": "f13ffec9e9f81c77588355fb1aaf88affb8727d5bb9c26c9ed19e1bc502c4d64",
+      "core_v1_store.py": "3cd5780bda29e13f40a71a6d8f2d5925dd94a54316ab0b23e7c246fa12fb56e3"
+    }
+  },
+  "decision_input": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "d05e6f969596bcfb0c71427d5c64156a0fb4192f",
+    "path": "artifacts/g5-lan-integration-20261102/producer-fixture-reference-20261102.json",
+    "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "generation_source": "adapter_contract.request.principal.generation"
+  },
+  "pinned_context_fields": [
+    "source", "version", "as_of", "owner", "tenant", "project",
+    "grant_revision", "embedding_generation", "context_digest"
+  ],
+  "own_modules": {
+    "consumer_runner.py": "959b968fcbc1ebe368418bcdae2fc2b104ae42ce7a853e064cf60e6a605cfca7",
+    "src/source_closure.py": "b02c67a4f61e6d3e4e58f05a385f709430e81b5a0a625a98da10f9305a836fc0",
+    "src/decision_consumer.py": "5ac1235cac7e77828a04b1c99a33e4b8ed89a00dc6a5e2e76ecd98c312ead0e9",
+    "src/child_context.py": "69e3c543a274c1fff7a77e10ed63115f65ab09d16c102c1e374ea1b9ee1ae10d",
+    "src/live_retrieval.py": "75ab6d9f1574e835fa6f869cd07bd8de30c08e5266b66ca275279e9334f1efe2",
+    "src/adapters.py": "f7a1a4e823d19b6b44590ff837fbf83a657adaca4324679f2a5ac443c4d9bb37",
+    "src/pilot.py": "c4efb6403f3f32bb2b3e491de45fec24b46164cf97eaf42d49eb9a14447b2121",
+    "src/safety.py": "c2373e73bbf8852b30aa981ddbfea5de1560a50000e96b180d7eff6c72df42cd",
+    "src/temporal_store.py": "b8afdd6777ba3540abfdf6c3b6723d8b156a8a86410fd4cb98a55af552762a69",
+    "controls/g4-memory-consumer-20261102/minimax-decision-input.json": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279",
+    "controls/g4-memory-consumer-20261102/consumer-frozen-input.json": "ea0dfca43290b57019923a03154441dcc323d0fef9e6fcc90438b32dfe696453",
+    "tests/test_decision_consumer.py": "e640f9670122beeb7831d5c5a78ed26be739cd0f17ad7ea0b70448e330b319b4"
+  },
+  "evidence": {
+    "path": "artifacts/consumer-g4-evidence.json",
+    "sha256": "9efd99abca505a4a6e85a3f0b114189e36b3e0cf9604d1a0dbd849d968534888"
+  },
+  "model_budget": {
+    "limit": 64,
+    "previously_spent": 47,
+    "current_run": 0,
+    "remaining": 17
+  },
+  "boundaries": [
+    "offline deterministic model/tool adapters on real CORE runtime/store",
+    "no live model, backfill, training, production or worker restart",
+    "memory holds references; CORE owns execution history",
+    "safety PASS is not a model-quality claim"
+  ]
+}

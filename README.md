@@ -135,6 +135,29 @@ grant/deadline/runtime после него, выполняет retrieval в work
 /opt/homebrew/bin/python3.12 training/review_sources.py  # ожидаемый exit 1
 ```
 
+## G4 consumer: exact MiniMax decision input
+
+Ветка `memory/consumer-g4-20261102` связывает live recall и frozen child v2 с
+точным MiniMax envelope `d05e6f969596bcfb0c71427d5c64156a0fb4192f`.
+Principal generation берётся из `adapter_contract.request.principal.generation`,
+не из CORE SHA. `MAKO_CORE_DIR` и `MAKO_CORE_GIT_HEAD` обязательны; пять
+CORE-модулей проверяются по SHA-256 без локального checkout fallback.
+
+```bash
+MAKO_CORE_DIR=/path/to/core-2fa \
+MAKO_CORE_GIT_HEAD=2fa094082324af15b2c0fa7ad38c95dab92d7147 \
+  /opt/homebrew/bin/python3.12 consumer_runner.py
+```
+
+Parent v1 остаётся неизменным после v2 и replay не создаёт новый эффект; новая
+задача получает v2. Revoked/foreign/missing/tampered/embedding-generation
+останавливаются внутри consumer до tool effect. Результат: 16 PASS, 0 FAIL,
+2 synthetic effects, 2 result/ACK, внешних/model calls 0. Прежний расход 47/64
+сохранён, текущий 0, остаток 17. Это offline adapter на реальном CORE, не live
+model run и не независимая приёмка качества. Source closure и hashes:
+`integration/consumer-g4-manifest.json`; evidence:
+`artifacts/consumer-g4-evidence.json`.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,

@@ -173,7 +173,8 @@ class Pilot:
 
     def run_core(self, label, owner, project, query, model_slug, memory_mode,
                  request_key=None, tool_arguments=None, crash_stage=None,
-                 expected_fact_id=None, verifier_cls=None, memory_context=None):
+                 expected_fact_id=None, verifier_cls=None, memory_context=None,
+                 binding=None, deadline_at=None):
         request_key = request_key or (
             f"{label}:{owner}:{hashlib.sha256(query.encode()).hexdigest()[:12]}")
         expected_fact_id = (expected_fact_id if expected_fact_id is not None
@@ -190,14 +191,14 @@ class Pilot:
         model = SyntheticModel(model_slug)
         memory = memory_context or StoreMemoryContext(self.memory, owner, project, memory_mode)
         verifier = verifier_cls(expected_fact_id)
-        binding = make_binding(owner)
+        binding = binding or make_binding(owner)
         request = make_request(query, tool=tool, arguments=tool_arguments)
         runtime = CoreRuntime(store=store, model=model, memory=memory,
                               policy=self.policy, tools=self.executor,
                               transport=self.transport, verifier=verifier)
         try:
             run = asyncio.run(runtime.execute(binding, request_key, request,
-                                              self._deadline(), holder=label))
+                                              deadline_at or self._deadline(), holder=label))
             crashed = False
         except ProcessDeath:
             run, crashed = None, True
@@ -215,14 +216,15 @@ class Pilot:
         self._phase("core_run", **{k: v for k, v in result.items() if k != "result"})
         return result
 
-    def flush(self, owner, run_id):
+    def flush(self, owner, run_id, binding=None, deadline_at=None):
+        binding = binding or make_binding(owner)
         runtime = CoreRuntime(store=self._run_store(), model=SyntheticModel(MODEL_A),
                               memory=StoreMemoryContext(self.memory, owner, "synth-proj", "none"),
                               policy=self.policy, tools=self.executor,
                               transport=self.transport,
                               verifier=PermissiveVerifier(None))
         receipt = asyncio.run(runtime.flush_result(
-            make_binding(owner).principal, run_id, self._deadline()))
+            binding.principal, run_id, deadline_at or self._deadline()))
         self._phase("flush", run_id=run_id, deliveries=len(self.transport.deliveries))
         return receipt
 

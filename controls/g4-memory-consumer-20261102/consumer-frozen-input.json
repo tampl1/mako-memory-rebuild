@@ -1,0 +1,23 @@
+{
+  "schema": "memory-consumer-frozen-input/1.0",
+  "minimax_source": {
+    "repo": "tampl1/Attached-Assets",
+    "commit": "d05e6f969596bcfb0c71427d5c64156a0fb4192f",
+    "path": "artifacts/g5-lan-integration-20261102/producer-fixture-reference-20261102.json",
+    "sha256": "35fa0c9129c9f1c7960daee69c089bf178fdc0a83b7f7e82464edfb35d976279"
+  },
+  "project": "g4-memory-consumer",
+  "query": "what should we ship?",
+  "parent_run_id": "parent-v1",
+  "new_parent_run_id": "parent-v2",
+  "as_of": "2026-10-31T00:01:00+00:00",
+  "deadline_at": "2099-01-01T00:00:00+00:00",
+  "embedding_generation": "bge-m3/1024",
+  "v1": "v1.0",
+  "v2": "v2.0",
+  "model_budget": {
+    "limit": 64,
+    "previously_spent": 47,
+    "current_run": 0
+  }
+}
