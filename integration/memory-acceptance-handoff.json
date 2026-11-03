@@ -1,0 +1,36 @@
+{
+  "schema": "fleet-handoff/1",
+  "agent": "kimi-code-m5m",
+  "scope": "memory as a pluggable service, no new G4",
+  "candidate_sha": "7d2012d3cc056a114b2a48070da145e404645dc1",
+  "source_manifest_sha256": "d150bdd0f98ddc784807b25584c438f36393811bf7701a1b4997326e6b2a66d9",
+  "entrypoint": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 memory_acceptance_adapter.py",
+  "delivery": {
+    "recipient": "mini-max-m5m",
+    "location": "https://github.com/tampl1/mako-memory-rebuild/tree/7d2012d3cc056a114b2a48070da145e404645dc1",
+    "readback": false
+  },
+  "checks": [
+    {"id": "owner_grant_ready", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "historical_source_version_as_of", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "latest_frozen_child_decision", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "single_result_and_ack", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "restart_replay_no_new_recall_or_effect", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "outage_no_fallback", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "revoke_does_not_recreate_grant", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "generation_mismatch_ready_and_typed", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "missing_source_ready_and_typed", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"},
+    {"id": "unrelated_exception_not_accepted", "verdict": "PASS", "receipt": "artifacts/memory-acceptance-evidence.json"}
+  ],
+  "effects": {
+    "model_calls": 0,
+    "paid_calls": 0,
+    "production_writes": 0,
+    "deterministic_model_calls": 4,
+    "result": 1,
+    "ack": 1,
+    "effects": 0
+  },
+  "blocker": null,
+  "next_executable_action": "MiniMax M5M runs the entrypoint with exact CORE 4c31 closure and compares 10 checks and evidence SHA; independent review remains pending"
+}
