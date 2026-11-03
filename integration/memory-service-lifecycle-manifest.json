@@ -1,6 +1,6 @@
 {
-  "schema": "memory-service-lifecycle-manifest/1.0",
-  "base_sha": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+  "schema": "memory-service-lifecycle-manifest/1.1",
+  "base_sha": "111f15f1afdcc122903151cd1c4a3c165e8b0fee",
   "entry_point": "memory_service_runner.py",
   "command": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 memory_service_runner.py",
   "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
@@ -10,13 +10,13 @@
     "mismatches": 0
   },
   "own_modules": {
-    "memory_service_runner.py": "8f9432cb118eaa401e6c3317d0bf027eb218db1cb4f63671a025fb69a0b7ba52",
-    "src/memory_service.py": "4130b8587d3a67c43ddb91bbbd325a5ecc19c17a0e6afc472b68dd9b892ef6e2",
+    "memory_service_runner.py": "ce90eec1b175a6865593f5225b732e05102271c23576852fe6303ecd7fb8d134",
+    "src/memory_service.py": "edfb213127262315be5b67e0a564c540f0659fa58cbd77f1a36a875608116421",
     "tests/test_memory_service.py": "cdac0e85f43d75ca80ed522d3a036cc933699d6da9dbfcfbe9c086e695df00f4"
   },
   "contract": "start → ready → recall → drain → restart → replay",
   "verdict": {
-    "goal_pass": 11,
+    "goal_pass": 14,
     "safety_pass": 3,
     "fail": 0,
     "skip": 0,
@@ -27,9 +27,23 @@
     "failed_controls": ["revoke_rejected", "generation_mismatch_rejected", "missing_source_rejected"],
     "cause": "negative cases reused completed request key; fresh keys now reject before model"
   },
+  "independent_review": {
+    "verdict": "CHANGES_REQUIRED",
+    "candidate": "111f15f1afdcc122903151cd1c4a3c165e8b0fee",
+    "defects": [
+      "restart recreated revoked grant through constructor allow",
+      "authority revision change reused old profile",
+      "unrelated RuntimeError counted as valid negative evidence"
+    ],
+    "fixes": [
+      "external authority is required and refreshed at every start/restart",
+      "revoked authority stops start; changed revision forms a new profile",
+      "negative controls require expected typed errors and fresh request keys"
+    ]
+  },
   "evidence": {
     "path": "artifacts/memory-service-lifecycle-evidence.json",
-    "sha256": "38b274f58b01c814554a72d1dd53aff3813aac3e1d490f772c1d0b5609026a4b"
+    "sha256": "95ce2264e1cbf120d7e6abe92c721bc9f771f3cf93e9f21c69b66dd35ffec287"
   },
   "counters": {
     "proposed": 2,

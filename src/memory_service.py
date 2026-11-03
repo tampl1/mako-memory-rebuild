@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 from core_v1_contract import ModelResult
@@ -14,11 +15,36 @@ from .final_answer import (
     FinalAnswerMemoryContext, SourceVersionVerifier, make_agent, make_request,
 )
 from .pilot import Pilot, make_binding
-from .safety import AccessGrants, SafeReader
+from .safety import AccessGrants, AuthorizationError, SafeReader
 
 
 class ServiceNotReady(Exception):
     pass
+
+
+class StaticAuthority:
+    def __init__(self, revision=7, embedding_generation="bge-m3/1024"):
+        self.revision = revision
+        self.embedding_generation = embedding_generation
+        self.revoked = False
+        self.freshness_until = "2099-01-01T00:00:00+00:00"
+
+    def revoke(self):
+        self.revoked = True
+
+    def change(self, *, revision=None, embedding_generation=None):
+        if revision is not None:
+            self.revision = revision
+        if embedding_generation is not None:
+            self.embedding_generation = embedding_generation
+
+    def current(self, owner, project):
+        return {
+            "revoked": self.revoked,
+            "grant_revision": self.revision,
+            "embedding_generation": self.embedding_generation,
+            "freshness_until": self.freshness_until,
+        }
 
 
 class DeterministicContextModel:
@@ -38,22 +64,45 @@ class DeterministicContextModel:
 
 
 class MemoryService:
-    def __init__(self, workdir):
+    def __init__(self, workdir, authority):
         self.workdir = Path(workdir)
+        self.authority = authority
         self.pilot = Pilot(self.workdir)
         self.store = self.pilot.memory
         self.owner = "owner-fixture"
         self.project = "g4-memory-consumer"
-        self.grant_revision = 7
-        self.embedding_generation = "bge-m3/1024"
+        self.grant_revision = None
+        self.embedding_generation = None
         self.grants = AccessGrants()
-        self.grants.allow(self.owner, self.project, self.embedding_generation,
-                          self.grant_revision)
         self.binding = make_binding(self.owner)
         self.deadline = self.pilot._deadline()
         self.state = "new"
         self.children = {}
         self.runs = {}
+
+    def _refresh_authority(self):
+        if self.authority is None:
+            self.state = "unresolved"
+            raise AuthorizationError("grant authority unavailable")
+        current = self.authority.current(self.owner, self.project)
+        if current.get("revoked"):
+            self.state = "denied"
+            raise AuthorizationError("grant revoked by authority")
+        revision = current.get("grant_revision")
+        generation = current.get("embedding_generation")
+        freshness = current.get("freshness_until")
+        if type(revision) is not int or revision < 1 \
+                or not isinstance(generation, str) or not generation \
+                or not isinstance(freshness, str):
+            self.state = "unresolved"
+            raise AuthorizationError("authority grant is invalid")
+        if datetime.fromisoformat(freshness.replace("Z", "+00:00")) <= datetime.now(timezone.utc):
+            self.state = "denied"
+            raise AuthorizationError("authority grant expired")
+        self.grant_revision = revision
+        self.embedding_generation = generation
+        self.grants = AccessGrants()
+        self.grants.allow(self.owner, self.project, generation, revision)
 
     def _seed(self, version, occurred, kind, supersedes=None):
         event = self.store.ingest_event(
@@ -74,6 +123,7 @@ class MemoryService:
         return event
 
     def start(self):
+        self._refresh_authority()
         if not self.children:
             reader = SafeReader(self.store, self.grants,
                                 self.embedding_generation, self.grant_revision)
@@ -121,7 +171,7 @@ class MemoryService:
     def restart(self):
         if self.state != "stopped":
             self.drain()
-        service = MemoryService(self.workdir)
+        service = MemoryService(self.workdir, self.authority)
         service.deadline = self.deadline
         service.start()
         return service

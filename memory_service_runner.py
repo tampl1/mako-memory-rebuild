@@ -11,13 +11,26 @@ from src.source_closure import configure_core, sha256_file
 CORE_CLOSURE = configure_core()
 
 from src.child_context import ContextRestoreUnresolved  # noqa: E402
-from src.memory_service import MemoryService, ServiceNotReady  # noqa: E402
+from src.memory_service import MemoryService, ServiceNotReady, StaticAuthority  # noqa: E402
+from src.safety import AuthorizationError  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent
+
+
+def _rejected(expected, operation):
+    try:
+        operation()
+    except expected as exc:
+        return True, type(exc).__name__
+    except Exception as exc:
+        return False, type(exc).__name__
+    return False, None
 
 
 def run_lifecycle():
     with tempfile.TemporaryDirectory(prefix="memory-service-lifecycle-") as tmp:
-        service = MemoryService(tmp)
+        authority = StaticAuthority()
+        service = MemoryService(tmp, authority)
         ready = service.start()
         r1 = service.execute("v1.0")
         ack1 = service.pilot.flush(service.owner, r1.run_id)
@@ -42,37 +55,39 @@ def run_lifecycle():
         except ServiceNotReady:
             outage_rejected = True
         restarted.start()
-        restarted.grants.revoke(restarted.owner, restarted.project)
-        try:
-            restarted.execute("v2.0", suffix=":revoked")
-            revoke_rejected = False
-        except Exception:
-            revoke_rejected = True
-        restarted.grants.allow(
-            restarted.owner, restarted.project, restarted.embedding_generation,
-            restarted.grant_revision)
-        restarted.grants.allow(restarted.owner, restarted.project, "bge-m3/1025",
-                               restarted.grant_revision)
-        try:
-            restarted.execute("v2.0", suffix=":mismatch")
-            mismatch_rejected = False
-        except Exception:
-            mismatch_rejected = True
-        restarted.grants.allow(
-            restarted.owner, restarted.project, restarted.embedding_generation,
-            restarted.grant_revision)
+        restarted.authority.revoke()
+        revoke_rejected, revoke_error = _rejected(AuthorizationError, restarted.restart)
+        restarted.authority.revoked = False
+        restarted.authority.change(revision=8)
+        changed = restarted.restart()
+        revision_uses_new_profile = changed.grant_revision == 8
+        restarted.authority.change(revision=7)
+        restarted.grants.allow(restarted.owner, restarted.project, "bge-m3/1025", 7)
+        mismatch_rejected, mismatch_error = _rejected(
+            Exception, lambda: restarted.execute("v2.0", suffix=":mismatch"))
         with restarted.store._db() as db:
             db.execute("DELETE FROM source_events WHERE event_id=?", (r2.checkpoint["memory"]["items"][0]["fact_id"],))
-        try:
-            restarted.execute("v2.0", suffix=":missing")
-            missing_rejected = False
-        except Exception:
-            missing_rejected = True
+        missing_rejected, missing_error = _rejected(
+            Exception, lambda: restarted.execute("v2.0", suffix=":missing"))
         try:
             restarted.restore_snapshot('{"source":"missing"}')
             unknown_rejected = False
         except ContextRestoreUnresolved:
             unknown_rejected = True
+
+        def unrelated():
+            raise RuntimeError("INJECTED unrelated executor failure")
+        unrelated_rejected, unrelated_error = _rejected(AuthorizationError, unrelated)
+        unrelated_not_accepted = not unrelated_rejected and unrelated_error == "RuntimeError"
+        missing_authority_rejected, missing_authority_error = _rejected(
+            AuthorizationError, lambda: MemoryService(tmp, None).start())
+        negative_errors = {
+            "revoke_restart": revoke_error,
+            "generation_mismatch": mismatch_error,
+            "missing_source": missing_error,
+            "unrelated_exception": unrelated_error,
+            "missing_authority": missing_authority_error,
+        }
 
         checks = {
             "start_ready": ready["state"] == "ready" and ready["grant_revision"] == 7
@@ -87,10 +102,13 @@ def run_lifecycle():
             "restart_replay_no_new_model_recall_effect": replay_ok
                                                         and replay.result["tool_receipts"] == [],
             "outage_no_fallback": outage["fallback"] is False and outage_rejected,
-            "revoke_rejected": revoke_rejected,
+            "revoke_restart_does_not_recreate_grant": revoke_rejected,
+            "authority_change_uses_new_profile": revision_uses_new_profile,
             "generation_mismatch_rejected": mismatch_rejected,
             "missing_source_rejected": missing_rejected,
             "corrupt_snapshot_unresolved": unknown_rejected,
+            "unrelated_exception_not_accepted": unrelated_not_accepted,
+            "missing_authority_rejected": missing_authority_rejected,
         }
         goal_checks = [{"id": key, "status": "PASS" if value else "FAIL"}
                        for key, value in checks.items()]
@@ -110,6 +128,7 @@ def run_lifecycle():
             "ready": ready,
             "run_ids": {"v1": r1.run_id, "v2": r2.run_id, "v2_replay": replay.run_id},
             "checks": checks,
+            "negative_errors": negative_errors,
             "counters": {
                 "proposed": 2, "attempted": 2, "admitted": 2,
                 "effect": len(restarted.pilot.executor.executions),

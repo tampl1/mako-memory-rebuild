@@ -1,17 +1,20 @@
 {
   "candidate": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
   "checks": {
+    "authority_change_uses_new_profile": true,
     "corrupt_snapshot_unresolved": true,
     "drain_stops_new_work": true,
     "generation_mismatch_rejected": true,
+    "missing_authority_rejected": true,
     "missing_source_rejected": true,
     "outage_no_fallback": true,
     "recall_v1_result": "{\"source\": \"ev_7c12ad706915bcaf8e62716d\", \"version\": \"v1.0\"}",
     "recall_v2_result": "{\"source\": \"ev_460059792ad113e88b8e8696\", \"version\": \"v2.0\"}",
     "restart_replay_no_new_model_recall_effect": true,
     "result_and_ack": true,
-    "revoke_rejected": true,
-    "start_ready": true
+    "revoke_restart_does_not_recreate_grant": true,
+    "start_ready": true,
+    "unrelated_exception_not_accepted": true
   },
   "contract": "start → ready → recall → drain → restart → replay",
   "core": {
@@ -201,7 +204,11 @@
         "status": "PASS"
       },
       {
-        "id": "revoke_rejected",
+        "id": "revoke_restart_does_not_recreate_grant",
+        "status": "PASS"
+      },
+      {
+        "id": "authority_change_uses_new_profile",
         "status": "PASS"
       },
       {
@@ -215,19 +222,34 @@
       {
         "id": "corrupt_snapshot_unresolved",
         "status": "PASS"
+      },
+      {
+        "id": "unrelated_exception_not_accepted",
+        "status": "PASS"
+      },
+      {
+        "id": "missing_authority_rejected",
+        "status": "PASS"
       }
     ]
   },
   "limitations": "isolated deterministic fixture, not live LLM or old memory worker",
+  "negative_errors": {
+    "generation_mismatch": "ServiceNotReady",
+    "missing_authority": "AuthorizationError",
+    "missing_source": "ServiceNotReady",
+    "revoke_restart": "AuthorizationError",
+    "unrelated_exception": "RuntimeError"
+  },
   "ready": {
     "grant_revision": 7,
     "principal_generation": 1,
     "state": "ready"
   },
   "run_ids": {
-    "v1": "606ed154-52f8-4f48-abfb-2ef4b0d95ee9",
-    "v2": "76556b8f-630a-4226-9cfe-e80689d9c3f7",
-    "v2_replay": "76556b8f-630a-4226-9cfe-e80689d9c3f7"
+    "v1": "0e134aac-c523-474d-b8c3-ae9919c65a2d",
+    "v2": "e2225a3c-0540-4ea4-8d2f-2573d63dd1fb",
+    "v2_replay": "e2225a3c-0540-4ea4-8d2f-2573d63dd1fb"
   },
   "safety": {
     "checks": [
@@ -248,7 +270,7 @@
   "schema": "memory-service-lifecycle/1.0",
   "verdict": {
     "FAIL": 0,
-    "PASS": 14,
+    "PASS": 17,
     "SKIP": 0,
     "UNKNOWN": 0,
     "overall": "PASS"
