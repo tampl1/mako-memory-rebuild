@@ -1,0 +1,52 @@
+{
+  "schema": "g4-window-reconciliation/1.0",
+  "verdict": "not_started_expired",
+  "candidate": "63e20818adfdb31f3223c58b0c3348eaa3a1b39b",
+  "core": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+  "expected_lease": {
+    "lease_id": "M1M-G4-FINAL-20261102-003",
+    "state": "ARMED_not_active",
+    "source": "resource-lease-M1M-G4-FINAL-20261102-003.json"
+  },
+  "actual_lease": {
+    "lease_id": "M1M-G4-LIVE-20261102-003",
+    "state": "ACTIVE_expired",
+    "start": "2026-11-02T19:10:00Z",
+    "expiry": "2026-11-02T19:30:00Z",
+    "source": "Attached-Assets cf4bd7057ba518fb445ba366045b62b1551a3297, zcode/price-contract/g5-lan-route/resource-lease-M1M-G4-LIVE-003-ACTIVE.json",
+    "endpoint": "http://10.1.0.75:11434/v1",
+    "binding_generation": 2
+  },
+  "id_reconciliation": "MISMATCH_not_proven_aliases",
+  "runner": {
+    "started": false,
+    "reason": "final_live_runner.py requires M1M-G4-FINAL-20261102-003; actual ACTIVE ID differs; no final ACTIVE JSON or runner evidence exists",
+    "final_evidence_exists": false,
+    "process_alive": false
+  },
+  "counters": {
+    "embedding": 0,
+    "rerank": 0,
+    "model": 0,
+    "attempted": 0,
+    "accepted": 0,
+    "unknown": 0,
+    "run_ids": [],
+    "operation_keys": [],
+    "result": 0,
+    "ACK": 0,
+    "unknown_effects": 0
+  },
+  "resource": {
+    "state": "expired_not_restarted",
+    "release": "window elapsed without runner start; old ACTIVE JSON not reused",
+    "delegation": "expired at 2026-11-02T23:59:59Z; no new GPU request on 2026-11-03"
+  },
+  "evidence": [
+    "ZCode activation comment 6585991744, created 2026-11-02T19:09:12Z",
+    "Attached-Assets cf4bd7057ba518fb445ba366045b62b1551a3297",
+    "local artifacts: no final_live evidence file",
+    "process readback: no final_live_runner.py process"
+  ],
+  "next": "offline memory-service lifecycle only; no new model dispatch"
+}
