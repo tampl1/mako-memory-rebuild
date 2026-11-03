@@ -10,18 +10,30 @@ from src.source_closure import configure_core, sha256_file
 
 CORE_CLOSURE = configure_core()
 
+from core_v1_errors import DependencyUnavailable  # noqa: E402
 from src.child_context import ContextRestoreUnresolved  # noqa: E402
 from src.memory_service import MemoryService, ServiceNotReady, StaticAuthority  # noqa: E402
-from src.safety import AuthorizationError  # noqa: E402
+from src.safety import (  # noqa: E402
+    AuthorizationError, EmbeddingGenerationMismatch, EvidenceError,
+)
 
 ROOT = Path(__file__).resolve().parent
 
 
-def _rejected(expected, operation):
+def _rejected(expected, operation, *, cause=None):
     try:
         operation()
     except expected as exc:
-        return True, type(exc).__name__
+        if cause is None:
+            return True, type(exc).__name__
+        current = exc
+        seen = set()
+        while current is not None and id(current) not in seen:
+            seen.add(id(current))
+            if isinstance(current, cause):
+                return True, type(exc).__name__
+            current = current.__cause__ or current.__context__
+        return False, type(exc).__name__
     except Exception as exc:
         return False, type(exc).__name__
     return False, None
@@ -61,16 +73,35 @@ def run_lifecycle():
         restarted.authority.change(revision=8)
         changed = restarted.restart()
         revision_uses_new_profile = changed.grant_revision == 8
-        restarted.authority.change(revision=7)
-        restarted.grants.allow(restarted.owner, restarted.project, "bge-m3/1025", 7)
+        def make_ready_fixture(name):
+            workdir = Path(tmp) / name
+            workdir.mkdir()
+            fixture = MemoryService(workdir, StaticAuthority())
+            fixture_ready = fixture.start()
+            control = fixture.execute("v2.0", suffix=":control")
+            return fixture, fixture_ready, control
+
+        mismatch_service, mismatch_ready, mismatch_control = make_ready_fixture(
+            "generation-mismatch")
+        mismatch_ready_ok = mismatch_ready["state"] == "ready" \
+            and mismatch_service.state == "ready" and mismatch_control.state == "completed"
+        mismatch_service.grants.allow(
+            mismatch_service.owner, mismatch_service.project, "bge-m3/1025", 7)
         mismatch_rejected, mismatch_error = _rejected(
-            Exception, lambda: restarted.execute("v2.0", suffix=":mismatch"))
-        with restarted.store._db() as db:
-            db.execute("DELETE FROM source_events WHERE event_id=?", (r2.checkpoint["memory"]["items"][0]["fact_id"],))
+            DependencyUnavailable, lambda: mismatch_service.execute("v2.0", suffix=":mismatch"),
+            cause=EmbeddingGenerationMismatch)
+
+        missing_service, missing_ready, missing_control = make_ready_fixture("missing-source")
+        missing_ready_ok = missing_ready["state"] == "ready" \
+            and missing_service.state == "ready" and missing_control.state == "completed"
+        missing_fact_id = missing_control.checkpoint["memory"]["items"][0]["fact_id"]
+        with missing_service.store._db() as db:
+            db.execute("DELETE FROM source_events WHERE event_id=?", (missing_fact_id,))
         missing_rejected, missing_error = _rejected(
-            Exception, lambda: restarted.execute("v2.0", suffix=":missing"))
+            DependencyUnavailable, lambda: missing_service.execute("v2.0", suffix=":missing"),
+            cause=EvidenceError)
         try:
-            restarted.restore_snapshot('{"source":"missing"}')
+            changed.restore_snapshot('{"source":"missing"}')
             unknown_rejected = False
         except ContextRestoreUnresolved:
             unknown_rejected = True
@@ -88,6 +119,17 @@ def run_lifecycle():
             "unrelated_exception": unrelated_error,
             "missing_authority": missing_authority_error,
         }
+        negative_fixtures = {
+            "generation_mismatch": {
+                "ready": mismatch_ready_ok, "control_run_id": mismatch_control.run_id,
+                "expected_error": "DependencyUnavailable",
+                "expected_cause": "EmbeddingGenerationMismatch",
+            },
+            "missing_source": {
+                "ready": missing_ready_ok, "control_run_id": missing_control.run_id,
+                "expected_error": "DependencyUnavailable", "expected_cause": "EvidenceError",
+            },
+        }
 
         checks = {
             "start_ready": ready["state"] == "ready" and ready["grant_revision"] == 7
@@ -104,7 +146,9 @@ def run_lifecycle():
             "outage_no_fallback": outage["fallback"] is False and outage_rejected,
             "revoke_restart_does_not_recreate_grant": revoke_rejected,
             "authority_change_uses_new_profile": revision_uses_new_profile,
+            "generation_mismatch_fixture_ready": mismatch_ready_ok,
             "generation_mismatch_rejected": mismatch_rejected,
+            "missing_source_fixture_ready": missing_ready_ok,
             "missing_source_rejected": missing_rejected,
             "corrupt_snapshot_unresolved": unknown_rejected,
             "unrelated_exception_not_accepted": unrelated_not_accepted,
@@ -112,28 +156,31 @@ def run_lifecycle():
         }
         goal_checks = [{"id": key, "status": "PASS" if value else "FAIL"}
                        for key, value in checks.items()]
+        effect_count = sum(len(fixture.pilot.executor.executions) for fixture in (
+            service, restarted, changed, mismatch_service, missing_service))
         safety_checks = [
             {"id": "no_live_llm_backfill_or_old_worker_restart", "status": "PASS"},
-            {"id": "no_tool_effects", "status": (
-                "PASS" if not restarted.pilot.executor.executions else "FAIL")},
+            {"id": "no_tool_effects", "status": "PASS" if effect_count == 0 else "FAIL"},
             {"id": "temporary_service_cleanup", "status": "PASS"},
         ]
         failures = [item["id"] for item in goal_checks + safety_checks
                     if item["status"] == "FAIL"]
         return {
             "schema": "memory-service-lifecycle/1.0",
-            "candidate": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+            "candidate": "aa6611d4e35e7a90097fb311e5fdaf9121725cf6",
             "core": CORE_CLOSURE,
             "contract": "start → ready → recall → drain → restart → replay",
             "ready": ready,
             "run_ids": {"v1": r1.run_id, "v2": r2.run_id, "v2_replay": replay.run_id},
             "checks": checks,
             "negative_errors": negative_errors,
+            "negative_fixtures": negative_fixtures,
             "counters": {
                 "proposed": 2, "attempted": 2, "admitted": 2,
-                "effect": len(restarted.pilot.executor.executions),
+                "effect": effect_count,
                 "result": 2, "ACK": 2,
-                "deterministic_model_calls": 2,
+                "deterministic_model_calls": 4,
+                "deterministic_control_calls": 2,
                 "live_model_calls": 0, "retries": 0,
                 "cost": {"usd": 0.0, "state": "known"},
             },

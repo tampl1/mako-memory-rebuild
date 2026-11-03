@@ -1,6 +1,6 @@
 {
   "schema": "memory-service-lifecycle-manifest/1.1",
-  "base_sha": "111f15f1afdcc122903151cd1c4a3c165e8b0fee",
+  "base_sha": "aa6611d4e35e7a90097fb311e5fdaf9121725cf6",
   "entry_point": "memory_service_runner.py",
   "command": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 memory_service_runner.py",
   "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
@@ -10,13 +10,13 @@
     "mismatches": 0
   },
   "own_modules": {
-    "memory_service_runner.py": "ce90eec1b175a6865593f5225b732e05102271c23576852fe6303ecd7fb8d134",
+    "memory_service_runner.py": "027c12a07cfc0d62f944f055181f3bf62204bc0c639a0df1d271e3421bb2f72c",
     "src/memory_service.py": "edfb213127262315be5b67e0a564c540f0659fa58cbd77f1a36a875608116421",
-    "tests/test_memory_service.py": "cdac0e85f43d75ca80ed522d3a036cc933699d6da9dbfcfbe9c086e695df00f4"
+    "tests/test_memory_service.py": "9c72b73ab36d839e39b7a4568737a822bc4bf04b0f7b05ec5d71620bfeed0261"
   },
   "contract": "start → ready → recall → drain → restart → replay",
   "verdict": {
-    "goal_pass": 14,
+    "goal_pass": 16,
     "safety_pass": 3,
     "fail": 0,
     "skip": 0,
@@ -29,21 +29,26 @@
   },
   "independent_review": {
     "verdict": "CHANGES_REQUIRED",
-    "candidate": "111f15f1afdcc122903151cd1c4a3c165e8b0fee",
+    "candidate": "aa6611d4e35e7a90097fb311e5fdaf9121725cf6",
+    "receipt": "https://github.com/tampl1/Attached-Assets/issues/664#issuecomment-6602712556",
     "defects": [
-      "restart recreated revoked grant through constructor allow",
-      "authority revision change reused old profile",
-      "unrelated RuntimeError counted as valid negative evidence"
+      "generation mismatch and missing source reused a stopped object and accepted any Exception",
+      "unrelated RuntimeError in either real negative path remained false-green"
     ],
     "fixes": [
-      "external authority is required and refreshed at every start/restart",
-      "revoked authority stops start; changed revision forms a new profile",
-      "negative controls require expected typed errors and fresh request keys"
+      "negative cases use independent ready-fixtures and successful pre-injection controls",
+      "generation mismatch requires DependencyUnavailable caused by EmbeddingGenerationMismatch",
+      "missing source requires DependencyUnavailable caused by EvidenceError",
+      "each unrelated RuntimeError mutation makes its control and overall verdict FAIL"
     ]
   },
   "evidence": {
     "path": "artifacts/memory-service-lifecycle-evidence.json",
-    "sha256": "95ce2264e1cbf120d7e6abe92c721bc9f771f3cf93e9f21c69b66dd35ffec287"
+    "sha256": "240fd44f8e7fd5ef5b8208f58408f3a2698a1b5379af8c229d67d062fe72a218"
+  },
+  "mutation_evidence": {
+    "path": "artifacts/memory-service-lifecycle-mutation-evidence.json",
+    "sha256": "71087d4b6eadbef4bba4aa9b384f1a3c1462a9e43c5dd74faa9b097853430215"
   },
   "counters": {
     "proposed": 2,
@@ -52,7 +57,8 @@
     "effect": 0,
     "result": 2,
     "ACK": 2,
-    "deterministic_model_calls": 2,
+    "deterministic_model_calls": 4,
+    "deterministic_control_calls": 2,
     "live_model_calls": 0
   },
   "boundaries": [

@@ -1,0 +1,67 @@
+{
+  "base_candidate": "aa6611d4e35e7a90097fb311e5fdaf9121725cf6",
+  "counters": {
+    "deterministic_model_calls": 12,
+    "external_effects": 0,
+    "live_model_calls": 0,
+    "runs": 3
+  },
+  "fail_before": {
+    "generation_mismatch": "ServiceNotReady accepted as PASS; unrelated RuntimeError also accepted",
+    "independent_review": "https://github.com/tampl1/Attached-Assets/issues/664#issuecomment-6602712556",
+    "missing_source": "ServiceNotReady accepted as PASS; unrelated RuntimeError also accepted"
+  },
+  "pass_after": {
+    "baseline_negative_errors": {
+      "generation_mismatch": "DependencyUnavailable",
+      "missing_authority": "AuthorizationError",
+      "missing_source": "DependencyUnavailable",
+      "revoke_restart": "AuthorizationError",
+      "unrelated_exception": "RuntimeError"
+    },
+    "baseline_negative_fixtures": {
+      "generation_mismatch": {
+        "control_run_id": "7f05bff1-78f4-4696-8eb2-e7b68a5315dd",
+        "expected_cause": "EmbeddingGenerationMismatch",
+        "expected_error": "DependencyUnavailable",
+        "ready": true
+      },
+      "missing_source": {
+        "control_run_id": "7b17c339-449d-4197-8049-6e1d510306b7",
+        "expected_cause": "EvidenceError",
+        "expected_error": "DependencyUnavailable",
+        "ready": true
+      }
+    },
+    "baseline_verdict": {
+      "FAIL": 0,
+      "PASS": 19,
+      "SKIP": 0,
+      "UNKNOWN": 0,
+      "overall": "PASS"
+    },
+    "mutations": [
+      {
+        "actual_deterministic_model_calls": 4,
+        "control": "generation_mismatch_rejected",
+        "control_passed": false,
+        "live_model_calls": 0,
+        "negative_error": "RuntimeError",
+        "overall": "FAIL",
+        "required_overall": "FAIL",
+        "suffix": ":mismatch"
+      },
+      {
+        "actual_deterministic_model_calls": 4,
+        "control": "missing_source_rejected",
+        "control_passed": false,
+        "live_model_calls": 0,
+        "negative_error": "RuntimeError",
+        "overall": "FAIL",
+        "required_overall": "FAIL",
+        "suffix": ":missing"
+      }
+    ]
+  },
+  "schema": "memory-service-lifecycle-mutation-evidence/1.0"
+}

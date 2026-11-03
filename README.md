@@ -223,7 +223,12 @@ Source closure: `integration/final-g4-manifest.json`.
 каноне: start → ready → recall v1/v2 → result/ACK → drain → fresh restart →
 replay. Используется deterministic model double, не live LLM. Outage, revoke,
 missing source, generation mismatch и corrupt snapshot дают typed refusal без
-эффектов. Результат: 14 PASS, 0 FAIL, 2 result/ACK, live calls=0. Manifest:
+эффектов. Оба negative case имеют независимые ready-fixtures и успешный
+контрольный вызов до порчи; принимаются только `DependencyUnavailable` с
+ожидаемой причиной `EmbeddingGenerationMismatch`/`EvidenceError`. Мутационный
+тест заменяет каждый фактический negative path на unrelated `RuntimeError` и
+требует FAIL. Результат: 16 goal PASS + 3 safety PASS, 0 FAIL, 2 result/ACK,
+4 deterministic calls (2 основных + 2 контрольных), live calls=0. Manifest:
 `integration/memory-service-lifecycle-manifest.json`; evidence:
 `artifacts/memory-service-lifecycle-evidence.json`. Старый worker не
 перезапускается и второй постоянный процесс Мнемосины не создаётся.

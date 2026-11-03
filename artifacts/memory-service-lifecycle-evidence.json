@@ -1,11 +1,13 @@
 {
-  "candidate": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+  "candidate": "aa6611d4e35e7a90097fb311e5fdaf9121725cf6",
   "checks": {
     "authority_change_uses_new_profile": true,
     "corrupt_snapshot_unresolved": true,
     "drain_stops_new_work": true,
+    "generation_mismatch_fixture_ready": true,
     "generation_mismatch_rejected": true,
     "missing_authority_rejected": true,
+    "missing_source_fixture_ready": true,
     "missing_source_rejected": true,
     "outage_no_fallback": true,
     "recall_v1_result": "{\"source\": \"ev_7c12ad706915bcaf8e62716d\", \"version\": \"v1.0\"}",
@@ -166,7 +168,8 @@
       "state": "known",
       "usd": 0.0
     },
-    "deterministic_model_calls": 2,
+    "deterministic_control_calls": 2,
+    "deterministic_model_calls": 4,
     "effect": 0,
     "live_model_calls": 0,
     "proposed": 2,
@@ -212,7 +215,15 @@
         "status": "PASS"
       },
       {
+        "id": "generation_mismatch_fixture_ready",
+        "status": "PASS"
+      },
+      {
         "id": "generation_mismatch_rejected",
+        "status": "PASS"
+      },
+      {
+        "id": "missing_source_fixture_ready",
         "status": "PASS"
       },
       {
@@ -235,11 +246,25 @@
   },
   "limitations": "isolated deterministic fixture, not live LLM or old memory worker",
   "negative_errors": {
-    "generation_mismatch": "ServiceNotReady",
+    "generation_mismatch": "DependencyUnavailable",
     "missing_authority": "AuthorizationError",
-    "missing_source": "ServiceNotReady",
+    "missing_source": "DependencyUnavailable",
     "revoke_restart": "AuthorizationError",
     "unrelated_exception": "RuntimeError"
+  },
+  "negative_fixtures": {
+    "generation_mismatch": {
+      "control_run_id": "83ca50df-3a70-4c3b-8db1-fa4478346a3d",
+      "expected_cause": "EmbeddingGenerationMismatch",
+      "expected_error": "DependencyUnavailable",
+      "ready": true
+    },
+    "missing_source": {
+      "control_run_id": "55c0079e-9ab1-4eb1-a084-e11ac11884e1",
+      "expected_cause": "EvidenceError",
+      "expected_error": "DependencyUnavailable",
+      "ready": true
+    }
   },
   "ready": {
     "grant_revision": 7,
@@ -247,9 +272,9 @@
     "state": "ready"
   },
   "run_ids": {
-    "v1": "0e134aac-c523-474d-b8c3-ae9919c65a2d",
-    "v2": "e2225a3c-0540-4ea4-8d2f-2573d63dd1fb",
-    "v2_replay": "e2225a3c-0540-4ea4-8d2f-2573d63dd1fb"
+    "v1": "dda34c02-9882-46eb-b491-e9095c769ac0",
+    "v2": "ea22d3a7-32a7-45e4-99c7-e2572675a78b",
+    "v2_replay": "ea22d3a7-32a7-45e4-99c7-e2572675a78b"
   },
   "safety": {
     "checks": [
@@ -270,7 +295,7 @@
   "schema": "memory-service-lifecycle/1.0",
   "verdict": {
     "FAIL": 0,
-    "PASS": 17,
+    "PASS": 19,
     "SKIP": 0,
     "UNKNOWN": 0,
     "overall": "PASS"
