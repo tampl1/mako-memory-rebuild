@@ -1,0 +1,36 @@
+{
+  "schema": "memory-acceptance-source/1.0",
+  "base_candidate": "e29743aa8452b67bfa4d104a82a3b355b2c853f6",
+  "entrypoint": "memory_acceptance_adapter.py",
+  "command": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 memory_acceptance_adapter.py",
+  "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "runtime_modules_verified": 135,
+    "mismatches": 0
+  },
+  "own_modules": {
+    "memory_acceptance_adapter.py": "77a8ba0c786d9a246178e55e1c6cce790a6830151e35273322ddb0f9cd266df5",
+    "tests/test_memory_acceptance_adapter.py": "5451a678294e83eae45c526cb3a808f97d2a293b4010fc2fa3a110a4fe95bab4"
+  },
+  "evidence": {
+    "path": "artifacts/memory-acceptance-evidence.json",
+    "sha256": "cfe2a2c6784201136ad7c9717ee6d8883f535141fed7dc3a4f5975e81494f568"
+  },
+  "checks": {
+    "total": 10,
+    "pass": 10,
+    "fail": 0,
+    "result": 1,
+    "ack": 1,
+    "effects": 0,
+    "deterministic_model_calls": 4,
+    "live_model_calls": 0,
+    "paid_calls": 0,
+    "production_writes": 0
+  },
+  "boundaries": [
+    "deterministic isolated fixture, not live LLM",
+    "no old worker, backfill, embeddings, GPU or expired G4"
+  ]
+}
