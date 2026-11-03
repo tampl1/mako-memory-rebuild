@@ -1,0 +1,49 @@
+{
+  "schema": "memory-service-lifecycle-manifest/1.0",
+  "base_sha": "5cd5d6e8c94ae715a4b3b29d7dddcecc01c9fe18",
+  "entry_point": "memory_service_runner.py",
+  "command": "MAKO_CORE_DIR=/path/to/core-4c31/runtime MAKO_CORE_GIT_HEAD=4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d /opt/homebrew/bin/python3.12 memory_service_runner.py",
+  "required_env": ["MAKO_CORE_DIR", "MAKO_CORE_GIT_HEAD"],
+  "core": {
+    "commit": "4c31e0e0a21a6328e8a8e4e2ebca653e18120f3d",
+    "runtime_modules_verified": 135,
+    "mismatches": 0
+  },
+  "own_modules": {
+    "memory_service_runner.py": "8f9432cb118eaa401e6c3317d0bf027eb218db1cb4f63671a025fb69a0b7ba52",
+    "src/memory_service.py": "4130b8587d3a67c43ddb91bbbd325a5ecc19c17a0e6afc472b68dd9b892ef6e2",
+    "tests/test_memory_service.py": "cdac0e85f43d75ca80ed522d3a036cc933699d6da9dbfcfbe9c086e695df00f4"
+  },
+  "contract": "start → ready → recall → drain → restart → replay",
+  "verdict": {
+    "goal_pass": 11,
+    "safety_pass": 3,
+    "fail": 0,
+    "skip": 0,
+    "unknown": 0
+  },
+  "superseded_failures": {
+    "evidence_sha256": "affc6e11d02f15fa29a7b39e0391c64e4653b8e38c96f8bb0030ca20bbd3e32c",
+    "failed_controls": ["revoke_rejected", "generation_mismatch_rejected", "missing_source_rejected"],
+    "cause": "negative cases reused completed request key; fresh keys now reject before model"
+  },
+  "evidence": {
+    "path": "artifacts/memory-service-lifecycle-evidence.json",
+    "sha256": "38b274f58b01c814554a72d1dd53aff3813aac3e1d490f772c1d0b5609026a4b"
+  },
+  "counters": {
+    "proposed": 2,
+    "attempted": 2,
+    "admitted": 2,
+    "effect": 0,
+    "result": 2,
+    "ACK": 2,
+    "deterministic_model_calls": 2,
+    "live_model_calls": 0
+  },
+  "boundaries": [
+    "isolated deterministic fixture, not live LLM",
+    "no backfill, migration or old memory worker restart",
+    "no second persistent Mnemosyne process"
+  ]
+}

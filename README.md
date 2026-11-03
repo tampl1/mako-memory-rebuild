@@ -217,6 +217,17 @@ malformed/drop не являются успехом, native tools отклоня
 51/64 потрачено, не более 8 новых вызовов, план 3 embedding + 2 model.
 Source closure: `integration/final-g4-manifest.json`.
 
+## Memory service lifecycle
+
+`memory_service_runner.py` проверяет изолированный lifecycle на существующем
+каноне: start → ready → recall v1/v2 → result/ACK → drain → fresh restart →
+replay. Используется deterministic model double, не live LLM. Outage, revoke,
+missing source, generation mismatch и corrupt snapshot дают typed refusal без
+эффектов. Результат: 14 PASS, 0 FAIL, 2 result/ACK, live calls=0. Manifest:
+`integration/memory-service-lifecycle-manifest.json`; evidence:
+`artifacts/memory-service-lifecycle-evidence.json`. Старый worker не
+перезапускается и второй постоянный процесс Мнемосины не создаётся.
+
 ## Структура
 
 - `contracts/*.schema.json` — source-event, claim, evidence-link,
